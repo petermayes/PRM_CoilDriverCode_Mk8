@@ -1,0 +1,222 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 2019  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and any partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details, at
+https://fpgasoftware.intel.com/eula.
+*/
+(header "symbol" (version "1.1"))
+(symbol
+	(rect 0 0 368 456)
+	(text "TimerSYS" (rect 154 -1 196 11)(font "Arial" (font_size 10)))
+	(text "inst" (rect 8 440 20 452)(font "Arial" ))
+	(port
+		(pt 0 72)
+		(input)
+		(text "timer_0_s1_address[2..0]" (rect 0 0 102 12)(font "Arial" (font_size 8)))
+		(text "timer_0_s1_address[2..0]" (rect 4 61 148 72)(font "Arial" (font_size 8)))
+		(line (pt 0 72)(pt 144 72)(line_width 3))
+	)
+	(port
+		(pt 0 88)
+		(input)
+		(text "timer_0_s1_writedata[15..0]" (rect 0 0 108 12)(font "Arial" (font_size 8)))
+		(text "timer_0_s1_writedata[15..0]" (rect 4 77 166 88)(font "Arial" (font_size 8)))
+		(line (pt 0 88)(pt 144 88)(line_width 3))
+	)
+	(port
+		(pt 0 120)
+		(input)
+		(text "timer_0_s1_chipselect" (rect 0 0 88 12)(font "Arial" (font_size 8)))
+		(text "timer_0_s1_chipselect" (rect 4 109 130 120)(font "Arial" (font_size 8)))
+		(line (pt 0 120)(pt 144 120)(line_width 1))
+	)
+	(port
+		(pt 0 136)
+		(input)
+		(text "timer_0_s1_write_n" (rect 0 0 79 12)(font "Arial" (font_size 8)))
+		(text "timer_0_s1_write_n" (rect 4 125 112 136)(font "Arial" (font_size 8)))
+		(line (pt 0 136)(pt 144 136)(line_width 1))
+	)
+	(port
+		(pt 0 176)
+		(input)
+		(text "timer_1_s1_address[2..0]" (rect 0 0 101 12)(font "Arial" (font_size 8)))
+		(text "timer_1_s1_address[2..0]" (rect 4 165 148 176)(font "Arial" (font_size 8)))
+		(line (pt 0 176)(pt 144 176)(line_width 3))
+	)
+	(port
+		(pt 0 192)
+		(input)
+		(text "timer_1_s1_writedata[15..0]" (rect 0 0 107 12)(font "Arial" (font_size 8)))
+		(text "timer_1_s1_writedata[15..0]" (rect 4 181 166 192)(font "Arial" (font_size 8)))
+		(line (pt 0 192)(pt 144 192)(line_width 3))
+	)
+	(port
+		(pt 0 224)
+		(input)
+		(text "timer_1_s1_chipselect" (rect 0 0 87 12)(font "Arial" (font_size 8)))
+		(text "timer_1_s1_chipselect" (rect 4 213 130 224)(font "Arial" (font_size 8)))
+		(line (pt 0 224)(pt 144 224)(line_width 1))
+	)
+	(port
+		(pt 0 240)
+		(input)
+		(text "timer_1_s1_write_n" (rect 0 0 77 12)(font "Arial" (font_size 8)))
+		(text "timer_1_s1_write_n" (rect 4 229 112 240)(font "Arial" (font_size 8)))
+		(line (pt 0 240)(pt 144 240)(line_width 1))
+	)
+	(port
+		(pt 0 280)
+		(input)
+		(text "timer_2_s1_address[2..0]" (rect 0 0 102 12)(font "Arial" (font_size 8)))
+		(text "timer_2_s1_address[2..0]" (rect 4 269 148 280)(font "Arial" (font_size 8)))
+		(line (pt 0 280)(pt 144 280)(line_width 3))
+	)
+	(port
+		(pt 0 296)
+		(input)
+		(text "timer_2_s1_writedata[15..0]" (rect 0 0 108 12)(font "Arial" (font_size 8)))
+		(text "timer_2_s1_writedata[15..0]" (rect 4 285 166 296)(font "Arial" (font_size 8)))
+		(line (pt 0 296)(pt 144 296)(line_width 3))
+	)
+	(port
+		(pt 0 328)
+		(input)
+		(text "timer_2_s1_chipselect" (rect 0 0 88 12)(font "Arial" (font_size 8)))
+		(text "timer_2_s1_chipselect" (rect 4 317 130 328)(font "Arial" (font_size 8)))
+		(line (pt 0 328)(pt 144 328)(line_width 1))
+	)
+	(port
+		(pt 0 344)
+		(input)
+		(text "timer_2_s1_write_n" (rect 0 0 79 12)(font "Arial" (font_size 8)))
+		(text "timer_2_s1_write_n" (rect 4 333 112 344)(font "Arial" (font_size 8)))
+		(line (pt 0 344)(pt 144 344)(line_width 1))
+	)
+	(port
+		(pt 0 384)
+		(input)
+		(text "timer_clk_clk" (rect 0 0 53 12)(font "Arial" (font_size 8)))
+		(text "timer_clk_clk" (rect 4 373 82 384)(font "Arial" (font_size 8)))
+		(line (pt 0 384)(pt 144 384)(line_width 1))
+	)
+	(port
+		(pt 0 424)
+		(input)
+		(text "timer_reset_reset_n" (rect 0 0 82 12)(font "Arial" (font_size 8)))
+		(text "timer_reset_reset_n" (rect 4 413 118 424)(font "Arial" (font_size 8)))
+		(line (pt 0 424)(pt 144 424)(line_width 1))
+	)
+	(port
+		(pt 368 72)
+		(output)
+		(text "timer_0_irq_irq" (rect 0 0 61 12)(font "Arial" (font_size 8)))
+		(text "timer_0_irq_irq" (rect 292 61 382 72)(font "Arial" (font_size 8)))
+		(line (pt 368 72)(pt 224 72)(line_width 1))
+	)
+	(port
+		(pt 0 104)
+		(output)
+		(text "timer_0_s1_readdata[15..0]" (rect 0 0 108 12)(font "Arial" (font_size 8)))
+		(text "timer_0_s1_readdata[15..0]" (rect 4 93 160 104)(font "Arial" (font_size 8)))
+		(line (pt 0 104)(pt 144 104)(line_width 3))
+	)
+	(port
+		(pt 368 112)
+		(output)
+		(text "timer_1_irq_irq" (rect 0 0 60 12)(font "Arial" (font_size 8)))
+		(text "timer_1_irq_irq" (rect 294 101 384 112)(font "Arial" (font_size 8)))
+		(line (pt 368 112)(pt 224 112)(line_width 1))
+	)
+	(port
+		(pt 0 208)
+		(output)
+		(text "timer_1_s1_readdata[15..0]" (rect 0 0 107 12)(font "Arial" (font_size 8)))
+		(text "timer_1_s1_readdata[15..0]" (rect 4 197 160 208)(font "Arial" (font_size 8)))
+		(line (pt 0 208)(pt 144 208)(line_width 3))
+	)
+	(port
+		(pt 368 152)
+		(output)
+		(text "timer_2_irq_irq" (rect 0 0 61 12)(font "Arial" (font_size 8)))
+		(text "timer_2_irq_irq" (rect 292 141 382 152)(font "Arial" (font_size 8)))
+		(line (pt 368 152)(pt 224 152)(line_width 1))
+	)
+	(port
+		(pt 0 312)
+		(output)
+		(text "timer_2_s1_readdata[15..0]" (rect 0 0 108 12)(font "Arial" (font_size 8)))
+		(text "timer_2_s1_readdata[15..0]" (rect 4 301 160 312)(font "Arial" (font_size 8)))
+		(line (pt 0 312)(pt 144 312)(line_width 3))
+	)
+	(drawing
+		(text "timer_0_irq" (rect 225 43 516 99)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "irq" (rect 210 67 438 144)(font "Arial" (color 0 0 0)))
+		(text "timer_0_s1" (rect 80 43 220 99)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "address" (rect 149 67 340 144)(font "Arial" (color 0 0 0)))
+		(text "writedata" (rect 149 83 352 176)(font "Arial" (color 0 0 0)))
+		(text "readdata" (rect 149 99 346 208)(font "Arial" (color 0 0 0)))
+		(text "chipselect" (rect 149 115 358 240)(font "Arial" (color 0 0 0)))
+		(text "write_n" (rect 149 131 340 272)(font "Arial" (color 0 0 0)))
+		(text "timer_1_irq" (rect 225 83 516 179)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "irq" (rect 210 107 438 224)(font "Arial" (color 0 0 0)))
+		(text "timer_1_s1" (rect 82 147 224 307)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "address" (rect 149 171 340 352)(font "Arial" (color 0 0 0)))
+		(text "writedata" (rect 149 187 352 384)(font "Arial" (color 0 0 0)))
+		(text "readdata" (rect 149 203 346 416)(font "Arial" (color 0 0 0)))
+		(text "chipselect" (rect 149 219 358 448)(font "Arial" (color 0 0 0)))
+		(text "write_n" (rect 149 235 340 480)(font "Arial" (color 0 0 0)))
+		(text "timer_2_irq" (rect 225 123 516 259)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "irq" (rect 210 147 438 304)(font "Arial" (color 0 0 0)))
+		(text "timer_2_s1" (rect 80 251 220 515)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "address" (rect 149 275 340 560)(font "Arial" (color 0 0 0)))
+		(text "writedata" (rect 149 291 352 592)(font "Arial" (color 0 0 0)))
+		(text "readdata" (rect 149 307 346 624)(font "Arial" (color 0 0 0)))
+		(text "chipselect" (rect 149 323 358 656)(font "Arial" (color 0 0 0)))
+		(text "write_n" (rect 149 339 340 688)(font "Arial" (color 0 0 0)))
+		(text "timer_clk" (rect 91 355 236 723)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "clk" (rect 149 379 316 768)(font "Arial" (color 0 0 0)))
+		(text "timer_reset" (rect 77 395 220 803)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "reset_n" (rect 149 419 340 848)(font "Arial" (color 0 0 0)))
+		(text " TimerSYS " (rect 321 440 702 890)(font "Arial" ))
+		(line (pt 144 32)(pt 224 32)(line_width 1))
+		(line (pt 224 32)(pt 224 440)(line_width 1))
+		(line (pt 144 440)(pt 224 440)(line_width 1))
+		(line (pt 144 32)(pt 144 440)(line_width 1))
+		(line (pt 223 52)(pt 223 76)(line_width 1))
+		(line (pt 222 52)(pt 222 76)(line_width 1))
+		(line (pt 145 52)(pt 145 140)(line_width 1))
+		(line (pt 146 52)(pt 146 140)(line_width 1))
+		(line (pt 223 92)(pt 223 116)(line_width 1))
+		(line (pt 222 92)(pt 222 116)(line_width 1))
+		(line (pt 145 156)(pt 145 244)(line_width 1))
+		(line (pt 146 156)(pt 146 244)(line_width 1))
+		(line (pt 223 132)(pt 223 156)(line_width 1))
+		(line (pt 222 132)(pt 222 156)(line_width 1))
+		(line (pt 145 260)(pt 145 348)(line_width 1))
+		(line (pt 146 260)(pt 146 348)(line_width 1))
+		(line (pt 145 364)(pt 145 388)(line_width 1))
+		(line (pt 146 364)(pt 146 388)(line_width 1))
+		(line (pt 145 404)(pt 145 428)(line_width 1))
+		(line (pt 146 404)(pt 146 428)(line_width 1))
+		(line (pt 0 0)(pt 368 0)(line_width 1))
+		(line (pt 368 0)(pt 368 456)(line_width 1))
+		(line (pt 0 456)(pt 368 456)(line_width 1))
+		(line (pt 0 0)(pt 0 456)(line_width 1))
+	)
+)

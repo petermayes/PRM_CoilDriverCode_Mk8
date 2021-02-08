@@ -1,0 +1,236 @@
+INCLUDE "single_high_pulse";
+
+CONSTANT RESET_STATE 								= 0;
+CONSTANT IDLE_STATE_BIT_DETECT					= 1;
+CONSTANT	IDLE_STATE									= 2;
+CONSTANT	POSSIBLE_START_BIT				 		= 3;
+CONSTANT	CHECK_FOR_STOP_BIT						= 4;
+CONSTANT	STOP_BIT								 		= 5;
+CONSTANT	START_BIT								 	= 6;
+CONSTANT	DATA_BITS								 	= 7;
+
+
+SUBDESIGN cdr_decision_v5
+(
+	Reset										: input;
+	Data_in									: input;
+	clk										: input;
+
+
+	CDR_Clk_En								: output;	
+	clk_div4_out							: output;
+	ResultState[1..0]						: output;		
+	debug										: output;
+	Data_SHP									: output;
+	clk_tap[3..0]							: output;
+	clk_div4_tap[3..0]					: output;	
+	result_tap[3..0]						: output;
+	DataDelayTAP[7..0]					: output;
+
+)
+
+VARIABLE
+	ResultState_dff[1..0]				: dff;
+	clk_div4_dff							: dff;
+	clk_div4_tap_dff[3..0]				: dff;
+	Data_in_dff								: dff;
+	Data_SHP_dff							: dff;
+	Data_SHP_node							: node;	
+	clk_div4_count_dff[2..0]			: dff;
+	clk_SHP_dff								: dff;
+	clk_SHP_node							: node;	
+	clk_div4_p_tap_dff[2..0]			: dff;
+	Result_node[3..0]						: node;
+	Result_dff[3..0]						: dff;
+	Data_SLP_dff							: dff;
+	Data_SLP_node							: node;	
+	DataDelay[7..0]						: dff;
+
+	
+
+	
+BEGIN 
+
+	(CDR_Clk_En) = single_high_pulse(clk_div4_dff.q, clk);
+
+	DataDelay[0].d = Data_in_dff.q;
+	DataDelay[1].d = DataDelay[0].q;
+	DataDelay[2].d = DataDelay[1].q;
+	DataDelay[3].d = DataDelay[2].q;
+	DataDelay[4].d = DataDelay[3].q;
+	DataDelay[5].d = DataDelay[4].q;
+	DataDelay[6].d = DataDelay[5].q;
+	DataDelay[7].d = DataDelay[6].q;	
+	
+	DataDelayTAP[] = DataDelay[].q;
+
+
+-- ************************************************************	
+		
+	ResultState_dff[].clk = clk;
+	clk_div4_dff.clk = clk;
+	clk_div4_tap_dff[].clk = clk;
+	Data_in_dff.clk = clk;
+	Data_SHP_dff.clk = clk;	
+	clk_div4_count_dff[].clk = clk; 
+	clk_SHP_dff.clk = clk;
+	clk_div4_p_tap_dff[].clk = clk;
+	Result_dff[].clk = clk;
+	Data_SLP_dff.clk = clk;
+	DataDelay[].clk = clk;
+
+	
+-- ************************************************************		
+	
+	
+	clk_div4_tap_dff[0].d = clk_div4_count_dff[1].q;
+	clk_div4_tap_dff[1].d = clk_div4_tap_dff[0].q;
+	clk_div4_tap_dff[2].d = clk_div4_tap_dff[1].q;
+	clk_div4_tap_dff[3].d = clk_div4_tap_dff[2].q;	
+	
+	clk_div4_tap[] = clk_div4_tap_dff[].q;
+	
+	
+	clk_div4_p_tap_dff[0].d = clk_SHP_node;
+	clk_div4_p_tap_dff[1].d = clk_div4_p_tap_dff[0].q;
+	clk_div4_p_tap_dff[2].d = clk_div4_p_tap_dff[1].q;
+	
+	clk_tap[0] = clk_SHP_node;
+	clk_tap[3..1] = clk_div4_p_tap_dff[2..0].q;	
+	
+	
+-- ************************************************************	
+
+
+	Data_in_dff.d = Data_in;
+	
+	Data_SHP_dff.d = Data_in_dff.q;
+	Data_SHP_node = gnd ; --!Data_SHP_dff.q and Data_in_dff.q;
+	
+	Data_SLP_dff.d = Data_in_dff.q;
+	Data_SLP_node = Data_SHP_dff.q and !Data_in_dff.q;
+	
+	Data_SHP = (Data_SHP_node or Data_SLP_node);
+	
+
+-- ************************************************************	
+
+
+	clk_div4_count_dff[].d = clk_div4_count_dff[].q + 1;
+	clk_SHP_dff.d = clk_div4_count_dff[1].q;
+	clk_SHP_node = !clk_SHP_dff.q and clk_div4_count_dff[1].q;
+	
+	debug = clk_SHP_node;
+
+
+-- ************************************************************	
+
+	Result_node[0] = (Data_SHP_node or Data_SLP_node) and clk_SHP_node;
+	Result_node[1] = (Data_SHP_node or Data_SLP_node) and clk_div4_p_tap_dff[0].q;
+	Result_node[2] = (Data_SHP_node or Data_SLP_node) and clk_div4_p_tap_dff[1].q;
+	Result_node[3] = (Data_SHP_node or Data_SLP_node) and clk_div4_p_tap_dff[2].q;	
+	
+	Result_dff[].d = Result_node[];
+	result_tap[] = Result_node[];
+
+
+-- ************************************************************
+	
+	
+	
+	ResultState[] = ResultState_dff[].q;
+	
+	clk_div4_out = clk_div4_dff.q;
+	
+	
+	if (Reset == vcc) then
+	
+	
+		case Result_dff[].q is
+
+			when 1 =>
+	
+				ResultState_dff[].d = 0;
+
+				
+				-- ************************************************************	
+				
+			when 2 =>
+			
+				ResultState_dff[].d = 1;			
+					
+				
+				-- ************************************************************					
+				
+			when 4 =>
+			
+				ResultState_dff[].d = 2;
+				
+				
+				-- ************************************************************					
+				
+			when 8 =>
+
+				ResultState_dff[].d = 3;
+				
+				
+				-- ************************************************************				
+				
+					
+			when others =>
+			
+				ResultState_dff[].d = ResultState_dff[].q;			
+				
+
+			
+		end case;
+		
+		
+		case ResultState_dff[].q is
+
+			when 0 =>
+	
+				clk_div4_dff.d = clk_div4_tap_dff[1].q;	
+				
+				-- ************************************************************	
+				
+			when 1 =>
+			
+				clk_div4_dff.d = clk_div4_tap_dff[2].q;								
+				
+				-- ************************************************************					
+				
+			when 2 =>
+			
+				clk_div4_dff.d = clk_div4_tap_dff[3].q;					
+				
+				-- ************************************************************					
+				
+			when 3 =>
+
+				clk_div4_dff.d = clk_div4_tap_dff[0].q;				
+				
+				-- ************************************************************				
+				
+					
+			when others =>
+			
+				clk_div4_dff.d = gnd;				
+
+			
+		end case;
+		
+		
+				
+				
+				
+	
+	else
+	
+		ResultState_dff[].d = 0;
+	
+	end if;
+
+	
+	
+END;

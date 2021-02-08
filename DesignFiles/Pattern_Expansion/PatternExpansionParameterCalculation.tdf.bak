@@ -1,0 +1,152 @@
+INCLUDE "TwoInputSigned33_Divide";
+INCLUDE "TwoInputSigned32Mult";
+
+CONSTANT RESET_STATE 								= 0;
+CONSTANT IDLE_STATE 									= 1;
+CONSTANT TRIGGER_NEXT_CALC					 		= 2;
+
+SUBDESIGN PatternExpansionParameterCalculation
+(
+	Resetn											: input;
+	Global_Count[31..0]							: input;
+	PD_Packet_Data[2..0][31..0]				: input;
+	clk_en[1..0]									: input;	
+	clk												: input;
+	
+	Absolute_Time_Threshold[31..0]			: output;
+	Current_Position[1..0][31..0]				: output;
+	Increment[1..0][31..0]						: output;
+	PrepareNextDataSet							: output;	
+	state[3..0]										: output;	
+)	 
+
+VARIABLE
+	
+	PatternState_dffe[3..0]						: dffe;	
+	X_position_dffe[1..0][32..0]				: dffe;
+	Y_position_dffe[1..0][32..0]				: dffe;		
+	Latched_TimeIncrement_dffe[31..0]		: dffe;	
+	latch_enable_node								: node;	
+	Difference_node[1..0][32..0]				: node;	
+	Absolute_Time_Threshold_dffe[31..0]		: dffe;	
+	TimeDifferenceNode[31..0]					: node;	
+	Current_Position_dffe[1..0][31..0]		: dffe;	
+	IncrementCount_dffe[31..0]					: dffe;
+	Multiplication_node[1..0][63..0]			: node;	
+	
+
+BEGIN 
+
+	PatternState_dffe[].clk = clk;
+	PatternState_dffe[].ena = clk_en[0];
+	
+	Absolute_Time_Threshold_dffe[].clk = clk;
+	Absolute_Time_Threshold_dffe[].ena = latch_enable_node and clk_en[0];
+	Absolute_Time_Threshold_dffe[].d = Absolute_Time_Threshold_dffe[].q + PD_Packet_Data[0][31..0];
+
+	Absolute_Time_Threshold[] = Absolute_Time_Threshold_dffe[].q;
+	
+	Latched_TimeIncrement_dffe[].clk = clk;
+	Latched_TimeIncrement_dffe[].ena = latch_enable_node and clk_en[0];
+	Latched_TimeIncrement_dffe[].d = PD_Packet_Data[0][31..0];		
+	
+	TimeDifferenceNode[] = Absolute_Time_Threshold_dffe[].q - Global_Count[31..0];
+	
+	X_position_dffe[][].clk = clk;
+	X_position_dffe[][].ena = latch_enable_node and clk_en[0];
+	X_position_dffe[0][31..0].d = PD_Packet_Data[1][31..0];
+	X_position_dffe[0][32].d = PD_Packet_Data[1][31];
+	X_position_dffe[1][].d = X_position_dffe[0][].q;	
+	
+	Y_position_dffe[][].clk = clk;
+	Y_position_dffe[][].ena = latch_enable_node and clk_en[0];
+	Y_position_dffe[0][31..0].d = PD_Packet_Data[2][31..0];
+	Y_position_dffe[0][32].d = PD_Packet_Data[2][31];	
+	Y_position_dffe[1][].d = Y_position_dffe[0][].q;
+	
+	IncrementCount_dffe[].clk = clk;
+	IncrementCount_dffe[].ena = clk_en[0];
+	
+	Difference_node[0][32..0] = X_position_dffe[0][32..0].q - X_position_dffe[1][32..0].q;
+	Difference_node[1][32..0] = Y_position_dffe[0][32..0].q - Y_position_dffe[1][32..0].q;
+	
+	(Increment[0][31..0]) = TwoInputSigned33_Divide(Difference_node[0][32..0], Latched_TimeIncrement_dffe[].q);
+	(Increment[1][31..0]) = TwoInputSigned33_Divide(Difference_node[1][32..0], Latched_TimeIncrement_dffe[].q);	
+	
+	(Multiplication_node[0][63..0]) = TwoInputSigned32Mult(IncrementCount_dffe[31..0].q, Increment[0][31..0]);
+	(Multiplication_node[1][63..0]) = TwoInputSigned32Mult(IncrementCount_dffe[31..0].q, Increment[1][31..0]);
+		
+	if (resetn == gnd) then
+	
+			PatternState_dffe[].d = RESET_STATE;
+
+			latch_enable_node	= vcc;
+	
+	else
+	
+			CASE  PatternState_dffe[].q IS
+			
+			% ---------------------------------------------------------- %
+			
+					When RESET_STATE =>
+					
+						PatternState_dffe[].d = IDLE_STATE;
+									
+			% ---------------------------------------------------------- %
+			
+					When IDLE_STATE =>
+
+						if (TimeDifferenceNode[31] == vcc) then
+						
+								PatternState_dffe[].d = TRIGGER_NEXT_CALC;	
+
+								Current_Position_dffe[0][].d = X_position_dffe[0][31..0].q;
+								Current_Position_dffe[1][].d = Y_position_dffe[0][31..0].q;								
+								latch_enable_node	= vcc;
+								
+								IncrementCount_dffe[].d = 1;
+													
+						else
+						
+								PatternState_dffe[].d = PatternState_dffe[].q;	
+
+								IncrementCount_dffe[].d = IncrementCount_dffe[].q + 1;
+								Current_Position_dffe[0][].d = X_position_dffe[1][31..0].q + Multiplication_node[0][31..0]; 						
+								Current_Position_dffe[1][].d = Y_position_dffe[1][31..0].q + Multiplication_node[1][31..0]; 
+								
+						end if;				
+					
+			% ---------------------------------------------------------- %
+						
+					When TRIGGER_NEXT_CALC =>
+					
+						PatternState_dffe[].d = IDLE_STATE;
+
+						IncrementCount_dffe[].d = IncrementCount_dffe[].q + 1;
+						Current_Position_dffe[0][].d = X_position_dffe[1][31..0].q + Multiplication_node[0][31..0]; 
+						Current_Position_dffe[1][].d = Y_position_dffe[1][31..0].q + Multiplication_node[1][31..0]; 		
+		
+						PrepareNextDataSet = vcc;		
+
+			% ---------------------------------------------------------- %
+	
+					When others =>
+					
+						PatternState_dffe[].d = RESET_STATE;	
+						
+			
+			end case;
+
+
+			
+	end if;
+
+
+	state[3..0] = PatternState_dffe[3..0].q;
+	
+	Current_Position_dffe[][].clk = clk;
+	Current_Position[][] = Current_Position_dffe[][].q;
+	Current_Position_dffe[][].ena = clk_en[1];	
+
+
+END;

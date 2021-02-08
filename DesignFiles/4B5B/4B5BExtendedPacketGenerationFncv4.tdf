@@ -1,0 +1,741 @@
+
+INCLUDE "Single_High_Pulse";
+INCLUDE "Encoder4B_5B_LookUpTable";
+include "CRC_RAM_Wrapper";
+
+-- warning the bdf inc files dont follow the same order as the block def file
+
+CONSTANT RESET_STATE 								= 0;
+CONSTANT	IDLE_STATE									= 1;
+CONSTANT SEND_PREAMBLE_BYTE_STATE				= 2;
+CONSTANT SEND_DATA_LENGTH_BYTE_STATE			= 3;
+CONSTANT SEND_DATA_BYTEs_STATE					= 4;
+CONSTANT SEND_LAST_DATA_BYTE_CRC_STATE			= 5;
+CONSTANT	SEND_CRC_BYTE_STATE						= 6;
+CONSTANT SEND_POSTAMBLE_BYTE_STATE				= 7;
+CONSTANT WAIT_FOR_IDLE_STATE						= 8;
+CONSTANT SEND_20_IDLE_PACKETS						= 9;
+CONSTANT SEND_EXTRA_IDLE_PACKET					= 10;
+CONSTANT TRIGGER_CRC_STATE							= 11;
+CONSTANT SEND_INFO_BYTE_STATE						= 12;
+
+CONSTANT RESET_CRC_SUM								= 2;
+CONSTANT WAIT_STATE_1								= 3;
+CONSTANT WAIT_STATE_2								= 4;
+CONSTANT ACTIVE_IDLE_STATE							= 5;
+CONSTANT LATCH_DATA_BYTE							= 6;
+CONSTANT	UPDATE_CRC_CALC_STATE					= 7;	
+CONSTANT CALC_COMPLETE_TEST_STATE				= 8;	
+CONSTANT WAIT_FOR_END_OF_MESSAGE_STATE			= 9;		
+
+
+SUBDESIGN 4B5BExtendedPacketGenerationFncv4
+(
+
+	Reset											: input;
+	ExternalInterfaceAddr[7..0]			: input;
+	ExternalWriteData[7..0]					: input;
+	ExternalWrite								: input;
+	ReadDataWord[31..0]						: input;
+	PacketLengthByte[7..0]					: input;	
+	PageInfoByte[7..0]						: input;
+	PacketTrigger								: input;
+	SynchFlag									: input;
+	clk											: input;
+
+	TX_Data										: output;	
+	NibbleClkEnable							: output;
+	StateMode[3..0]							: output;
+	ByteAddr[12..0]							: output;
+	CRC_State[3..0]							: output;
+	DebugTX_UART								: output;
+	DebugTriggerPulse							: output;
+	CRC_Calc[7..0]								: output;
+	XOR_Result[7..0]							: output;
+	Debug[7..0]									: output;
+	NibbleInputData[9..0]					: output;
+	NibbleClkCount[3..0]						: output;
+)
+
+VARIABLE
+	StateMode_dffe[3..0]						: dffe;
+	LatchedDataByteCount_dffe[15..0]		: dffe;
+	AddressByteCount_dffe[12..0]			: dffe;
+	NibbleClkCount_dff[3..0]				: dff;
+	NibbleInputData_dffe[9..0]				: dffe;
+	CRC_Calculation_dffe[7..0]				: dffe;
+	NibbleClkEnableNode						: node;
+
+	InputDataByte_dffe[1..0][7..0]		: dffe;
+	DebugUART_dffe[7..0]						: dffe;
+	Delay_NibbleClkEnable_dff				: dff;
+	CodedDataNode[9..0]						: node;
+	
+	DataByte[7..0]								: node;
+	
+	CRC_State_dff[3..0]						: dff;
+	
+	Idle_Flag_node								: node;
+	
+	XOR_LSB_node[7..0]						: node;
+	RAM_Write_Node[7..0]						: node;
+	RAM_Read_Node[7..0]						: node;
+	
+	CRCCode5B_node[9..0]						: node;
+	
+	CRC_ByteCount_dffe[11..0]				: dffe;
+	
+	DebugTX_UART_dff							: dff;
+	DebugTX_UART_node							: node;
+	
+	DataLength_node[2..0][15..0]			: node;	
+	DataLengthByte_node[7..0]				: node;	
+	DataLengthDoubleNibble_node[9..0]	: node;
+	
+	Idle_TX_Count_dffe[7..0]				: dffe;
+	DataLength4B5B_node[9..0]				: node;
+	PageInfo4B5B_node[9..0]					: node;
+	
+	AddressCountDelay_dff[2..0][12..0]	: dff;
+	
+	TX_Data_node								: node;
+	TX_Data_dff								: dff;
+
+	
+BEGIN 
+
+
+	StateMode_dffe[].clk = clk;
+	StateMode_dffe[].ena = NibbleClkEnableNode;
+
+	Idle_TX_Count_dffe[].clk = clk;
+	Idle_TX_Count_dffe[].ena = NibbleClkEnableNode;	
+	
+	NibbleInputData[9..0] = NibbleInputData_dffe[9..0].q;
+	
+	LatchedDataByteCount_dffe[].clk = clk;
+	LatchedDataByteCount_dffe[].ena = NibbleClkEnableNode;
+
+	
+	NibbleInputData_dffe[].clk = clk;
+	NibbleInputData_dffe[].ena = NibbleClkEnableNode;	
+	
+	AddressByteCount_dffe[].clk = clk;
+	AddressByteCount_dffe[].ena = NibbleClkEnableNode;
+	
+	TX_Data_dff.clk = clk;
+	TX_Data_dff.d = TX_Data_node;
+	TX_Data = TX_Data_dff.q;	
+	
+	
+	case (AddressByteCount_dffe[1..0].q) is
+	
+		when 0 =>	
+			DataByte[7..0] = ReadDataWord[7..0];
+		when 1 =>	
+			DataByte[7..0] = ReadDataWord[15..8];
+		when 2 =>	
+			DataByte[7..0] = ReadDataWord[23..16];
+		when 3 =>	
+			DataByte[7..0] = ReadDataWord[31..24];
+	end case;
+	
+		
+	
+	InputDataByte_dffe[][].clk = clk;
+	InputDataByte_dffe[][].ena = NibbleClkEnableNode;
+	InputDataByte_dffe[0][7..0].d = DataByte[7..0];
+	InputDataByte_dffe[1][7..0].d = InputDataByte_dffe[0][7..0].q;
+	
+	AddressCountDelay_dff[][].clk = clk;	
+	AddressCountDelay_dff[0][].d = AddressByteCount_dffe[].q;
+	AddressCountDelay_dff[1][].d = AddressCountDelay_dff[0][].q;	
+	AddressCountDelay_dff[2][].d = AddressCountDelay_dff[1][].q;		
+	ByteAddr[] = AddressCountDelay_dff[2][].q;	
+
+	DataLengthByte_node[7..0] = PacketLengthByte[7..0];
+	
+	DataLength_node[0][7..0] = PacketLengthByte[7..0];
+	DataLength_node[0][15..8] = 0;
+
+	DataLength_node[1][] = DataLength_node[0][] + 1;
+	
+	DataLength_node[2][15..4] = DataLength_node[1][11..0];
+	DataLength_node[2][3..0] = 0;
+	
+	DataLengthDoubleNibble_node[] = DataLength4B5B_node[];
+
+	
+	-- *************************************************************
+	-- *																				*
+	-- *																				*
+	-- *																				*
+	-- *																				*		
+	-- *************************************************************	
+	
+	
+	StateMode[] = StateMode_dffe[].q;
+	
+	
+	DebugTriggerPulse = !Idle_Flag_node;
+	
+	
+	
+	if (Reset == vcc) then
+	
+	
+		case StateMode_dffe[].q is
+
+			when RESET_STATE =>
+	
+				StateMode_dffe[].d = IDLE_STATE; -- 
+				
+				
+			-- ************************************************************	
+				
+			when IDLE_STATE =>  
+			
+				if ((PacketTrigger == vcc) and (SynchFlag == vcc)) then
+				
+					StateMode_dffe[].d = SEND_20_IDLE_PACKETS;	
+				--	NibbleInputData_dffe[9..0].d = B"1100010001"; -- these cannot be decode so are not included in the crc		
+					AddressByteCount_dffe[].d = 0;
+					
+			--		CRC_InputData_dffe[].d = DataLengthByte_node[7..0];
+			
+				elsif (PacketTrigger == vcc) then
+				
+					StateMode_dffe[].d = TRIGGER_CRC_STATE;	
+				--	NibbleInputData_dffe[9..0].d = B"1100010001"; -- these cannot be decode so are not included in the crc		
+					AddressByteCount_dffe[].d = 0;
+					
+			--		CRC_InputData_dffe[].d = DataLengthByte_node[7..0];
+			
+
+				else
+				
+					StateMode_dffe[].d = IDLE_STATE;	
+
+					AddressByteCount_dffe[].d = 0;	
+	
+
+			--		CRC_InputData_dffe[].d = 0;	
+	
+				end if;				
+				
+				Idle_Flag_node = vcc;
+				NibbleInputData_dffe[9..0].d = B"1111100000"; -- these cannot be decode so are not included in the crc				
+				Idle_TX_Count_dffe[].d = 10;
+				
+				
+			-- ************************************************************	
+				
+			when SEND_20_IDLE_PACKETS =>  
+			
+				if (Idle_TX_Count_dffe[].q == 0) then
+				
+					StateMode_dffe[].d = TRIGGER_CRC_STATE;
+					
+			--		CRC_InputData_dffe[].d = DataLengthByte_node[7..0];
+
+				else
+				
+					StateMode_dffe[].d = SEND_20_IDLE_PACKETS;	
+
+	
+
+			--		CRC_InputData_dffe[].d = 0;	
+	
+				end if;				
+				
+				Idle_Flag_node = gnd;	
+	
+				Idle_TX_Count_dffe[].d = Idle_TX_Count_dffe[].q - 1;
+				
+				NibbleInputData_dffe[9..0].d = B"1111100000"; -- these cannot be decode so are not included in the crc	
+				AddressByteCount_dffe[].d = 0;	
+				
+				
+			-- ************************************************************
+		
+			when TRIGGER_CRC_STATE =>
+			
+					StateMode_dffe[].d = SEND_DATA_LENGTH_BYTE_STATE;	
+					NibbleInputData_dffe[9..0].d = B"1100010001"; -- these cannot be decode so are not included in the crc		
+					AddressByteCount_dffe[].d = 0;
+
+	
+							
+			-- ************************************************************								
+				
+			when SEND_DATA_LENGTH_BYTE_STATE =>		
+			
+					StateMode_dffe[].d = SEND_INFO_BYTE_STATE;
+
+					AddressByteCount_dffe[].d = 0; --AddressByteCount_dffe[].q + 1;					
+				
+					NibbleInputData_dffe[9..0].d = DataLengthDoubleNibble_node[]; --B"0100111110"; --CodedDataNode[9..0]; --Address_10b_node[];
+					
+					LatchedDataByteCount_dffe[15..0].d = DataLength_node[2][15..0];
+			
+			-- ************************************************************											
+			
+			
+			when SEND_INFO_BYTE_STATE =>
+			
+					StateMode_dffe[].d = SEND_DATA_BYTEs_STATE; -- SEND_INFO_BYTE_STATE;
+					
+					AddressByteCount_dffe[].d = 1; --AddressByteCount_dffe[].q + 1;					
+					NibbleInputData_dffe[9..0].d = PageInfo4B5B_node[];	
+					
+	--				LatchedDataByteCount_dffe[].d = LatchedDataByteCount_dffe[].q - 1;
+					LatchedDataByteCount_dffe[15..0].d = DataLength_node[2][15..0];				
+				
+			-- ************************************************************	
+
+			when SEND_DATA_BYTEs_STATE =>
+
+				if (LatchedDataByteCount_dffe[].q == 1) then
+				
+					StateMode_dffe[].d = SEND_LAST_DATA_BYTE_CRC_STATE;	
+								
+				else
+				
+					StateMode_dffe[].d = SEND_DATA_BYTEs_STATE;	
+				
+				end if;
+				
+				
+				NibbleInputData_dffe[9..0].d = CodedDataNode[9..0];
+				
+				AddressByteCount_dffe[].d = AddressByteCount_dffe[].q + 1;				
+				LatchedDataByteCount_dffe[].d = LatchedDataByteCount_dffe[].q - 1;				
+				
+				
+			-- ************************************************************							
+	
+			when SEND_LAST_DATA_BYTE_CRC_STATE =>
+			
+				StateMode_dffe[].d = SEND_CRC_BYTE_STATE;	
+				NibbleInputData_dffe[9..0].d = CRCCode5B_node[]; --0; --CRCCode5B_node[]; --B"1001010100";						
+				
+				AddressByteCount_dffe[].d = AddressByteCount_dffe[].q + 1;				
+				LatchedDataByteCount_dffe[].d = LatchedDataByteCount_dffe[].q - 1;	
+				
+				
+			-- ************************************************************
+	
+
+			when SEND_CRC_BYTE_STATE =>
+			
+					StateMode_dffe[].d = SEND_POSTAMBLE_BYTE_STATE;
+					NibbleInputData_dffe[9..0].d = B"0011101101";
+												
+				
+			-- ************************************************************		
+			
+			when SEND_POSTAMBLE_BYTE_STATE =>
+			
+					StateMode_dffe[].d = WAIT_FOR_IDLE_STATE;
+					NibbleInputData_dffe[9..0].d = B"1111100000"; -- these cannot be decode so are not included in the crc	
+												
+				
+			-- ************************************************************					
+	
+			when WAIT_FOR_IDLE_STATE =>  
+			
+				if ((PacketTrigger == gnd) and (SynchFlag == vcc)) then
+				
+					StateMode_dffe[].d = SEND_EXTRA_IDLE_PACKET;		
+					
+				elsif (PacketTrigger == gnd)  then
+				
+					StateMode_dffe[].d = IDLE_STATE;					
+					
+				else
+				
+					StateMode_dffe[].d = WAIT_FOR_IDLE_STATE;	
+				
+				end if;
+				
+				
+				NibbleInputData_dffe[9..0].d = B"1111100000"; -- these cannot be decode so are not included in the crc	
+				Idle_TX_Count_dffe[].d = 5;
+					
+		
+			-- ************************************************************			
+
+			
+			when SEND_EXTRA_IDLE_PACKET =>
+			
+				if (Idle_TX_Count_dffe[].q == 0) then
+					StateMode_dffe[].d = IDLE_STATE;
+				else
+					StateMode_dffe[].d = SEND_EXTRA_IDLE_PACKET;				
+				end if;
+				NibbleInputData_dffe[9..0].d = B"1111100000"; -- these cannot be decode so are not included in the crc	
+				Idle_TX_Count_dffe[].d = Idle_TX_Count_dffe[].q - 1;				
+												
+				
+			-- ************************************************************				
+				
+			when others =>
+			
+				StateMode_dffe[].d = RESET_STATE; -- 
+
+			
+		end case;	
+	
+	else
+	
+		StateMode_dffe[].d = RESET_STATE;
+	
+	end if;
+	
+	
+	
+	-- *************************************************************
+	-- *																				*
+	-- *																				*
+	-- *																				*
+	-- *																				*		
+	-- *************************************************************	
+	
+	
+	NibbleClkCount_dff[].clk = clk;
+	NibbleClkCount[] = NibbleClkCount_dff[].q;		
+
+	
+	if (NibbleClkCount_dff[].q == 0) then
+	
+		NibbleClkCount_dff[].d = 9;
+		NibbleClkEnableNode = vcc;
+			
+	else
+	
+		NibbleClkCount_dff[].d = NibbleClkCount_dff[].q - 1;	
+		
+	end if;
+	
+	NibbleClkEnable = NibbleClkEnableNode;
+	
+	
+	-- *************************************************************
+	-- *																				*
+	-- *																				*
+	-- *																				*
+	-- *																				*		
+	-- *************************************************************	
+	
+	CRC_State_dff[3..0].clk = clk;
+	CRC_State[] = CRC_State_dff[].q;
+	
+	CRC_Calculation_dffe[].clk = clk;
+	CRC_Calc[] = CRC_Calculation_dffe[].q;
+	
+	
+	case CRC_ByteCount_dffe[].q is
+			when 0 => 
+				XOR_LSB_node[] = CRC_Calculation_dffe[].q $ DataLengthByte_node[7..0];
+			when 1 =>
+				XOR_LSB_node[] = CRC_Calculation_dffe[].q $ PageInfoByte[7..0];	
+			when others => 
+				XOR_LSB_node[] = CRC_Calculation_dffe[].q $ InputDataByte_dffe[0][7..0];	
+	end case;	
+
+	
+	RAM_Write_Node[7..0] = 0;
+	(RAM_Read_Node[7..0]) = CRC_RAM_Wrapper(clk, ExternalInterfaceAddr[7..0], ExternalWrite, XOR_LSB_node[], ExternalWriteData[7..0]);
+
+	CRC_ByteCount_dffe[].clk = clk;
+	CRC_ByteCount_dffe[].ena = NibbleClkEnableNode;
+	
+	
+	if (Reset == vcc) then
+	
+	
+		case CRC_State_dff[].q is
+
+			when RESET_STATE =>
+	
+				CRC_State_dff[].d = IDLE_STATE; -- 
+				
+				
+			-- ************************************************************	
+				
+			when IDLE_STATE =>  
+
+				if (StateMode_dffe[].q == TRIGGER_CRC_STATE and NibbleClkEnableNode == vcc) then --PacketTrigger == vcc and NibbleClkEnableNode == vcc) then			
+				
+					CRC_State_dff[].d = RESET_CRC_SUM;	
+					
+				else
+				
+					CRC_State_dff[].d = IDLE_STATE;	
+						
+				end if;		
+	
+				CRC_ByteCount_dffe[].d = 0;
+			
+			-- ************************************************************	
+				
+			when RESET_CRC_SUM =>  
+			
+				CRC_State_dff[].d = WAIT_STATE_1;
+				
+				
+				CRC_Calculation_dffe[7..0].d = 0;
+				CRC_Calculation_dffe[].ena = vcc;
+							
+
+			-- ************************************************************	
+			
+			when LATCH_DATA_BYTE =>
+	
+				
+				if (Idle_Flag_node == vcc) then
+				
+					CRC_State_dff[].d = IDLE_STATE; -- 	
+
+				else
+				
+					CRC_State_dff[].d = WAIT_STATE_1; -- 	
+					
+				end if;
+						
+				
+			-- ************************************************************	
+				
+			when WAIT_STATE_1 =>  
+			
+				CRC_State_dff[].d = WAIT_STATE_2;		
+
+					
+					
+			-- ************************************************************	
+				
+			when WAIT_STATE_2 =>  
+			
+				CRC_State_dff[].d = UPDATE_CRC_CALC_STATE;					
+					
+			-- ************************************************************	
+			
+			when UPDATE_CRC_CALC_STATE =>  
+			
+				CRC_State_dff[].d = CALC_COMPLETE_TEST_STATE;		
+				CRC_Calculation_dffe[7..0].d = RAM_Read_Node[7..0];			
+				CRC_Calculation_dffe[].ena = vcc;							
+				
+			-- ************************************************************	
+			
+			when CALC_COMPLETE_TEST_STATE =>
+	
+				
+				if (LatchedDataByteCount_dffe[].q == 1) then
+				
+					CRC_State_dff[].d = WAIT_FOR_END_OF_MESSAGE_STATE; -- 	
+
+				else
+				
+					CRC_State_dff[].d = ACTIVE_IDLE_STATE; -- 	
+					
+				end if;				
+					
+			-- ************************************************************	
+			
+
+			when WAIT_FOR_END_OF_MESSAGE_STATE =>  
+			
+				if (Idle_Flag_node == vcc) then				
+				
+					CRC_State_dff[].d = IDLE_STATE;	
+					
+				else
+				
+					CRC_State_dff[].d = WAIT_FOR_END_OF_MESSAGE_STATE;	
+						
+				end if;						
+							
+
+							
+			-- ************************************************************				
+						
+				
+			when ACTIVE_IDLE_STATE =>  
+			
+				if (NibbleClkEnableNode == vcc) then				
+				
+					CRC_State_dff[].d = LATCH_DATA_BYTE;	
+					
+				else
+				
+					CRC_State_dff[].d = ACTIVE_IDLE_STATE;	
+						
+				end if;	
+	
+		
+				if (CRC_ByteCount_dffe[].q < 10) then
+					CRC_ByteCount_dffe[].d = CRC_ByteCount_dffe[].q + 1;	
+				else	
+					CRC_ByteCount_dffe[].d = CRC_ByteCount_dffe[].q;
+				end if;
+
+							
+			-- ************************************************************				
+		
+			when others =>
+			
+				CRC_State_dff[].d = RESET_STATE; -- 
+
+			
+		end case;	
+	
+	else
+	
+		CRC_State_dff[].d = RESET_STATE;
+	
+	end if;		
+		
+
+	-- *************************************************************
+	-- *																				*
+	-- *																				*
+	-- *																				*
+	-- *																				*		
+	-- *************************************************************	
+	
+	Delay_NibbleClkEnable_dff.clk = clk;
+	Delay_NibbleClkEnable_dff.d = NibbleClkEnableNode;
+	
+	DebugUART_dffe[].clk = clk;
+--	DebugUART_dffe[].ena = Delay_NibbleClkEnable_dff.q;  -- the ena for the UART is delayed so it can reflect the change to the main state machine
+	DebugUART_dffe[].ena = NibbleClkEnableNode;  -- the ena for the UART is synced so it can reflect the data capture by to the main state machine	
+		
+	case NibbleClkCount_dff[].q is  
+	
+	--		when 9 =>	
+			when 0 =>				
+			
+					--	DebugUART_dffe[7..0].d = CRC_Calculation_dff[7..0].q;
+					--	DebugUART_dffe[7..0].d = CRC_Calculation_dff[15..8].q;	
+	
+					case StateMode_dffe[].q is
+							when IDLE_STATE => 
+								DebugUART_dffe[].d = 255;
+							when SEND_20_IDLE_PACKETS =>
+								DebugUART_dffe[].d = 254; -- - Idle_TX_Count_dffe[].q;	
+							when TRIGGER_CRC_STATE => 
+								DebugUART_dffe[].d = 121;									
+						--	when SEND_PREAMBLE_BYTE_STATE => 
+						--		DebugUART_dffe[].d = 121;	
+							when SEND_DATA_LENGTH_BYTE_STATE =>
+								DebugUART_dffe[].d = DataLengthByte_node[7..0];	
+							when SEND_INFO_BYTE_STATE =>
+								DebugUART_dffe[].d = PageInfoByte[7..0];								
+							when SEND_CRC_BYTE_STATE => 
+								DebugUART_dffe[].d = CRC_Calculation_dffe[].q;	
+							when SEND_POSTAMBLE_BYTE_STATE =>
+								DebugUART_dffe[].d = 10;								
+							when WAIT_FOR_IDLE_STATE =>  	
+								DebugUART_dffe[].d = 255;
+							when SEND_EXTRA_IDLE_PACKET =>
+								DebugUART_dffe[].d = 254;							
+							when others =>
+								DebugUART_dffe[7..0].d = InputDataByte_dffe[1][7..0].q;
+					end case;
+					
+					
+			-- ************************************************************
+			
+		end case;			
+
+	
+	
+	-- *************************************************************
+	-- *																				*
+	-- *																				*
+	-- *																				*
+	-- *																				*		
+	-- *************************************************************	
+	
+	
+	case NibbleClkCount_dff[].q is
+		
+				when 0 =>		
+					TX_Data_node = NibbleInputData_dffe[0].q;
+					DebugTX_UART_node = vcc;  -- stop bit
+
+				when 1 =>		
+					TX_Data_node = NibbleInputData_dffe[1].q;
+					DebugTX_UART_node = DebugUART_dffe[7].q;
+		
+				when 2 =>		
+					TX_Data_node = NibbleInputData_dffe[2].q;
+					DebugTX_UART_node = DebugUART_dffe[6].q;					
+			
+				when 3 =>		
+					TX_Data_node = NibbleInputData_dffe[3].q;
+					DebugTX_UART_node = DebugUART_dffe[5].q;					
+			
+				when 4 =>		
+					TX_Data_node = NibbleInputData_dffe[4].q;
+					DebugTX_UART_node = DebugUART_dffe[4].q;
+				
+				when 5 =>		
+					TX_Data_node = NibbleInputData_dffe[5].q;
+					DebugTX_UART_node = DebugUART_dffe[3].q;					
+
+				when 6 =>		
+					TX_Data_node = NibbleInputData_dffe[6].q;
+					DebugTX_UART_node = DebugUART_dffe[2].q;					
+		
+				when 7 =>		
+					TX_Data_node = NibbleInputData_dffe[7].q;
+					DebugTX_UART_node = DebugUART_dffe[1].q;					
+			
+				when 8 =>		
+					TX_Data_node = NibbleInputData_dffe[8].q;	
+					DebugTX_UART_node = DebugUART_dffe[0].q;					
+			
+				when 9 =>		
+					TX_Data_node = NibbleInputData_dffe[9].q;
+					DebugTX_UART_node = gnd;  -- startbit
+			
+			-- ************************************************************								
+			
+				when others =>
+		
+					DebugTX_UART_node = gnd;
+					
+		end case;
+		
+	DebugTX_UART_dff.d = DebugTX_UART_node;
+	DebugTX_UART_dff.clk = clk;	
+	DebugTX_UART = DebugTX_UART_dff.q;
+	
+	
+	-- *************************************************************
+	-- *																				*
+	-- *																				*
+	-- *																				*
+	-- *																				*		
+	-- *************************************************************	
+	
+	(CodedDataNode[9..5]) = Encoder4B_5B_LookUpTable(InputDataByte_dffe[0][7..4].q);
+	(CodedDataNode[4..0]) = Encoder4B_5B_LookUpTable(InputDataByte_dffe[0][3..0].q);	
+	
+	(CRCCode5B_node[4..0]) = Encoder4B_5B_LookUpTable(CRC_Calculation_dffe[3..0].q);
+	(CRCCode5B_node[9..5]) = Encoder4B_5B_LookUpTable(CRC_Calculation_dffe[7..4].q);
+	
+	(DataLength4B5B_node[4..0]) = Encoder4B_5B_LookUpTable(PacketLengthByte[3..0]);
+	(DataLength4B5B_node[9..5]) = Encoder4B_5B_LookUpTable(PacketLengthByte[7..4]);
+	
+	(PageInfo4B5B_node[4..0]) = Encoder4B_5B_LookUpTable(PageInfoByte[3..0]);
+	(PageInfo4B5B_node[9..5]) = Encoder4B_5B_LookUpTable(PageInfoByte[7..4]);
+	
+
+	-- ************************************************************								
+	-- ************************************************************	
+	
+	
+END;

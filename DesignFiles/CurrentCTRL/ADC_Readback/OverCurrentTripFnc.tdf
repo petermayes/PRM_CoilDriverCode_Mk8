@@ -1,0 +1,198 @@
+
+CONSTANT RESET_STATE									= 0;
+CONSTANT UNTRIPPED_STATE							= 1;
+CONSTANT	TRIPPED_STATE						 		= 2;
+CONSTANT	FAULT_RESET_STATE							= 3;
+
+
+SUBDESIGN OverCurrentTripFnc
+(
+	reset												: input;
+	Fault_Reset										: input;
+	InputData[19..0]								: input;
+	PositiveCurrentTrip[19..0]					: input;
+	clk_en											: input;
+	clk												: input;
+	
+	OverCurrentLatchFaultFlag					: output;
+	OverCurrentFlag								: output;
+	OverCurrentcount[7..0]						: output;
+	StateMode[4..0]								: output;
+)
+
+VARIABLE
+	InputData_dff[1..0][19..0]					: dff;
+	InvertedInputData_dff[1..0][19..0]		: dff;	
+	PositiveCurrentTrip_dff[1..0][19..0]	: dff;
+	StateMode_dffe[4..0]							: dffe;
+	PositiveTrip_node								: node;
+	NegativeTrip_node								: node;
+	OverCurrentFlag_node							: node;
+	OverCurrentFlag_dffe							: dffe;	
+
+	OverCurrentcount_dffe[7..0]				: dffe;	
+	OverCurrentLatchFaultFlag_node			: node;
+	OverCurrentLatchFaultFlag_dff				: dff;
+	Fault_Reset_Sync_dff[1..0]					: dff;
+	
+BEGIN 	
+
+	InputData_dff[][].clk = clk;
+	InputData_dff[0][].d = InputData[];
+	InputData_dff[1][].d = InputData_dff[0][].q;
+	
+	InvertedInputData_dff[][].clk = clk;
+	InvertedInputData_dff[0][].d = (0 - InputData[]);
+	InvertedInputData_dff[1][].d = InvertedInputData_dff[0][].q;	
+	
+	PositiveCurrentTrip_dff[][].clk = clk;
+	PositiveCurrentTrip_dff[0][].d = PositiveCurrentTrip[];
+	PositiveCurrentTrip_dff[1][].d = PositiveCurrentTrip_dff[0][].q;	
+	
+	Fault_Reset_Sync_dff[].clk = clk;
+	Fault_Reset_Sync_dff[0].d = Fault_Reset;
+	Fault_Reset_Sync_dff[1].d = Fault_Reset_Sync_dff[0].q;
+	
+
+	OverCurrentFlag_node = PositiveTrip_node or NegativeTrip_node;
+	OverCurrentFlag_dffe.clk = clk;
+	OverCurrentFlag_dffe.ena = clk_en;
+	OverCurrentFlag_dffe.d = OverCurrentFlag_node;
+	OverCurrentFlag = OverCurrentFlag_dffe.q;
+	
+	StateMode_dffe[].clk = clk;
+	StateMode_dffe[].ena = clk_en;	
+	StateMode[] = StateMode_dffe[].q;
+	
+	
+	OverCurrentcount_dffe[].clk = clk;
+	OverCurrentcount_dffe[].ena = clk_en;
+	OverCurrentcount[] = OverCurrentcount_dffe[].q;
+	
+	OverCurrentLatchFaultFlag_dff.clk = clk;
+	OverCurrentLatchFaultFlag_dff.d = OverCurrentLatchFaultFlag_node;
+	OverCurrentLatchFaultFlag = OverCurrentLatchFaultFlag_dff.q;
+	
+
+	if (InputData_dff[1][19].q == gnd) then				
+		if (InputData_dff[1][19..0] > PositiveCurrentTrip_dff[1][19..0]) then
+			PositiveTrip_node = vcc;
+		else
+			PositiveTrip_node = gnd;
+		end if;	
+			
+	else				
+	
+		if (InvertedInputData_dff[1][19..0] > PositiveCurrentTrip_dff[1][19..0]) then
+			NegativeTrip_node = vcc;
+		else
+			NegativeTrip_node = gnd;
+		end if;		
+			
+	end if;
+	
+	
+	if (Reset == gnd) then
+	
+		StateMode_dffe[].d = RESET_STATE;
+		OverCurrentcount_dffe[].d = 0;
+	
+	else	
+	
+		case StateMode_dffe[].q is
+		
+			when RESET_STATE =>
+			
+				StateMode_dffe[].d = UNTRIPPED_STATE;	
+				OverCurrentcount_dffe[].d = 0;	
+					
+				
+	-- ******************************************************************				
+			
+
+			when UNTRIPPED_STATE =>
+			
+				if (OverCurrentFlag_dffe.q == vcc) then
+					
+						if (OverCurrentcount_dffe[].q < 6) then 
+					
+							OverCurrentcount_dffe[].d = OverCurrentcount_dffe[] + 1;
+							StateMode_dffe[].d = UNTRIPPED_STATE;	
+
+						else
+						
+							OverCurrentcount_dffe[].d = 6;
+							StateMode_dffe[].d = TRIPPED_STATE;	
+							
+						end if;
+						
+				else
+					
+						if (OverCurrentcount_dffe[].q == 0) then 
+					
+							OverCurrentcount_dffe[].d = 0;
+
+						else
+						
+							OverCurrentcount_dffe[].d = OverCurrentcount_dffe[] - 1;
+							
+						end if;
+						
+						StateMode_dffe[].d = UNTRIPPED_STATE;	
+						
+				end if;
+				
+				
+					
+
+	-- ******************************************************************		
+
+
+			when TRIPPED_STATE =>
+			
+				if (Fault_Reset_Sync_dff[1].q == vcc) then
+
+					StateMode_dffe[].d = FAULT_RESET_STATE;					
+				
+				else
+				
+					StateMode_dffe[].d = TRIPPED_STATE;	
+				
+				end if;
+				
+				OverCurrentcount_dffe[].d = 178;
+				OverCurrentLatchFaultFlag_node = vcc;
+				
+				
+	-- ******************************************************************		
+
+			when FAULT_RESET_STATE =>
+			
+				if (Fault_Reset_Sync_dff[1].q == gnd) then
+
+					StateMode_dffe[].d = RESET_STATE;					
+				
+				else
+				
+					StateMode_dffe[].d = FAULT_RESET_STATE;	
+				
+				end if;
+				
+				OverCurrentcount_dffe[].d = 213;
+				OverCurrentLatchFaultFlag_node = vcc;	
+				
+	-- ******************************************************************					
+	
+			when others =>	
+			
+					StateMode_dffe[].d = RESET_STATE;	
+		
+
+					
+			end case;		
+
+	
+	end if;
+				
+	
+END;

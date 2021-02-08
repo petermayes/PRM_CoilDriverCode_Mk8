@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simPackage>
+<file path="hdl_sim/Mk8_InlineController_CPU_CurrCTRL_SYS_CurrCTRL_Register_RAM.dat" type="DAT" initParamName="INIT_FILE" memoryPath="CurrCTRL_SYS.CurrCTRL_Register_RAM" />
+<file path="hdl_sim/Mk8_InlineController_CPU_Data_Memory.dat" type="DAT" initParamName="INIT_FILE" memoryPath="Data_Memory" />
+<file path="hdl_sim/Mk8_InlineController_CPU_Parameter_SYS_Parameter_RX_RAM.dat" type="DAT" initParamName="INIT_FILE" memoryPath="Parameter_SYS.Parameter_RX_RAM" />
+<file path="hdl_sim/Mk8_InlineController_CPU_Parameter_SYS_Parameter_TX_RAM.dat" type="DAT" initParamName="INIT_FILE" memoryPath="Parameter_SYS.Parameter_TX_RAM" />
+<file path="hdl_sim/Mk8_InlineController_CPU_Program_Memory.dat" type="DAT" initParamName="INIT_FILE" memoryPath="Program_Memory" />
+<file path="hdl_sim/Mk8_InlineController_CPU_USB_Data_SYS_USB_RX_RAM.dat" type="DAT" initParamName="INIT_FILE" memoryPath="USB_Data_SYS.USB_RX_RAM" />
+<file path="Mk8_InlineController_CPU_CurrCTRL_SYS_CurrCTRL_Register_RAM.hex" type="HEX" initParamName="INIT_FILE" memoryPath="CurrCTRL_SYS.CurrCTRL_Register_RAM" />
+<file path="Mk8_InlineController_CPU_Data_Memory.hex" type="HEX" initParamName="INIT_FILE" memoryPath="Data_Memory" />
+<file path="Mk8_InlineController_CPU_Parameter_SYS_Parameter_RX_RAM.hex" type="HEX" initParamName="INIT_FILE" memoryPath="Parameter_SYS.Parameter_RX_RAM" />
+<file path="Mk8_InlineController_CPU_Parameter_SYS_Parameter_TX_RAM.hex" type="HEX" initParamName="INIT_FILE" memoryPath="Parameter_SYS.Parameter_TX_RAM" />
+<file path="Mk8_InlineController_CPU_Program_Memory.hex" type="HEX" initParamName="INIT_FILE" memoryPath="Program_Memory" />
+<file path="Mk8_InlineController_CPU_USB_Data_SYS_USB_RX_RAM.hex" type="HEX" initParamName="INIT_FILE" memoryPath="USB_Data_SYS.USB_RX_RAM" />
+</simPackage>

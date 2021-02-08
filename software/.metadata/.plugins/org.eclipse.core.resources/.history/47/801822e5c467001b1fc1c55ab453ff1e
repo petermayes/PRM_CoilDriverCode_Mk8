@@ -1,0 +1,503 @@
+/*
+ * CurrentCTRL_Handler.c
+ *
+ *  Created on: 3 Feb 2021
+ *      Author: Pete.Mayes
+ */
+
+#include "system.h"
+#include "alt_types.h"
+#include "altera_avalon_pio_regs.h"
+
+#include "..\Includes\Types.h"
+#include "..\Handlers\CurrentCTRL_Handler.h"
+#include "..\Handlers\Registers_Handler.h"
+#include "..\Drivers\GPIO_Driver.h"
+#include "..\Drivers\FPGA_Driver.h"
+
+static Uint16 PM_MachineDriveStateCtrl(Uint16);
+static Uint32 Set_FPGA_EnableBits(Uint16);
+static inline void Write_LocalExternalBusRegister(Uint32 Address, Uint32 Data);
+static Uint16 ControlLoops(Uint16 DriveTargetAddress);
+
+static ControlModuleDataStruc	DriveData[1];
+
+/*------------------------------------------------------------------------------
+ * ControlLoopHandler
+ *
+ * ----------------------------------------------------------------------------*/
+void Init_ControlLoopHandler(void)
+{
+	Registers.CurrCTRL_DriveStateDemand.ReadWriteFlag = READ_WRITE;
+	Registers.CurrCTRL_ControlModeDemand.ReadWriteFlag = READ_WRITE;
+
+	Registers.VoltageDemandFloat.ReadWriteFlag = READ_WRITE;
+	Registers.VoltageDemandFloat.DataType = SINGLE;
+
+	DriveData[0].DriveState = DRIVE_STATE_INITIALISATION;
+	DriveData[0].SystemFaultFlags = 0;
+	DriveData[0].FPGA_FaultFlags = 0;
+
+	DriveData[0].ControlMode = VOLTAGE_MODE_CTRL;
+	DriveData[0].ControlModeRequest = VOLTAGE_MODE_CTRL;
+
+}
+
+/*------------------------------------------------------------------------------
+ * ControlLoopHandler
+ *
+ * ----------------------------------------------------------------------------*/
+void ControlLoopHandler(void)
+{
+
+	InputDemandHandler(&DriveData[0]);
+
+	Registers.FPGA_Fault_Flags.DataField = CheckForFPGAFaultFlags(&DriveData[0]);
+
+	Registers.System_Fault_Bits.DataField = DriveData[0].SystemFaultFlags;
+	Registers.FPGA_Fault_Bits.DataField = DriveData[0].FPGA_FaultFlags;
+
+	Registers.CurrCTRL_DriveState.DataField = PM_MachineDriveStateCtrl(0);
+
+	ControlLoops(0);
+
+	Registers.System_Status_Bits.DataField = Set_FPGA_EnableBits(0);
+
+
+	/*
+	Set_TP4();
+
+	Clear_TP4();
+
+
+
+
+	LED_FlashCount++;
+	if (LED_FlashCount > 1250)
+		{
+			LED_FlashCount = 0;
+			LocalCount[TargetAddress]++;
+
+			if ((LocalCount[TargetAddress] & 0x0001))
+				DriveData[TargetAddress].StatusFlags |= STATUS_FLAGS_TOGGLE_BIT;
+			else
+				DriveData[TargetAddress].StatusFlags &= ~STATUS_FLAGS_TOGGLE_BIT;
+
+		}
+
+	ParameterFloatTable[OUTPUT_TABLE][PARAMETER_ACTUAL_CONTROL_MODE] = (float)DriveData[TargetAddress].ControlMode;  // swapped over
+	ParameterFloatTable[OUTPUT_TABLE][PARAMETER_ACTUAL_DRIVE_STATE] = (float)DriveData[TargetAddress].DriveState;   // swapped
+	ParameterFloatTable[OUTPUT_TABLE][PARAMETER_STATUS_FLAGS] = (float)DriveData[TargetAddress].StatusFlags;
+	ParameterFloatTable[OUTPUT_TABLE][PARAMETER_FAULT_FLAGS] = DriveData[TargetAddress].FaultFlags;
+
+//	ParameterFloatTable[TargetAddress][OUTPUT_TABLE][PARAMETER_REMOTE_MODE_TIMEOUT_COUNT] = DriveData[TargetAddress].RemoteModeTimeOutCount;
+
+*/
+
+}
+
+
+/*------------------------------------------------------------------------------
+ * PM_MachineDriveStateCtrl
+ *
+ * ----------------------------------------------------------------------------*/
+static Uint16 PM_MachineDriveStateCtrl(Uint16 TargetDriveAddress)
+{
+static Uint32 InitDelayCount = 0;
+
+	switch (DriveData[TargetDriveAddress].DriveState)
+		{
+			case DRIVE_STATE_INITIALISATION:
+
+				if ((InitDelayCount++ > 2500) && (TRUE))
+					{
+						if (ControlSupplyRailsInBounds(TargetDriveAddress))
+							{
+								DriveData[TargetDriveAddress].DriveState = DRIVE_STATE_FIRST_FAULT_RESET;
+								DriveData[TargetDriveAddress].InitialisationCompleteFlag = TRUE;
+								InitDelayCount = 0;
+							}
+					}
+
+				// this delay is so long as there is a disturbance on the -10V ref measurement after the code is started, why?????
+				// stopping the on-board LED flashing stops the disturbance
+				// the current for the leds is sourced from the psu, but must disturb the psu enough to effect the ref
+
+				break;
+
+			case DRIVE_STATE_FIRST_FAULT_RESET:  // added as the ADC readback block powers up into a trip state, which stops the DAC from initialising
+
+				DriveData[TargetDriveAddress].ResetFaultFlag = TRUE;
+
+				if ((InitDelayCount++ > 2500) && (TRUE))
+					{
+						DriveData[TargetDriveAddress].DriveState = PM_MOTOR_INIT;
+						InitDelayCount = 0;
+					}
+
+				break;
+
+			case PM_MOTOR_INIT:
+
+				if ((InitDelayCount++ > 2500) && (TRUE))
+					{
+						DriveData[TargetDriveAddress].DriveState = PM_MOTOR_FAULTRESET;
+						InitDelayCount = 0;
+					}
+
+			break;
+
+			case PM_MOTOR_DISABLED:
+
+				if (DriveData[TargetDriveAddress].InputDemand_Data.DriveStateDemand & DRIVE_STATE_COMMAND_MOVE_TO_RUN_STATE)
+					{
+					DriveData[TargetDriveAddress].DriveState = PM_MOTOR_ENABLED;
+					}
+
+				if (DriveData[TargetDriveAddress].SystemFaultFlags)
+					{
+					DriveData[TargetDriveAddress].DriveState = PM_MOTOR_FAULT;
+					}
+
+
+
+
+			break;
+
+			case PM_MOTOR_ENABLED:
+			case PM_MOTOR_HOLD_CURRENT_POSITION:
+
+				if (DriveData[TargetDriveAddress].SystemFaultFlags)
+					{
+					DriveData[TargetDriveAddress].DriveState = PM_MOTOR_FAULT;
+					}
+
+				else if ((DriveData[TargetDriveAddress].InputDemand_Data.DriveStateDemand & DRIVE_STATE_COMMAND_MOVE_TO_STOPPED_STATE) == DRIVE_STATE_COMMAND_MOVE_TO_STOPPED_STATE)
+					{
+					DriveData[TargetDriveAddress].DriveState = PM_MOTOR_DISABLED;
+					}
+
+				else if (DriveData[TargetDriveAddress].InputDemand_Data.DriveStateDemand & DRIVE_STATE_COMMAND_MOVE_TO_RUN_STATE)
+					{
+					DriveData[TargetDriveAddress].DriveState = PM_MOTOR_ENABLED;
+					}
+
+			break;
+
+			case PM_MOTOR_FAULT:
+
+				if (DriveData[TargetDriveAddress].InputDemand_Data.DriveStateDemand & DRIVE_STATE_COMMAND_MOVE_TO_RESET_FAULT_STATE)
+					DriveData[TargetDriveAddress].DriveState = PM_MOTOR_FAULTRESET;
+
+			break;
+
+			case PM_MOTOR_FAULTRESET:
+
+				DriveData[TargetDriveAddress].ResetFaultFlag = TRUE;
+				DriveData[TargetDriveAddress].DriveState = PM_MOTOR_DISABLED;
+			//	ParameterFloatTable[INPUT_TABLE][PARAMETER_DRIVE_STATE_DEMAND] = 0;
+
+			break;
+
+			default:
+
+				break;
+		}
+
+	return DriveData[TargetDriveAddress].DriveState;
+}
+
+
+/*------------------------------------------------------------------------------
+ * ControlLoops
+ *
+ * ----------------------------------------------------------------------------*/
+static Uint16 ControlLoops(Uint16 DriveTargetAddress)
+{
+static float TempFloat = 0.25f;
+
+
+	if (DriveData[DriveTargetAddress].ControlModeRequest)
+		DriveData[DriveTargetAddress].ControlMode = DriveData[DriveTargetAddress].ControlModeRequest;
+
+
+	switch (DriveData[DriveTargetAddress].ControlMode)
+		{
+			case NULL_MODE:
+			case VOLTAGE_MODE_CTRL:
+
+
+				TempFloat = *(float*)&Registers.VoltageDemandFloat.DataField;  // V
+				TempFloat *= 1000; // mV
+		//		TempFloat /= *(float*)&Registers.VoltageScalingFactor_mV_bit.DataField;
+				TempFloat *= *(float*)&Registers.VoltageScalingFactor_bit_mV.DataField;
+
+				Write_LocalExternalBusRegister(FPGA_VOLTAGE_DEMAND_REGISTER, (int32)TempFloat);
+
+
+			break;
+#if 0
+		//	case LOCAL_CIRCULAR_CTRL:
+			case PRE_HEAT_MODE_CTRL:
+			case VERTICAL_PRE_HEAT_MODE_CTRL:
+			case HORIZONTAL_PRE_HEAT_MODE_CTRL:
+		//		Set_Local_Demand_Mode(DriveTargetAddress);
+				UpdateControlLoopFPGA_DemandParameter(DriveTargetAddress, 0);
+				IOWR_ALTERA_AVALON_PIO_CLEAR_BITS(PIO_MODE_BASE, 1 << DriveTargetAddress);
+			break;
+
+			case CURRENT_MODE_CTRL:
+
+				UpdateControlLoopFPGA_DemandParameter(DriveTargetAddress, ParameterFloatTable[INPUT_TABLE][PARAMETER_CURRENT_DEMAND_mA]);
+				IOWR_ALTERA_AVALON_PIO_CLEAR_BITS(PIO_MODE_BASE, 1 << DriveTargetAddress);
+
+			break;
+
+			case LOCAL_CIRCULAR_CTRL:
+		//		Set_Local_Demand_Mode(DriveTargetAddress);
+
+				Tempfloat = ParameterFloatTable[INPUT_TABLE][PARAMETER_CURRENT_DEMAND_mA];
+				TempUint16Count++;
+
+				if (TempUint16Count > PeriodCount)
+					{
+						TempUint16Count = 0;
+						TempCount2++;
+
+						Tempfloat = ParameterFloatTable[INPUT_TABLE][PARAMETER_CURRENT_DEMAND_mA];
+						PeriodCount = 200;
+
+						if (TempCount2 & 0x01)
+							{
+								Tempfloat += ParameterFloatTable[INPUT_TABLE][PARAMETER_RASTER_MODE_MA_OFFSET];
+								PeriodCount = 10;
+							}
+
+						UpdateControlLoopFPGA_DemandParameter(DriveTargetAddress, Tempfloat);
+
+				//		UpdateControlLoopFPGA_DemandParameter(DriveTargetAddress, ParameterFloatTable[DriveTargetAddress][INPUT_TABLE][PARAMETER_CURRENT_DEMAND_mA]);
+					}
+
+				IOWR_ALTERA_AVALON_PIO_CLEAR_BITS(PIO_MODE_BASE, 1 << DriveTargetAddress);
+
+			break;
+
+			case LOCAL_RASTER_MODE_CTRL:
+
+#if 0
+
+				Set_TP5();
+
+				CurrentLimit = ParameterFloatTable[DriveTargetAddress][INPUT_TABLE][PARAMETER_RASTOR_MODE_AMPLITUDE];
+				if (ParameterFloatTable[DriveTargetAddress][INPUT_TABLE][PARAMETER_RASTOR_MODE_AMPLITUDE] < 0)
+					CurrentLimit *= -1.0f;
+
+				CurrentLimit *= 2; // ramp is +current demand to - current demand
+
+				TimerPeriod = ParameterFloatTable[DriveTargetAddress][OUTPUT_TABLE][PARAMETER_CURRENT_LOOP_PERIOD];
+
+				if (TimerPeriod < 0)
+					TimerPeriod *= -1.0f;
+
+				Timeslots = ParameterFloatTable[DriveTargetAddress][INPUT_TABLE][PARAMETER_RASTER_MODE_PERIOD] * 1000000 / TimerPeriod;
+
+				CurrentIncrement = CurrentLimit * 16;
+				CurrentIncrement *= ParameterFloatTable[DriveTargetAddress][OUTPUT_TABLE][PARAMETER_CURRENT_SCALING_FACTOR]; // ramp is +current demand to - current demand
+				CurrentIncrement /= Timeslots;
+
+				UpdateControlLoopFPGA_DemandParameter(DriveTargetAddress, ParameterFloatTable[DriveTargetAddress][INPUT_TABLE][PARAMETER_RASTOR_MODE_AMPLITUDE]);
+
+				Register_offset = DriveTargetAddress * FPGA_REGISTERS_PER_CONTROLLER;
+
+				Write_ExternalBusRegister(Register_offset + FPGA_RASTOR_CURRENT_INCREMENT_REGISTER, (CurrentIncrement + 1));  // Voltage_Limit
+
+				CurrentOffset = ParameterFloatTable[DriveTargetAddress][INPUT_TABLE][PARAMETER_RASTER_MODE_MA_OFFSET];
+				CurrentOffset *= ParameterFloatTable[DriveTargetAddress][OUTPUT_TABLE][PARAMETER_CURRENT_SCALING_FACTOR];
+
+				Write_ExternalBusRegister(Register_offset + FPGA_RASTOR_CURRENT_OFFSET_REGISTER, CurrentOffset);  // Voltage_Limit
+
+				IOWR_ALTERA_AVALON_PIO_CLEAR_BITS(PIO_MODE_BASE, 1 << DriveTargetAddress);
+
+				Clear_TP5();
+
+#endif
+
+			break;
+
+			case REMOTE_FIBRE_DEMAND_MODE_CTRL:
+
+		//		Set_Local_Demand_Mode(DriveTargetAddress);
+
+				IOWR_ALTERA_AVALON_PIO_SET_BITS(PIO_MODE_BASE, 1 << DriveTargetAddress);
+
+
+				if (DriveData[DriveTargetAddress].StatusFlags & STATUS_FLAGS_MOTOR_ENERGISED)
+					{
+						if (DriveData[DriveTargetAddress].RemoteModeTimeOutCount < 10000)
+							DriveData[DriveTargetAddress].RemoteModeTimeOutCount++;
+					}
+				else
+				{
+					DriveData[DriveTargetAddress].RemoteModeTimeOutCount = 0;
+				}
+
+			break;
+#endif
+			default:
+			break;
+		}
+
+	return 0;
+}
+
+
+/*------------------------------------------------------------------------------
+* InitControlLoops
+*
+* ----------------------------------------------------------------------------*/
+static Uint32 Set_FPGA_EnableBits(Uint16 TargetDriveAddress)
+{
+static Uint16	Register_offset;
+
+	if ((DriveData[TargetDriveAddress].DriveState == PM_MOTOR_ENABLED) || (DriveData[TargetDriveAddress].DriveState == PM_MOTOR_HOLD_CURRENT_POSITION))
+		{
+			DriveData[TargetDriveAddress].StatusFlags |= STATUS_FLAGS_MOTOR_ENERGISED;
+			DriveData[TargetDriveAddress].StatusFlags &= ~STATUS_FLAGS_MOTOR_DEENERGISED;
+	//		Release_Integrator_RESET(TargetDriveAddress);
+
+			DriveData[TargetDriveAddress].StatusFlags |= STATUS_INTEGRATOR_ENABLE_FLAG;
+		//	GlobalEnableFlag = TRUE;
+		}
+	else
+		{
+	//		Clear_FPGA_EnableBit();
+			// set the unenergised states for the ramp functions
+			DriveData[TargetDriveAddress].StatusFlags &= ~STATUS_FLAGS_MOTOR_ENERGISED;
+			DriveData[TargetDriveAddress].StatusFlags |= STATUS_FLAGS_MOTOR_DEENERGISED;
+
+	//		Force_Integrator_RESET(TargetDriveAddress);
+	//		LocalRasterCurrentDemand = 0;
+
+			DriveData[TargetDriveAddress].StatusFlags &= ~STATUS_INTEGRATOR_ENABLE_FLAG;
+		//	GlobalEnableFlag = FALSE;
+		}
+
+
+	if ((DriveData[TargetDriveAddress].DriveState == PM_MOTOR_FAULT) || (DriveData[TargetDriveAddress].DriveState == PM_MOTOR_FAULTRESET))
+		DriveData[TargetDriveAddress].StatusFlags |= STATUS_FLAGS_FAULT_PRESENT;
+	else
+		DriveData[TargetDriveAddress].StatusFlags &= ~STATUS_FLAGS_FAULT_PRESENT;
+
+	if (DriveData[TargetDriveAddress].ResetFaultFlag)
+		{
+			DriveData[TargetDriveAddress].StatusFlags |= STATUS_FLAGS_FPGA_FAULT_RESET;
+			DriveData[TargetDriveAddress].ResetFaultFlag = 0;
+			DriveData[TargetDriveAddress].SystemFaultFlags = 0;
+		}
+	else
+		DriveData[TargetDriveAddress].StatusFlags &= ~STATUS_FLAGS_FPGA_FAULT_RESET;
+
+	switch (DriveData[TargetDriveAddress].ControlMode)
+		{
+			case VOLTAGE_MODE_CTRL:
+				DriveData[TargetDriveAddress].StatusFlags &= ~STATUS_HARDWARE_DAC_OPTION;
+				DriveData[TargetDriveAddress].StatusFlags &= ~STATUS_INTEGRATOR_ENABLE_FLAG;
+				DriveData[TargetDriveAddress].StatusFlags &= ~STATUS_HARDWARE_MUX_0;
+				DriveData[TargetDriveAddress].StatusFlags &= ~STATUS_HARDWARE_MUX_1;
+				break;
+
+			case CURRENT_MODE_CTRL:
+			case LOCAL_CIRCULAR_CTRL:
+				DriveData[TargetDriveAddress].StatusFlags |= STATUS_HARDWARE_DAC_OPTION;
+				DriveData[TargetDriveAddress].StatusFlags &= ~STATUS_HARDWARE_MUX_0;
+				DriveData[TargetDriveAddress].StatusFlags &= ~STATUS_HARDWARE_MUX_1;
+			break;
+
+			case REMOTE_FIBRE_DEMAND_MODE_CTRL:
+				DriveData[TargetDriveAddress].StatusFlags |= STATUS_HARDWARE_DAC_OPTION;
+				DriveData[TargetDriveAddress].StatusFlags |= STATUS_HARDWARE_MUX_0;
+				DriveData[TargetDriveAddress].StatusFlags &= ~STATUS_HARDWARE_MUX_1;
+			break;
+
+			case LOCAL_RASTER_MODE_CTRL:
+				DriveData[TargetDriveAddress].StatusFlags |= STATUS_HARDWARE_DAC_OPTION;
+				DriveData[TargetDriveAddress].StatusFlags &= ~STATUS_HARDWARE_MUX_0;
+				DriveData[TargetDriveAddress].StatusFlags |= STATUS_HARDWARE_MUX_1;
+			break;
+		}
+
+	if (DriveData[TargetDriveAddress].DriveState == PM_MOTOR_INIT)
+		{
+			DriveData[TargetDriveAddress].StatusFlags |= STATUS_SEND_DAC_ENABLE_MESSAGE;
+		}
+	else
+		{
+			DriveData[TargetDriveAddress].StatusFlags &= ~STATUS_SEND_DAC_ENABLE_MESSAGE;
+		}
+
+
+	Register_offset = TargetDriveAddress * FPGA_REGISTERS_PER_CONTROLLER;
+	Write_LocalExternalBusRegister(Register_offset + FPGA_CURRENT_CONTROL_REGISTER, DriveData[TargetDriveAddress].StatusFlags);
+
+	return DriveData[TargetDriveAddress].StatusFlags;
+}
+
+/*------------------------------------------------------------------------------
+ * RampRateFunction
+ *
+ * ----------------------------------------------------------------------------*/
+static inline void Write_LocalExternalBusRegister(Uint32 Address, Uint32 Data)
+{
+	IOWR(CURRCTRL_SYS_CURRCTRLSYS_BRIDGE_BASE, Address, Data);
+}
+
+#if 0
+
+/*------------------------------------------------------------------------------
+ * RampRateFunction
+ *
+ * ----------------------------------------------------------------------------*/
+static inline float SignedRampRateFunctionFloat(float Input)
+{
+static float	SignedOutput = 0,
+				SignedIncrement = 0.015;
+
+
+SignedIncrement = CurrentRampRateSignedIncrement;
+
+			if (SignedOutput == Input)
+				{
+					// we are at the set point
+				SignedOutput = Input;
+				}
+
+			else
+				{
+					if (SignedOutput > Input) // need to use a 32 compare as the difference is a 17bit result
+						{
+							// we are above the set point
+							SignedOutput -= SignedIncrement;
+
+							if (Input > SignedOutput)
+								SignedOutput = Input;
+
+						}
+					else
+						{
+							// we are below the set point
+							SignedOutput += SignedIncrement;
+
+							if (SignedOutput > Input)
+								SignedOutput = Input;
+
+						}
+				}
+
+
+
+	return SignedOutput;
+}
+
+#endif
+
+/* --------------------------------------- eof -----------------------------------------*/

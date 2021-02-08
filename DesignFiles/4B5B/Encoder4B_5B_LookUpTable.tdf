@@ -1,0 +1,74 @@
+CONSTANT FIRST_BYTE									= 66;		
+CONSTANT SECOND_BYTE									= 46;	
+CONSTANT THIRD_BYTE									= 86;		
+CONSTANT FOURTH_BYTE									= 77;	
+CONSTANT FIFTH_BYTE									= 63;		
+
+CONSTANT DIVISOR										= 263; -- hex 107
+
+
+SUBDESIGN Encoder4B_5B_LookUpTable
+(
+	Code4B_In[3..0]							: input;	
+	
+	Code5B_Out[4..0]							: output;
+)
+
+BEGIN 
+
+
+		case Code4B_In[] is
+			
+				
+			when 0 =>
+				Code5B_Out[] = B"11110";	
+				
+			when 1 =>
+				Code5B_Out[] = B"01001";	
+	
+			when 2 =>
+				Code5B_Out[] = B"10100";	
+				
+			when 3 =>
+				Code5B_Out[] = B"10101";	
+			
+			when 4 =>
+				Code5B_Out[] = B"01010";	
+				
+			when 5 =>
+				Code5B_Out[] = B"01011";	
+				
+			when 6 =>
+				Code5B_Out[] = B"01110";	
+	
+			when 7 =>
+				Code5B_Out[] = B"01111";	
+				
+			when 8 =>
+				Code5B_Out[] = B"10010";	
+			
+			when 9 =>
+				Code5B_Out[] = B"10011";	
+				
+			when 10 =>
+				Code5B_Out[] = B"10110";	
+				
+			when 11 =>
+				Code5B_Out[] = B"10111";	
+	
+			when 12 =>
+				Code5B_Out[] = B"11010";	
+				
+			when 13 =>
+				Code5B_Out[] = B"11011";	
+			
+			when 14 =>
+				Code5B_Out[] = B"11100";	
+				
+			when 15 =>
+				Code5B_Out[] = B"11101";					
+							
+		end case;				
+
+
+END;

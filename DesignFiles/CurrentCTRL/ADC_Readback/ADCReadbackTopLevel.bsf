@@ -1,0 +1,128 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 2019  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and any partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details, at
+https://fpgasoftware.intel.com/eula.
+*/
+(header "symbol" (version "1.2"))
+(symbol
+	(rect 16 16 360 208)
+	(text "ADCReadbackTopLevel" (rect 5 0 145 19)(font "Intel Clear" (font_size 8)))
+	(text "inst" (rect 8 171 24 188)(font "Intel Clear" ))
+	(port
+		(pt 0 32)
+		(input)
+		(text "ADC_Trigger" (rect 0 0 75 19)(font "Intel Clear" (font_size 8)))
+		(text "ADC_Trigger" (rect 21 27 96 46)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 32)(pt 16 32))
+	)
+	(port
+		(pt 0 48)
+		(input)
+		(text "ADC_Busy_n" (rect 0 0 75 19)(font "Intel Clear" (font_size 8)))
+		(text "ADC_Busy_n" (rect 21 43 96 62)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 48)(pt 16 48))
+	)
+	(port
+		(pt 0 64)
+		(input)
+		(text "ADC_CLK_Readback" (rect 0 0 122 19)(font "Intel Clear" (font_size 8)))
+		(text "ADC_CLK_Readback" (rect 21 59 143 78)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 64)(pt 16 64))
+	)
+	(port
+		(pt 0 80)
+		(input)
+		(text "ADC_Data" (rect 0 0 61 19)(font "Intel Clear" (font_size 8)))
+		(text "ADC_Data" (rect 21 75 82 94)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 80)(pt 16 80))
+	)
+	(port
+		(pt 0 96)
+		(input)
+		(text "SysCLK" (rect 0 0 44 19)(font "Intel Clear" (font_size 8)))
+		(text "SysCLK" (rect 21 91 65 110)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 96)(pt 16 96))
+	)
+	(port
+		(pt 344 32)
+		(output)
+		(text "ADC_Convert" (rect 0 0 79 19)(font "Intel Clear" (font_size 8)))
+		(text "ADC_Convert" (rect 244 27 323 46)(font "Intel Clear" (font_size 8)))
+		(line (pt 344 32)(pt 328 32))
+	)
+	(port
+		(pt 344 48)
+		(output)
+		(text "ADC_CLK" (rect 0 0 56 19)(font "Intel Clear" (font_size 8)))
+		(text "ADC_CLK" (rect 267 43 323 62)(font "Intel Clear" (font_size 8)))
+		(line (pt 344 48)(pt 328 48))
+	)
+	(port
+		(pt 344 64)
+		(output)
+		(text "ADC_NewDataFlag" (rect 0 0 112 19)(font "Intel Clear" (font_size 8)))
+		(text "ADC_NewDataFlag" (rect 211 59 323 78)(font "Intel Clear" (font_size 8)))
+		(line (pt 344 64)(pt 328 64))
+	)
+	(port
+		(pt 344 80)
+		(output)
+		(text "ADC_ReadbackData[19..0]" (rect 0 0 159 19)(font "Intel Clear" (font_size 8)))
+		(text "ADC_ReadbackData[19..0]" (rect 164 75 323 94)(font "Intel Clear" (font_size 8)))
+		(line (pt 344 80)(pt 328 80)(line_width 3))
+	)
+	(port
+		(pt 344 96)
+		(output)
+		(text "ADC_TimebaseCount[31..0]" (rect 0 0 165 19)(font "Intel Clear" (font_size 8)))
+		(text "ADC_TimebaseCount[31..0]" (rect 158 91 323 110)(font "Intel Clear" (font_size 8)))
+		(line (pt 344 96)(pt 328 96)(line_width 3))
+	)
+	(port
+		(pt 344 112)
+		(output)
+		(text "clk_80M" (rect 0 0 50 19)(font "Intel Clear" (font_size 8)))
+		(text "clk_80M" (rect 273 107 323 126)(font "Intel Clear" (font_size 8)))
+		(line (pt 344 112)(pt 328 112))
+	)
+	(port
+		(pt 344 128)
+		(output)
+		(text "clk_320M" (rect 0 0 59 19)(font "Intel Clear" (font_size 8)))
+		(text "clk_320M" (rect 264 123 323 142)(font "Intel Clear" (font_size 8)))
+		(line (pt 344 128)(pt 328 128))
+	)
+	(port
+		(pt 344 144)
+		(output)
+		(text "clk_en_p" (rect 0 0 53 19)(font "Intel Clear" (font_size 8)))
+		(text "clk_en_p" (rect 270 139 323 158)(font "Intel Clear" (font_size 8)))
+		(line (pt 344 144)(pt 328 144))
+	)
+	(port
+		(pt 344 160)
+		(output)
+		(text "ADC_Data_in" (rect 0 0 79 19)(font "Intel Clear" (font_size 8)))
+		(text "ADC_Data_in" (rect 244 155 323 174)(font "Intel Clear" (font_size 8)))
+		(line (pt 344 160)(pt 328 160))
+	)
+	(drawing
+		(rectangle (rect 16 16 328 176))
+	)
+)

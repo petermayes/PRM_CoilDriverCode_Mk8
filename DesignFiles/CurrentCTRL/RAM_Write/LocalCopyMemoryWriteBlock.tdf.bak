@@ -1,0 +1,333 @@
+CONSTANT RESET_STATE 								= 0;
+CONSTANT IDLE_STATE 									= 1;
+CONSTANT WRITE_MODE_TRIGGERED_STATE 			= 2;
+CONSTANT WRITE_MODE_DELAY_STATE 					= 3;
+CONSTANT WRITE_MODE_TRANSFER						= 4;
+CONSTANT WRITE_MODE_FINISHED						= 5;
+CONSTANT READ_MODE_TRIGGERED_STATE 				= 6;
+CONSTANT READ_MODE_TRANSFER						= 7;
+CONSTANT READ_MODE_FINISHED						= 8;
+CONSTANT READ_MODE_FINISHED_EXTRA				= 9;
+CONSTANT RECHECK_RXF_LINE							= 10;
+CONSTANT WAIT_FOR_DATA_READ_ACK					= 11;
+
+
+
+SUBDESIGN LocalCopyMemoryWriteBlock
+(
+	Resetn									: input;
+	Input_Data[20..0][31..0]			: input;	
+	WriteTrigger							: input;
+	BlankingFlag_n							: input;
+	clk										: input;
+	SharedRAM_Data[31..0]				: output;
+	SharedRAM_addr[6..0]					: output;
+	SharedRAM_CS							: output;
+	SharedRAM_Wr							: output;
+	TriggerOut								: output;
+	Debug[7..0]								: output;
+
+
+)	 
+
+VARIABLE
+	
+	TransferMode[3..0]					: dff;
+	OutputAddrCount[6..0]				: dffe;
+	DebugCount_dff[31..0]				: dff;
+
+BEGIN 
+
+	TransferMode[].clk = clk;
+	OutputAddrCount[].clk = clk;	
+	DebugCount_dff[].clk = clk;
+	
+	OutputAddrCount[].ena = vcc;	
+	
+	
+	Debug[7..0] = Input_Data[15][7..0];
+
+
+	if (resetn == gnd) then
+	
+			TransferMode[].d = RESET_STATE;
+			OutputAddrCount[].d = 0; 
+			SharedRAM_CS = gnd;
+
+	
+	else
+	
+			CASE  TransferMode[].q IS
+		
+					When RESET_STATE =>
+					
+						TransferMode[].d = IDLE_STATE;
+
+							OutputAddrCount[].d = 0; 
+							SharedRAM_CS = gnd;
+							SharedRAM_Wr = vcc;										
+							
+					When IDLE_STATE =>
+			
+					
+						if (WriteTrigger == gnd)  then
+						
+							if (BlankingFlag_n == gnd) then
+						
+									TransferMode[].d = READ_MODE_TRANSFER;
+									
+									SharedRAM_CS = gnd;	
+									SharedRAM_Wr = vcc;	
+									
+									OutputAddrCount[].d = 0;
+							else
+								
+								TransferMode[].d = TransferMode[].q;	
+								
+								SharedRAM_CS = gnd;	
+								SharedRAM_Wr = vcc;	
+								
+								OutputAddrCount[].d = 0;
+								
+							end if;
+							
+						else
+						
+								TransferMode[].d = TransferMode[].q;	
+								
+								SharedRAM_CS = gnd;	
+								SharedRAM_Wr = vcc;	
+								
+								OutputAddrCount[].d = 0;
+								
+						end if;
+						
+						
+						DebugCount_dff[].d = DebugCount_dff[].q;
+						
+						
+						TriggerOut = vcc;
+										
+								
+		
+					When READ_MODE_TRANSFER =>			
+					
+						
+						if (OutputAddrCount[].q >= 24)  then 
+						
+								SharedRAM_CS = vcc;	
+								SharedRAM_Wr = vcc;	
+								
+								TransferMode[].d = WAIT_FOR_DATA_READ_ACK;		
+					
+								DebugCount_dff[].d = DebugCount_dff[].q + 1;			
+							
+						else
+
+								SharedRAM_CS = vcc;	
+								SharedRAM_Wr = vcc;	
+						
+								TransferMode[].d = TransferMode[].q;	
+								
+								DebugCount_dff[].d = DebugCount_dff[].q;
+								
+						end if;		
+
+						OutputAddrCount[].d = OutputAddrCount[].q + 1;
+						
+						
+					when WAIT_FOR_DATA_READ_ACK =>
+						
+						if (WriteTrigger == vcc) then
+						
+								SharedRAM_CS = gnd;	
+								SharedRAM_Wr = vcc;	
+								
+								TransferMode[].d = IDLE_STATE;					
+							
+						else
+
+								SharedRAM_CS = gnd;	
+								SharedRAM_Wr = vcc;	
+						
+								TransferMode[].d = TransferMode[].q;	
+				
+						end if;		
+			
+
+						DebugCount_dff[].d = DebugCount_dff[].q;			
+											
+		
+
+					When others =>
+					
+						TransferMode[].d = RESET_STATE;	
+								
+						
+			
+			end case;
+
+
+			
+	end if;
+	
+
+	SharedRAM_addr[] = OutputAddrCount[].q;
+	
+	case OutputAddrCount[].q is
+	
+		when 0 =>
+			SharedRAM_Data[] = Input_Data[0][];
+			
+		when 1 =>
+			SharedRAM_Data[] = Input_Data[1][];
+
+		when 2 =>
+			SharedRAM_Data[] = Input_Data[2][];
+
+		when 3 =>
+			SharedRAM_Data[] = Input_Data[3][];
+			
+		when 4 =>
+			SharedRAM_Data[] = Input_Data[4][];
+			
+		when 5 =>
+			SharedRAM_Data[] = Input_Data[5][];
+
+		when 6 =>
+			SharedRAM_Data[] = Input_Data[6][];
+
+		when 7 =>
+			SharedRAM_Data[] = Input_Data[7][];		
+			
+		when 8 =>
+			SharedRAM_Data[] = Input_Data[8][];
+
+		when 9 =>
+			SharedRAM_Data[] = Input_Data[9][];
+
+		when 10 =>
+			SharedRAM_Data[] = Input_Data[10][];		
+		
+		when 11 =>
+			SharedRAM_Data[] = Input_Data[11][];	
+			
+		when 12 =>
+			SharedRAM_Data[] = Input_Data[12][];
+
+		when 13 =>
+			SharedRAM_Data[] = Input_Data[13][];
+
+		when 14 =>
+			SharedRAM_Data[] = Input_Data[14][];		
+		
+		when 15 =>
+			SharedRAM_Data[] = Input_Data[15][];	
+
+		when 16 =>
+			SharedRAM_Data[] = Input_Data[16][];
+	
+		when 17 =>
+			SharedRAM_Data[] = Input_Data[17][];
+			
+		when 18 =>
+			SharedRAM_Data[] = Input_Data[18][];
+
+		when 19 =>
+			SharedRAM_Data[] = Input_Data[19][];
+
+		when 20 =>
+			SharedRAM_Data[] = Input_Data[20][];	
+		
+		when 21 =>
+			SharedRAM_Data[31..0] = DebugCount_dff[].q;	
+			
+	%	when 22 =>
+			SharedRAM_Data[31..0] = Input_Data[22][];
+			
+		when 23 =>
+			SharedRAM_Data[31..0] = Input_Data[23][];		
+	
+		when 24 =>
+			SharedRAM_Data[31..0] = Input_Data[24][];
+			
+		when 25 =>
+			SharedRAM_Data[31..0] = Input_Data[25][];
+
+		when 26 =>
+			SharedRAM_Data[31..0] = Input_Data[26][];
+
+		when 27 =>
+			SharedRAM_Data[31..0] = Input_Data[27][];	
+		
+		when 28 =>
+			SharedRAM_Data[31..0] = Input_Data[28][];	
+			
+		when 29 =>
+			SharedRAM_Data[31..0] = Input_Data[29][];
+			
+		when 30 =>
+			SharedRAM_Data[31..0] = Input_Data[30][];	
+
+		when 31 =>
+			SharedRAM_Data[31..0] = Input_Data[31][];		
+		
+		when 32 =>
+			SharedRAM_Data[31..0] = Input_Data[32][];	
+			
+		when 33 =>
+			SharedRAM_Data[31..0] = Input_Data[33][];
+			
+		when 34 =>
+			SharedRAM_Data[31..0] = Input_Data[34][];	
+
+		when 35 =>
+			SharedRAM_Data[31..0] = Input_Data[35][];			
+			
+		when 36 =>
+			SharedRAM_Data[31..0] = Input_Data[36][];
+			
+		when 37 =>
+			SharedRAM_Data[31..0] = Input_Data[37][];	
+
+		when 38 =>
+			SharedRAM_Data[31..0] = Input_Data[38][];		
+		
+		when 39 =>
+			SharedRAM_Data[31..0] = Input_Data[39][];	
+			
+		when 40 =>
+			SharedRAM_Data[31..0] = Input_Data[40][];
+			
+		when 41 =>
+			SharedRAM_Data[31..0] = Input_Data[41][];	
+
+		when 42 =>
+			SharedRAM_Data[31..0] = Input_Data[42][];			
+
+		when 43 =>
+			SharedRAM_Data[31..0] = Input_Data[43][];
+			
+		when 44 =>
+			SharedRAM_Data[31..0] = Input_Data[44][];	
+
+		when 45 =>
+			SharedRAM_Data[31..0] = Input_Data[45][];	
+
+		when 46 =>
+			SharedRAM_Data[31..0] = Input_Data[46][];
+			
+		when 47 =>
+			SharedRAM_Data[31..0] = Input_Data[47][];	
+%
+						
+		when others =>
+			SharedRAM_Data[] = 21567;
+
+	end case;
+
+--	SharedRAM_Data[6..0] = OutputAddrCount[6..0].q;
+--	SharedRAM_Data[31..7] = 0;
+
+
+END;

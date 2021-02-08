@@ -1,0 +1,553 @@
+
+INCLUDE "cdr_decision_v4";
+
+
+CONSTANT RESET_STATE 														= 0;
+CONSTANT IDLE_DETECT_STATE													= 1;
+CONSTANT	IDLE_DETECT_COUNT_STATE											= 2;
+CONSTANT	IDLE_NIBBLE_STATE													= 3;
+CONSTANT	PREAMBLE_NIBBLE_STATE											= 4;
+CONSTANT DATA_NIBBLES_STATE												= 5;
+CONSTANT	POSTAMBLE_NIBBLE_STATE											= 6;
+CONSTANT	DUMMY_STOP_STATE													= 7;
+
+
+
+
+CONSTANT DIVISOR										= 263; -- hex 107
+CONSTANT IDLE_BIT_PATTERN							= B"1111100000";
+CONSTANT PREAMBLE_BIT_PATTERN						= B"1100010001";
+CONSTANT POSTAMBLE_BIT_PATTERN					= B"0011101101";
+
+
+SUBDESIGN LVDS_MessageCapture_v5
+(
+	Reset													: input;
+	DataStream											: input;
+	BaudCLK_x4											: input;
+
+	LatchedDataByte[7..0]							: output;
+	CDR_Clk_Enable										: output;
+	Clk_Enable_Nibble									: output;
+	Nibble_Clk_Count[3..0]							: output;
+	IdleBitPatternFlag								: output;
+	PreambleBitPatternFlag							: output;
+	PostambleBitPatternFlag							: output;
+	CaptureStateMode[3..0]							: output;
+	ErrorFlag											: output;
+	IdleErrorFlag										: output;
+	RollingBitCapture[9..0]							: output;
+--	Ext_Data_Latch										: output;
+	
+	
+)
+
+VARIABLE
+
+	CaptureStateMode_dffe[3..0]					: dffe;
+	RollingBitCapture_dffe[10..0]					: dffe;
+	Nibble_Clk_Count_dffe[3..0]					: dffe;
+	
+	-- ************************************************************	
+	
+	IdleBitPatternFlagNode							: node;
+	PreambleBitPatternFlagNode						: node;
+	PostambleBitPatternFlagNode					: node;
+	NibbleStateNode[2..0]							: node;
+	ClkNibbleEnNode									: node;
+	ValidIdleNibbleCount_dffe[3..0]				: dffe;	
+	
+	LatchedDataByte_dffe[7..0]						: dffe;
+	LatchedDataNibble_dffe[9..0]					: dffe;	
+	
+	LatchedCode4B_Out[7..0]							: node;	
+	ErrorCode[1..0]									: node;
+	
+	Data_ReSampled_node								: node;
+	CDR_Clk_Enable_node								: node;
+	clk_div4_out_node									: node;
+	ResultState[1..0]									: node;
+	debug													: node;
+	Data_SHP												: node;
+	clk_tap[3..0]										: node;
+	clk_div4_tap[3..0]								: node;
+	result_tap[3..0]									: node;
+	DataDelayTAP[7..0]								: node;
+	
+	ErrorFlag_dffe										: dffe;
+	
+	CDR_DataBuffer_dff								: dff;
+	CDR_CLKEnBuffer_dff								: dff;
+	CDR_CLKEnBuffer_node								: node;
+
+	
+	
+BEGIN 
+
+
+	CDR_Clk_Enable = CDR_Clk_Enable_node;
+	Clk_Enable_Nibble = ClkNibbleEnNode;
+
+	CaptureStateMode_dffe[].clk = BaudCLK_x4;
+	CaptureStateMode_dffe[].ena = CDR_Clk_Enable_node;	
+	
+	
+	Nibble_Clk_Count_dffe[].clk = BaudCLK_x4;
+	Nibble_Clk_Count_dffe[].ena = CDR_Clk_Enable_node;
+	
+	ErrorFlag_dffe.clk = BaudCLK_x4;
+	ErrorFlag_dffe.ena = CDR_Clk_Enable_node;
+	
+	
+	CaptureStateMode[3..0] = CaptureStateMode_dffe[3..0].q;
+	
+	RollingBitCapture_dffe[].clk = BaudCLK_x4;
+	RollingBitCapture_dffe[].ena = CDR_Clk_Enable_node;	
+	RollingBitCapture_dffe[0].d = Data_ReSampled_node;
+	RollingBitCapture_dffe[10..1].d = RollingBitCapture_dffe[9..0].q;
+	
+	RollingBitCapture[9..0] = LatchedDataNibble_dffe[9..0].q;
+	
+	LatchedDataByte_dffe[].clk = BaudCLK_x4;
+	LatchedDataByte_dffe[].ena = CDR_Clk_Enable_node;
+	LatchedDataByte_dffe[].d = LatchedCode4B_Out[];
+	
+	
+	LatchedDataByte[7..0] = LatchedCode4B_Out[]; --LatchedDataByte_dffe[7..0].q;
+	
+	
+	LatchedDataNibble_dffe[].clk = BaudCLK_x4;
+	LatchedDataNibble_dffe[].ena = CDR_Clk_Enable_node and ClkNibbleEnNode;
+	LatchedDataNibble_dffe[].d = RollingBitCapture_dffe[9..0].q;	
+
+
+	ValidIdleNibbleCount_dffe[].clk = BaudCLK_x4;
+	ValidIdleNibbleCount_dffe[].ena = CDR_Clk_Enable_node;
+
+	
+	IdleBitPatternFlag = IdleBitPatternFlagNode;
+	PreambleBitPatternFlag = PreambleBitPatternFlagNode;
+	PostambleBitPatternFlag = PostambleBitPatternFlagNode;
+--=	ClkNibbleEnable = CDR_Clk_Enable_node;
+	
+	Nibble_Clk_Count[] = Nibble_Clk_Count_dffe[].q;
+
+	
+	if (RollingBitCapture_dffe[9..0].q == IDLE_BIT_PATTERN) then
+	
+		IdleBitPatternFlagNode = vcc;
+		
+	else
+	
+		IdleBitPatternFlagNode = gnd;		
+
+	end if;
+	
+	if (RollingBitCapture_dffe[9..0].q == PREAMBLE_BIT_PATTERN) then
+	
+		PreambleBitPatternFlagNode = vcc;
+		
+	else
+	
+		PreambleBitPatternFlagNode = gnd;		
+
+	end if;
+	
+	
+	if (RollingBitCapture_dffe[9..0].q == POSTAMBLE_BIT_PATTERN) then
+	
+		PostambleBitPatternFlagNode = vcc;
+		
+	else
+	
+		PostambleBitPatternFlagNode = gnd;		
+
+	end if;	
+	
+	NibbleStateNode[0] = IdleBitPatternFlagNode;
+	NibbleStateNode[1] = PreambleBitPatternFlagNode;	
+	NibbleStateNode[2] = PostambleBitPatternFlagNode;		
+	
+
+	ErrorFlag = ErrorCode[0] or ErrorCode[1];
+	
+	ErrorFlag_dffe.d = ErrorCode[0] or ErrorCode[1];
+	
+
+	if (Reset == vcc) then
+	
+	
+		case CaptureStateMode_dffe[].q is
+
+			when RESET_STATE =>
+	
+				CaptureStateMode_dffe[].d = IDLE_DETECT_STATE; -- 
+				
+				
+			-- ************************************************************					
+			-- ************************************************************	
+				
+			when IDLE_DETECT_STATE =>  
+			
+				if (IdleBitPatternFlagNode == vcc) then
+
+					CaptureStateMode_dffe[].d = IDLE_DETECT_COUNT_STATE;
+					Nibble_Clk_Count_dffe[].d = 9;
+					
+				else
+	
+					CaptureStateMode_dffe[].d = IDLE_DETECT_STATE;			
+	
+				end if;	
+				
+				ValidIdleNibbleCount_dffe[].d = 0;
+			
+				
+			-- ************************************************************					
+			-- ************************************************************		
+	
+			when IDLE_DETECT_COUNT_STATE =>  
+			
+				if (Nibble_Clk_Count_dffe[].q == 0) then
+					
+
+						Nibble_Clk_Count_dffe[].d = 9;
+						
+						if (IdleBitPatternFlagNode == vcc) then
+						
+							ClkNibbleEnNode = vcc;
+							
+							if (ValidIdleNibbleCount_dffe[].q == 10) then
+							
+								CaptureStateMode_dffe[].d = IDLE_NIBBLE_STATE;
+							
+							else
+							
+								ValidIdleNibbleCount_dffe[].d = ValidIdleNibbleCount_dffe[].q + 1;						
+								CaptureStateMode_dffe[].d = IDLE_DETECT_COUNT_STATE;
+							end if;
+											
+						else
+											
+							ClkNibbleEnNode = gnd;
+							ValidIdleNibbleCount_dffe[].d = 0;
+							
+							CaptureStateMode_dffe[].d = IDLE_DETECT_STATE;						
+																
+						end if;
+
+					
+				else
+		
+					Nibble_Clk_Count_dffe[].d = Nibble_Clk_Count_dffe[].q - 1;	
+					ValidIdleNibbleCount_dffe[].d = ValidIdleNibbleCount_dffe[].q;	
+					
+					CaptureStateMode_dffe[].d = IDLE_DETECT_COUNT_STATE;					
+	
+				end if;	
+				
+	
+				
+			-- ************************************************************					
+			-- ************************************************************		
+			
+			when IDLE_NIBBLE_STATE =>  
+			
+							
+				if (Nibble_Clk_Count_dffe[].q == 0) then
+				
+					Nibble_Clk_Count_dffe[].d = 9;
+									
+						case NibbleStateNode[2..0] is
+						
+							when 1 =>
+								ClkNibbleEnNode = vcc;
+								CaptureStateMode_dffe[].d = IDLE_NIBBLE_STATE;								
+							when 2 =>
+								ClkNibbleEnNode = vcc;
+								CaptureStateMode_dffe[].d = PREAMBLE_NIBBLE_STATE;
+							when others =>
+								ClkNibbleEnNode = gnd;
+								CaptureStateMode_dffe[].d = IDLE_DETECT_STATE;
+								IdleErrorFlag = vcc;
+						end case;				
+					
+				else
+		
+					Nibble_Clk_Count_dffe[].d = Nibble_Clk_Count_dffe[].q - 1;	
+					CaptureStateMode_dffe[].d = IDLE_NIBBLE_STATE;	
+	
+				end if;	
+					
+				
+			-- ************************************************************					
+			-- ************************************************************	
+	
+			when PREAMBLE_NIBBLE_STATE =>  
+			
+				
+			
+				if (Nibble_Clk_Count_dffe[].q == 0) then
+				
+					Nibble_Clk_Count_dffe[].d = 9;
+					
+					ClkNibbleEnNode = vcc;
+					CaptureStateMode_dffe[].d = DATA_NIBBLES_STATE;
+					
+					
+				else
+		
+					Nibble_Clk_Count_dffe[].d = Nibble_Clk_Count_dffe[].q - 1;	
+					CaptureStateMode_dffe[].d = PREAMBLE_NIBBLE_STATE;	
+	
+				end if;	
+				
+				
+	--			ValidNewNibbleNode = vcc;
+				
+			-- ************************************************************					
+			-- ************************************************************	
+			
+			when DATA_NIBBLES_STATE =>  
+			
+				
+			
+				if (Nibble_Clk_Count_dffe[].q == 0) then
+				
+					Nibble_Clk_Count_dffe[].d = 9;
+					
+					ClkNibbleEnNode = vcc;
+					
+					
+					case NibbleStateNode[2..0] is
+					
+						when 1 =>
+							CaptureStateMode_dffe[].d = IDLE_NIBBLE_STATE;		-- shouldnt happen						
+						when 2 =>
+							CaptureStateMode_dffe[].d = PREAMBLE_NIBBLE_STATE;  -- shouldnt happen
+						when 4 =>
+							CaptureStateMode_dffe[].d = POSTAMBLE_NIBBLE_STATE;  -- 							
+						when others =>
+						
+							if (ErrorFlag_dffe.q == vcc) then
+								CaptureStateMode_dffe[].d = IDLE_DETECT_STATE;
+							else
+								CaptureStateMode_dffe[].d = DATA_NIBBLES_STATE;	
+							end if;
+							
+						--	CaptureStateMode_dffe[].d = DATA_NIBBLES_STATE;
+							
+					end case;	
+					
+					
+				
+					
+					
+				else
+		
+					Nibble_Clk_Count_dffe[].d = Nibble_Clk_Count_dffe[].q - 1;	
+					CaptureStateMode_dffe[].d = DATA_NIBBLES_STATE;	
+	
+				end if;	
+				
+			-- ************************************************************					
+			-- ************************************************************	
+	
+
+			-- ************************************************************					
+			-- ************************************************************	
+	
+			when POSTAMBLE_NIBBLE_STATE =>  
+			
+				
+			
+				if (Nibble_Clk_Count_dffe[].q == 0) then
+				
+					Nibble_Clk_Count_dffe[].d = 9;
+					
+					ClkNibbleEnNode = vcc;
+					CaptureStateMode_dffe[].d = IDLE_NIBBLE_STATE;
+					
+					
+				else
+		
+					Nibble_Clk_Count_dffe[].d = Nibble_Clk_Count_dffe[].q - 1;	
+					CaptureStateMode_dffe[].d = POSTAMBLE_NIBBLE_STATE;	
+	
+				end if;		
+				
+			when others =>
+			
+				CaptureStateMode_dffe[].d = RESET_STATE; -- 
+
+			
+		end case;	
+	
+	else
+	
+		CaptureStateMode_dffe[].d = RESET_STATE;
+	
+	end if;
+	
+							
+			-- ************************************************************	
+
+
+
+
+	-- *************************************************************
+	-- *																				*
+	-- *			Reset										: input;				*
+	-- *			Data_in									: input;				*
+	-- *			clk										: input;				*
+	-- *																				*
+	-- *																				*
+	-- *			CDR_Clk_En								: output;			*
+	-- *			clk_div4_out							: output;			*
+	-- *			ResultState[1..0]						: output;			*		
+	-- *			debug										: output;			*
+	-- *			Data_SHP									: output;			*
+	-- *			clk_tap[3..0]							: output;			*
+	-- *			clk_div4_tap[3..0]					: output;			*	
+	-- *			result_tap[3..0]						: output;			*
+	-- *			DataDelayTAP[7..0]					: output;			*
+	-- *																				*
+	-- *************************************************************
+			
+	(	CDR_CLKEnBuffer_node, 
+	   clk_div4_out_node, 
+		ResultState[1..0], 
+		debug, 
+		Data_SHP, 
+		clk_tap[3..0], 
+		clk_div4_tap[3..0], 
+		result_tap[3..0], 
+		DataDelayTAP[7..0]) = cdr_decision_v4(Reset, DataStream, BaudCLK_x4); 
+
+
+	
+	CDR_DataBuffer_dff.clk = BaudCLK_x4;
+	CDR_DataBuffer_dff.d = DataDelayTAP[5];	
+	Data_ReSampled_node = CDR_DataBuffer_dff.q;	
+	
+	CDR_CLKEnBuffer_dff.clk = BaudCLK_x4;
+	CDR_CLKEnBuffer_dff.d = CDR_CLKEnBuffer_node;
+	CDR_Clk_Enable_node = CDR_CLKEnBuffer_dff.q;
+
+		
+		case LatchedDataNibble_dffe[4..0].q is
+			
+				
+			when H"1e" => -- B"11110" =>
+				LatchedCode4B_Out[3..0] = 0;	
+				 
+			when H"09" => -- B"01001" =>
+				LatchedCode4B_Out[3..0] = 1;	
+	
+			when H"14" => --B"10100" =>
+				LatchedCode4B_Out[3..0] = 2;	
+				
+			when H"15" => --B"10101" =>
+				LatchedCode4B_Out[3..0] = 3;	
+			
+			when H"0a" => --B"01010" =>  
+				LatchedCode4B_Out[3..0] = 4;	
+				
+			when H"0b" => --B"01011" =>
+				LatchedCode4B_Out[3..0] = 5;	
+				
+			when H"0e" => --B"01110" =>
+				LatchedCode4B_Out[3..0] = 6;	
+	
+			when H"0f" => --B"01111" =>
+				LatchedCode4B_Out[3..0] = 7;	
+				
+			when H"12" => -- B"10010"
+				LatchedCode4B_Out[3..0] = 8;	
+			
+			when H"13" => --B"10011" =>
+				LatchedCode4B_Out[3..0] = 9;	
+				
+			when H"16" => --B"10110" =>
+				LatchedCode4B_Out[3..0] = 10;	
+				
+			when H"17" => --B"10111" =>
+				LatchedCode4B_Out[3..0] = 11;	
+	
+			when H"1a" => --B"11010" =>
+				LatchedCode4B_Out[3..0] = 12;	
+				
+			when H"1b" => --B"11011" =>
+				LatchedCode4B_Out[3..0] = 13;	
+			
+			when H"1c" => --B"11100" =>
+				LatchedCode4B_Out[3..0] = 14;	
+				
+			when H"1d" => --B"11101" =>
+				LatchedCode4B_Out[3..0] = 15;
+
+			when others =>
+				LatchedCode4B_Out[] = 0;	
+				ErrorCode[0] = vcc;	
+							
+		end case;
+		
+		case LatchedDataNibble_dffe[9..5].q is
+			
+				
+			when H"1e" => -- B"11110" =>
+				LatchedCode4B_Out[7..4] = 0;	
+				 
+			when H"09" => -- B"01001" =>
+				LatchedCode4B_Out[7..4] = 1;	
+	
+			when H"14" => --B"10100" =>
+				LatchedCode4B_Out[7..4] = 2;	
+				
+			when H"15" => --B"10101" =>
+				LatchedCode4B_Out[7..4] = 3;	
+			
+			when H"0a" => --B"01010" =>  
+				LatchedCode4B_Out[7..4] = 4;	
+				
+			when H"0b" => --B"01011" =>
+				LatchedCode4B_Out[7..4] = 5;	
+				
+			when H"0e" => --B"01110" =>
+				LatchedCode4B_Out[7..4] = 6;	
+	
+			when H"0f" => --B"01111" =>
+				LatchedCode4B_Out[7..4] = 7;	
+				
+			when H"12" => -- B"10010"
+				LatchedCode4B_Out[7..4] = 8;	
+			
+			when H"13" => --B"10011" =>
+				LatchedCode4B_Out[7..4] = 9;	
+				
+			when H"16" => --B"10110" =>
+				LatchedCode4B_Out[7..4] = 10;	
+				
+			when H"17" => --B"10111" =>
+				LatchedCode4B_Out[7..4] = 11;	
+	
+			when H"1a" => --B"11010" =>
+				LatchedCode4B_Out[7..4] = 12;	
+				
+			when H"1b" => --B"11011" =>
+				LatchedCode4B_Out[7..4] = 13;	
+			
+			when H"1c" => --B"11100" =>
+				LatchedCode4B_Out[7..4] = 14;	
+				
+			when H"1d" => --B"11101" =>
+				LatchedCode4B_Out[7..4] = 15;
+
+			when others =>
+				LatchedCode4B_Out[] = 0;	
+				ErrorCode[1] = vcc;	
+							
+		end case;		
+	
+	
+END;

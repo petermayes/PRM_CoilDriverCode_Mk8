@@ -1,0 +1,230 @@
+INCLUDE "Single_High_Pulse";
+INCLUDE "Filter_Ring";
+
+CONSTANT RESET_STATE 								= 0;
+CONSTANT IDLE_STATE 									= 1;
+CONSTANT ASSERT_CS_LINE								= 2;
+CONSTANT DEASSERT_CS_LINE					 		= 3;
+CONSTANT CLOCK_LOW_STATE							= 4;
+CONSTANT CLOCK_HIGH_STATE							= 5;
+CONSTANT FIRST_CLOCK_LOW_STATE	 				= 6;
+CONSTANT READ_MODE_TRANSFER						= 7;
+CONSTANT READ_MODE_FINISHED						= 8;
+CONSTANT WAIT_FOR_TRIGGER_TO_GO_LOW				= 9;
+CONSTANT POWER_UP_STATE								= 15;
+
+
+SUBDESIGN DAC_8811_Driver
+(
+	Resetn											: input;
+	Trigger_In										: input;
+	Data_A_In[15..0]								: input;
+	Data_B_In[15..0]								: input;	
+	clk												: input;	
+	
+	DAC_CSn											: output;
+	DAC_CLK											: output;
+	DAC_Data_A										: output;
+	DAC_Data_B										: output;	
+	Debug[3..0]										: output;
+
+)	 
+
+VARIABLE
+	
+	State_dffe[3..0]								: dffe;
+	
+	Trigger_node									: node;
+	Trigger_dff[1..0]								: dff;		
+
+	Bit_Count_dff[5..0]							: dff;
+	
+	Data_In_dffe[1..0][15..0]					: dffe;
+	
+	CSn_Enable_node								: node;
+	CLK_Enable_node								: node;
+	CSn_dffe											: dffe;
+	CLK_dffe											: dffe;
+
+
+BEGIN 
+
+	State_dffe[].clk = clk;
+	State_dffe[].ena = vcc;
+	
+	Trigger_dff[].clk = clk;
+	Trigger_dff[0].d = Trigger_In;
+	Trigger_dff[1].d = Trigger_dff[0].q;
+	Trigger_node = Trigger_dff[1].q;	
+	
+	
+	Bit_Count_dff[].clk = clk;
+	
+	CSn_dffe.clk = clk;
+	CSn_dffe.ena = CSn_Enable_node;
+	
+	CLK_dffe.clk = clk;
+	CLK_dffe.ena = CLK_Enable_node;
+	
+	DAC_CSn = CSn_dffe.q;
+	DAC_CLK = CLK_dffe.q;
+	DAC_Data_A = Data_In_dffe[0][15].q;
+	DAC_Data_B = Data_In_dffe[1][15].q;	
+	
+	Debug[] = State_dffe[].q;
+	
+	
+	Data_In_dffe[][].clk = clk;
+	
+	
+	if (resetn == gnd) then
+	
+			State_dffe[].d = RESET_STATE;
+
+
+	
+	else
+	
+			CASE  State_dffe[].q IS
+			
+			% ---------------------------------------------------------- %
+			% ---------------------------------------------------------- %
+			
+					When RESET_STATE =>
+					
+						State_dffe[].d = IDLE_STATE;
+
+									
+			% ---------------------------------------------------------- %
+			% ---------------------------------------------------------- %
+			
+					When IDLE_STATE =>
+
+						if (Trigger_node == vcc) then
+						
+								State_dffe[].d = ASSERT_CS_LINE;																			
+							
+						else
+						
+								State_dffe[].d = State_dffe[].q;										
+								
+						end if;				
+
+						
+			% ---------------------------------------------------------- %
+			% ---------------------------------------------------------- %
+			
+			
+					When ASSERT_CS_LINE =>
+					
+						State_dffe[].d = FIRST_CLOCK_LOW_STATE;
+						CSn_dffe.d = gnd;
+						CSn_Enable_node = vcc;
+						
+						Bit_Count_dff[].d = 16;
+						
+						Data_In_dffe[0][].d = Data_A_In[] + 32768;
+						Data_In_dffe[1][].d = Data_B_In[] + 32768;						
+						Data_In_dffe[][].ena = vcc;
+						
+
+			% ---------------------------------------------------------- %
+			% ---------------------------------------------------------- %
+			
+					When FIRST_CLOCK_LOW_STATE =>
+					
+						State_dffe[].d = CLOCK_HIGH_STATE;
+						CLK_dffe.d = gnd;
+						CLK_Enable_node = vcc;			
+						
+						Bit_Count_dff[].d = Bit_Count_dff[].q - 1;
+						
+
+									
+			% ---------------------------------------------------------- %
+			% ---------------------------------------------------------- %				
+		
+			
+					When CLOCK_LOW_STATE =>
+					
+						State_dffe[].d = CLOCK_HIGH_STATE;
+						CLK_dffe.d = gnd;
+						CLK_Enable_node = vcc;			
+						
+						Bit_Count_dff[].d = Bit_Count_dff[].q - 1;
+						
+						Data_In_dffe[0][15..1].d = Data_In_dffe[0][14..0].q;
+						Data_In_dffe[1][15..1].d = Data_In_dffe[1][14..0].q;						
+						Data_In_dffe[][].ena = vcc;
+
+									
+			% ---------------------------------------------------------- %
+			% ---------------------------------------------------------- %	
+			
+			
+					When CLOCK_HIGH_STATE =>
+					
+						if (Bit_Count_dff[].q == 0) then
+						
+							State_dffe[].d = DEASSERT_CS_LINE;						
+						else
+						
+							State_dffe[].d = CLOCK_LOW_STATE;
+							
+						end if;
+						
+						CLK_dffe.d = vcc;
+						CLK_Enable_node = vcc;		
+					
+				
+						Bit_Count_dff[].d = Bit_Count_dff[].q;	
+						
+
+
+									
+			% ---------------------------------------------------------- %
+			% ---------------------------------------------------------- %		
+	
+			
+					When DEASSERT_CS_LINE =>
+					
+						State_dffe[].d = WAIT_FOR_TRIGGER_TO_GO_LOW;
+						CSn_dffe.d = vcc;
+						CSn_Enable_node = vcc;			
+
+									
+			% ---------------------------------------------------------- %
+			% ---------------------------------------------------------- %		
+			
+					When WAIT_FOR_TRIGGER_TO_GO_LOW =>
+
+						if (Trigger_node == gnd) then
+						
+								State_dffe[].d = IDLE_STATE;																			
+							
+						else
+						
+								State_dffe[].d = State_dffe[].q;										
+								
+						end if;				
+
+						
+			% ---------------------------------------------------------- %
+			% ---------------------------------------------------------- %			
+
+			
+					When others =>
+					
+						State_dffe[].d = RESET_STATE;	
+						
+			
+			end case;
+
+
+			
+	end if;
+
+
+
+
+END;

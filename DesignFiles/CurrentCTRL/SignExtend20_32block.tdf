@@ -1,0 +1,66 @@
+
+SUBDESIGN SignExtend20_32block
+(
+	 Data_0_In[19..0]				: input;
+	 Data_1_In[19..0]				: input;
+	 Data_2_In[19..0]				: input;
+	 Data_3_In[19..0]				: input;
+	 Data_4_In[19..0]				: input;
+	 Data_5_In[19..0]				: input;
+	 Data_6_In[19..0]				: input;
+	 Data_7_In[19..0]				: input;
+	 Data_8_In[19..0]				: input;
+	 Data_9_In[19..0]				: input;	 
+
+	 DataOut[9..0][31..0]				: output;
+
+)	
+
+--VARIABLE
+
+ 
+BEGIN 
+
+		DataOut[0][31..12] = Data_0_In[19..0];
+		DataOut[0][11..2] = 0;
+		DataOut[0][1..0] = 0;
+		
+		DataOut[1][31..12] = Data_1_In[19..0];
+		DataOut[1][11..2] = 1;
+		DataOut[1][1..0] = 0;		
+		
+		DataOut[2][31..12] = Data_2_In[19..0];
+		DataOut[2][11..2] = 2;
+		DataOut[2][1..0] = 0;
+		
+		DataOut[3][31..12] = Data_3_In[19..0];
+		DataOut[3][11..2] = 3;
+		DataOut[3][1..0] = 0;	
+	
+		DataOut[4][31..12] = Data_4_In[19..0];
+		DataOut[4][11..2] = 4;
+		DataOut[4][1..0] = 0;
+		
+		DataOut[5][31..12] = Data_5_In[19..0];
+		DataOut[5][11..2] = 5;
+		DataOut[5][1..0] = 0;		
+		
+		DataOut[6][31..12] = Data_6_In[19..0];
+		DataOut[6][11..2] = 6;
+		DataOut[6][1..0] = 0;
+		
+		DataOut[7][31..12] = Data_7_In[19..0];
+		DataOut[7][11..2] = 7;
+		DataOut[7][1..0] = 0;	
+		
+		DataOut[8][31..12] = Data_8_In[19..0];
+		DataOut[8][11..2] = 8;
+		DataOut[8][1..0] = 0;
+		
+		DataOut[9][31..12] = Data_9_In[19..0];
+		DataOut[9][11..2] = 9;
+		DataOut[9][1..0] = 0;		
+		
+	
+END;
+	

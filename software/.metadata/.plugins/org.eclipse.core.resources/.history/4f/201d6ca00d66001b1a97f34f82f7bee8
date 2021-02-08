@@ -1,0 +1,41 @@
+/*
+ * Calculations_Driver.c
+ *
+ *  Created on: 3 Feb 2021
+ *      Author: Pete.Mayes
+ */
+
+#include "system.h"
+#include "alt_types.h"
+
+#include "..\Includes\Types.h"
+#include "..\Handlers\Registers_Handler.h"
+
+#define DAC_FULL_SCALE_OUTPUT_VOLTAGE			20.0f
+#define FIRST_STAGE_GAIN						1.0f
+#define SECOND_STAGE_GAIN						1.0f
+#define TOTAL_OUTPUT_VOLTAGE_RANGE				(DAC_FULL_SCALE_OUTPUT_VOLTAGE * FIRST_STAGE_GAIN * SECOND_STAGE_GAIN)
+#define TOTAL_BITS								1048575.0f
+#define MILLIVOLTS_PER_BIT						(1000.0f * TOTAL_OUTPUT_VOLTAGE_RANGE) / TOTAL_BITS
+
+/*******************************************************************************
+* InterpFnc                                                                    *
+*   Parameter:                                                                 *
+*   Return:                                                                    *
+*******************************************************************************/
+void CalculateScalingfactors(void)
+{
+static float Tempfloat = 1.1f;
+
+	Tempfloat= 2.0f;
+	Registers.OutputStageGain.DataField = *(Uint32*)&Tempfloat;
+	Registers.OutputStageGain.DataType = SINGLE;
+	Registers.VoltageScalingFactor.DataType = SINGLE;
+	Registers.OutputStageGain.ReadWriteFlag = READ_WRITE;
+
+	Tempfloat = MILLIVOLTS_PER_BIT;
+	Tempfloat *= *(float*)&Registers.OutputStageGain.DataField;
+	Registers.VoltageScalingFactor.DataField = *(Uint32*)&Tempfloat;
+}
+
+

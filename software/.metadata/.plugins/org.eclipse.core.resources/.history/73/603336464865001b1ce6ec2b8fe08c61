@@ -1,0 +1,472 @@
+/*
+ * msgDMA_Handler.c
+ *
+ *  Created on: 8 Jun 2019
+ *      Author: prm
+ */
+
+
+#include "system.h"
+#include "alt_types.h"
+#include "sys\alt_irq.h"
+#include "io.h"
+#include "altera_msgdma.h"
+#include "altera_avalon_pio_regs.h"  // needed for the FT600 GPIO Lines
+
+#include "..\Includes\Types.h"
+#include "..\Drivers\GPIO_Driver.h"
+#include "..\Handlers\Registers_Handler.h"
+#include "..\Handlers\RegisterData_RX_Handler.h"
+//#include "..\Handlers\TimerHandler.h"
+#include "..\Handlers\msgDMA_Handler.h"
+
+#include <string.h>  //needed for memcpy
+
+
+//#define CURRCTRL_SYS_DEBUGFIFO_OUT_BASE  CURRCTRL_SYS_DEBUGFIFO_OUT_BASE
+
+static void msgDMA_InterruptCallback  (void*);
+//static void Reset_DMA_Stack_Entry(void);
+
+alt_msgdma_dev *FIFO_MSGDMA;
+alt_msgdma_extended_descriptor	FIFO_to_DDR3_Descriptor;
+
+Uint16 Trigger_USB_TXEnResponseFlag = FALSE;
+Uint16 Trigger_USB_RXFn_ResponseFlag = FALSE;
+Uint16 Trigger_New_USB_MessageFlag = FALSE;
+Uint16 Trigger_USB_BroadcastFlag = FALSE;
+
+Uint32 DMA_Read_StackPointer = 0, DMA_Write_StackPointer = 0;
+DMA_Queue	DMA_Stack[16];
+DMA_Queue	DMA_Stack_Entry;
+
+//alt_u32 *PC_to_NIOS_Shared_RAM_base_address = (alt_u32*)USB_DATA_SYS_USB_RX_RAM_BASE;
+alt_u32* 	ptr2CurrCTRLDebugData = (alt_u32*)&CurrCTRLDebugdata[0];
+
+#ifdef CURRCTRL_SYS_CURRCTRL_DEBUG_RAM_0_BASE
+
+alt_u32* 	ptr2CurrCTRLStreamingDebugData[4] = {(alt_u32*)CURRCTRL_SYS_CURRCTRL_DEBUG_RAM_0_BASE,
+												(alt_u32*)CURRCTRL_SYS_CURRCTRL_DEBUG_RAM_0_BASE,
+												(alt_u32*)CURRCTRL_SYS_CURRCTRL_DEBUG_RAM_0_BASE,
+												(alt_u32*)CURRCTRL_SYS_CURRCTRL_DEBUG_RAM_0_BASE};
+
+#endif
+
+/* -------------------------------------------------------------------------
+ * Process a received interrupt. Interrupts are generated when a transaction
+ * completes.
+ -------------------------------------------------------------------------- */
+int Init_msgDMA_Module(void)
+{
+alt_msgdma_callback callback;
+int	control;
+Uint32 context, count;
+
+#ifdef CURRCTRL_SYS_CURRCTRL_DEBUG_RAM_0_BASE
+
+	for (count = 0; count < 256; count++)
+	{
+		*(Uint32*)(ptr2CurrCTRLStreamingDebugData[0] + count) = count;
+	}
+
+#endif
+
+
+		FIFO_MSGDMA = alt_msgdma_open(MSGDMA_0_CSR_NAME);
+
+		DMA_Read_StackPointer = 0;
+		DMA_Write_StackPointer = 0;
+
+		if (FIFO_MSGDMA == NULL)
+			{
+				return FALSE;
+			}
+		else
+			{
+				callback = &msgDMA_InterruptCallback;
+				control = 0;  // what does control do
+				alt_msgdma_register_callback(FIFO_MSGDMA, callback, control, &context);
+
+				return 0x55;
+			}
+
+
+}
+
+/* -------------------------------------------------------------------------
+ *
+ *
+ -------------------------------------------------------------------------- */
+void DMA_Handler(void)
+{
+static Uint32		StatusRegister;
+
+	StatusRegister = IORD_ALTERA_MSGDMA_CSR_STATUS(MSGDMA_0_CSR_BASE);
+
+	Registers.DMA_StatusWord.DataField = StatusRegister;
+	Registers.DMA_WritePointer.DataField = DMA_Write_StackPointer;
+	Registers.DMA_ReadPointer.DataField = DMA_Read_StackPointer;
+
+	if (StatusRegister & 0x01) // busy
+		{
+		}
+	else
+		{
+			if (DMA_Write_StackPointer == DMA_Read_StackPointer)
+				{
+
+				}
+			else
+			{
+				Set_TP2();
+				(void)Trigger_FIFOmsgDMA_AsynchCall_2(&DMA_Stack[DMA_Read_StackPointer & 0x0f]);
+			//	Clear_TP2();
+			}
+		}
+}
+
+#ifdef PARAMETER_SYS_PARAMETER_TX_RAM_BASE
+
+/* -------------------------------------------------------------------------
+ * Process a received interrupt. Interrupts are generated when a transaction
+ * completes.
+ -------------------------------------------------------------------------- */
+void Basic_Parameter_Transfer(TransferSTRUC* DataInfo)
+{
+alt_irq_context context;
+
+	context = alt_irq_disable_all();
+
+	switch (DataInfo->PageCount)
+	{
+		case 0:
+			DMA_Stack_Entry.SourceAddress = (void*)(&Registers);
+			DMA_Stack_Entry.BytesToTransfer = 1024;
+		break;
+
+		default:
+			DMA_Stack_Entry.SourceAddress = (void*)((void*)DATA_MEMORY_BASE + ((DataInfo->PageCount) * 0x1000));
+			//(void*)(((void*)&ExtendedMemoryLocation + (PageCount * 4096)));
+			DMA_Stack_Entry.BytesToTransfer = 4096;
+		break;
+	}
+
+	DMA_Stack_Entry.DestinationAddress = (void*)PARAMETER_SYS_PARAMETER_TX_RAM_BASE;
+	DMA_Stack_Entry.InterruptFlag = PARAMETER_REQUEST;
+	DMA_Stack_Entry.FIFO_ReadFlag = READ_FROM_INCREMENTING_ADDRESS;
+	DMA_Stack_Entry.FIFO_WriteFlag = WRITE_TO_INCREMENTING_ADDRESS;
+	DMA_Stack_Entry.TransferLength = DataInfo->TransferLength;
+	DMA_Stack_Entry.TargetMemorySlot = DataInfo->TargetMemorySlot;
+	DMA_Stack[DMA_Write_StackPointer & 0x0f] = DMA_Stack_Entry;
+	DMA_Write_StackPointer++;
+	alt_irq_enable_all(context);
+}
+
+#endif
+
+#if 0
+
+/* -------------------------------------------------------------------------
+ * Process a received interrupt. Interrupts are generated when a transaction
+ * completes.
+ -------------------------------------------------------------------------- */
+void UpdateDMA_WithFT600_RX_CMD(Uint16 PageCount)
+{
+alt_irq_context context;
+
+	context = alt_irq_disable_all();
+
+	if ((PageCount == 0) && (TRUE))
+		{
+			DMA_Stack_Entry.BytesToTransfer = 64;
+			DMA_Stack_Entry.DestinationAddress = (void*)(&FirstTextArea[0]);
+			Registers.Command_1.DataField = *(PC_to_NIOS_Shared_RAM_base_address + 16);
+			Registers.Command_2.DataField = *(PC_to_NIOS_Shared_RAM_base_address + 17);
+			Registers.Command_3.DataField = *(PC_to_NIOS_Shared_RAM_base_address + 18);
+		}
+	else
+		{
+			DMA_Stack_Entry.BytesToTransfer = 4096;
+			DMA_Stack_Entry.DestinationAddress = (void*)((void*)MEM_IF_DDR3_EMIF_BASE + ((PageCount - 1) * 0x1000));  // calc is four times less than  *char
+		}
+
+	DMA_Stack_Entry.SourceAddress = (void*)USB_DATA_SYS_USB_RX_RAM_BASE;
+
+	DMA_Stack_Entry.InterruptFlag = USB_RX_ACTION;
+	DMA_Stack_Entry.FIFO_ReadFlag = READ_FROM_INCREMENTING_ADDRESS;
+	DMA_Stack_Entry.FIFO_WriteFlag = WRITE_FROM_INCREMENTING_ADDRESS;
+
+	DMA_Stack[DMA_Write_StackPointer & 0x0f] = DMA_Stack_Entry;
+	DMA_Write_StackPointer++;
+
+	alt_irq_enable_all(context);
+}
+
+#endif
+
+#if 0
+
+/* -------------------------------------------------------------------------
+ * Process a received interrupt. Interrupts are generated when a transaction
+ * completes.
+ -------------------------------------------------------------------------- */
+void TransferDataFromDDR3toFIFO(Uint16 BytesToTransfer, Uint32 WordReadIndex)
+{
+alt_irq_context context;
+
+	context = alt_irq_disable_all();
+
+	DMA_Stack_Entry.BytesToTransfer = BytesToTransfer;
+	DMA_Stack_Entry.SourceAddress = (void*)((void*)MEM_IF_DDR3_EMIF_BASE + (WordReadIndex * 8));  // calc is four times less than  *char
+
+	DMA_Stack_Entry.DestinationAddress = (void*)PATTERNGENERATORSYS_0_PD_FIFO_IN_BASE;
+
+	DMA_Stack_Entry.InterruptFlag = FIFO_WRITE;
+	DMA_Stack_Entry.FIFO_ReadFlag = READ_FROM_INCREMENTING_ADDRESS;
+	DMA_Stack_Entry.FIFO_WriteFlag = WRITE_TO_FIXED_ADDRESS;
+
+	DMA_Stack[DMA_Write_StackPointer & 0x0f] = DMA_Stack_Entry;
+	DMA_Write_StackPointer++;
+
+	alt_irq_enable_all(context);
+}
+
+#endif
+
+#ifdef CURRCTRL_SYS_MAINDIAGNOSTICFIFO_OUT_BASE
+
+/* -------------------------------------------------------------------------
+ * Process a received interrupt. Interrupts are generated when a transaction
+ * completes.
+ -------------------------------------------------------------------------- */
+void TransferDataFromFIFOtoDDR3(Uint16 WordsToTransfer, Uint32 WordReadIndex)
+{
+alt_irq_context context;
+
+	context = alt_irq_disable_all();
+
+	DMA_Stack_Entry.BytesToTransfer = WordsToTransfer << 2;
+	DMA_Stack_Entry.SourceAddress = (void*)CURRCTRL_SYS_MAINDIAGNOSTICFIFO_OUT_BASE;  // calc is four times less than  *char
+	DMA_Stack_Entry.DestinationAddress = ptr2CurrCTRLDebugData;
+
+	DMA_Stack_Entry.InterruptFlag = FIFO_READ;
+	DMA_Stack_Entry.FIFO_ReadFlag = READ_FROM_FIXED_ADDRESS;
+	DMA_Stack_Entry.FIFO_WriteFlag = WRITE_TO_INCREMENTING_ADDRESS;
+
+	DMA_Stack[DMA_Write_StackPointer & 0x0f] = DMA_Stack_Entry;
+	DMA_Write_StackPointer++;
+
+
+	alt_irq_enable_all(context);
+}
+
+#endif
+
+#ifdef CURRCTRL_SYS_CURRCTRL_DEBUG_RAM_0_BASE
+/* -------------------------------------------------------------------------
+ * Process a received interrupt. Interrupts are generated when a transaction
+ * completes.
+ -------------------------------------------------------------------------- */
+void TransferDataFromDebugFIFOtoExtBuffer(Uint16 WordsToTransfer, Uint32 WordReadIndex)
+{
+alt_irq_context context;
+static Uint16	MemorySpaceCount = 0;
+
+	context = alt_irq_disable_all();
+
+	DMA_Stack_Entry.BytesToTransfer = WordsToTransfer << 2;
+	DMA_Stack_Entry.SourceAddress = (void*)CURRCTRL_SYS_DEBUGFIFO_OUT_BASE;  // calc is four times less than  *char
+
+	switch (MemorySpaceCount++ & 0x03)
+		{
+			case 0:
+				DMA_Stack_Entry.DestinationAddress = (void*)ptr2CurrCTRLStreamingDebugData[0];
+				DMA_Stack_Entry.InterruptFlag = FIFO_STREAMING_DEBUG_READ_0;
+			break;
+
+			case 1:
+				DMA_Stack_Entry.DestinationAddress = (void*)ptr2CurrCTRLStreamingDebugData[1];
+				DMA_Stack_Entry.InterruptFlag = FIFO_STREAMING_DEBUG_READ_1;
+			break;
+
+			case 2:
+				DMA_Stack_Entry.DestinationAddress = (void*)ptr2CurrCTRLStreamingDebugData[2];
+				DMA_Stack_Entry.InterruptFlag = FIFO_STREAMING_DEBUG_READ_2;
+			break;
+
+			case 3:
+				DMA_Stack_Entry.DestinationAddress = (void*)ptr2CurrCTRLStreamingDebugData[3];
+				DMA_Stack_Entry.InterruptFlag = FIFO_STREAMING_DEBUG_READ_3;
+			break;
+		}
+
+
+
+	DMA_Stack_Entry.FIFO_ReadFlag = READ_FROM_FIXED_ADDRESS;
+	DMA_Stack_Entry.FIFO_WriteFlag = WRITE_TO_INCREMENTING_ADDRESS;
+
+	DMA_Stack[DMA_Write_StackPointer & 0x0f] = DMA_Stack_Entry;
+	DMA_Write_StackPointer++;
+
+
+	Set_TP3();
+
+	alt_irq_enable_all(context);
+}
+
+#endif
+
+#if 0
+/* -------------------------------------------------------------------------
+ * Process a received interrupt. Interrupts are generated when a transaction
+ * completes.
+ -------------------------------------------------------------------------- */
+static void Reset_DMA_Stack_Entry(void)
+{
+	DMA_Stack_Entry.Parameter_Request_ResponseFlag = FALSE;
+//	DMA_Stack_Entry.USB_RXFn_ResponseFlag = FALSE;
+//	DMA_Stack_Entry.Trigger_USB_Broadcast = FALSE;
+	DMA_Stack_Entry.NewUSB_MessageFlag = FALSE;
+	DMA_Stack_Entry.FIFO_ReadFlag = 1;
+}
+#endif
+/* -------------------------------------------------------------------------
+ * Process a received interrupt. Interrupts are generated when a transaction
+ * completes.
+ -------------------------------------------------------------------------- */
+static void msgDMA_InterruptCallback  (void* context)
+{
+//Uint32 TempUint32;
+//int32	TempInt32
+
+Set_TP7();
+Clear_TP2();
+Clear_TP2();
+
+	switch (DMA_Stack[DMA_Read_StackPointer & 0x0f].InterruptFlag)
+		{
+
+#ifdef PARAMETER_SYS_PARAMETERLENGTHPAGE_BASE
+			case PARAMETER_REQUEST:
+				TempUint32 = DMA_Stack[DMA_Read_StackPointer & 0x0f].TargetMemorySlot;
+				TempUint32 <<= 8;
+				TempUint32 += (DMA_Stack[DMA_Read_StackPointer & 0x0f].TransferLength & 0xff);
+				IOWR_ALTERA_AVALON_PIO_DATA(PARAMETER_SYS_PARAMETERLENGTHPAGE_BASE, TempUint32);
+				Trigger_Parameter_Page_Transmission();
+				break;
+#endif
+
+			case FIFO_READ:
+
+				Registers.CurrCTRL_Data0.DataField = *ptr2CurrCTRLDebugData;
+				Registers.CurrCTRL_Data1.DataField = ((int32)*(ptr2CurrCTRLDebugData + 1)) >> 12;
+				Registers.CurrCTRL_Data2.DataField = ((int32)*(ptr2CurrCTRLDebugData + 2)) >> 12;
+				Registers.CurrCTRL_Data3.DataField = ((int32)*(ptr2CurrCTRLDebugData + 3)) >> 12;
+				Registers.CurrCTRL_Data4.DataField = ((int32)*(ptr2CurrCTRLDebugData + 4)) >> 12;
+				Registers.CurrCTRL_Data5.DataField = ((int32)*(ptr2CurrCTRLDebugData + 5)) >> 12;
+				Registers.CurrCTRL_Data6.DataField = ((int32)*(ptr2CurrCTRLDebugData + 6)) >> 12;
+				Registers.CurrCTRL_Data7.DataField = ((int32)*(ptr2CurrCTRLDebugData + 7)) >> 12;
+
+				break;
+
+#ifdef CURRCTRL_SYS_CURRCTRL_GPIO_BASE
+			case FIFO_STREAMING_DEBUG_READ_0:
+				IOWR_ALTERA_AVALON_PIO_SET_BITS(CURRCTRL_SYS_CURRCTRL_GPIO_BASE, 0x01);
+				Clear_TP3();
+				Clear_TP3();
+				Registers.Debug_0.DataField = *ptr2CurrCTRLStreamingDebugData[0];
+				Registers.Debug_1.DataField = ((int32)*(ptr2CurrCTRLStreamingDebugData[0] + 1)) >> 12;
+				IOWR_ALTERA_AVALON_PIO_CLEAR_BITS(CURRCTRL_SYS_CURRCTRL_GPIO_BASE, 0x01);
+				break;
+
+			case FIFO_STREAMING_DEBUG_READ_1:
+				IOWR_ALTERA_AVALON_PIO_SET_BITS(CURRCTRL_SYS_CURRCTRL_GPIO_BASE, 0x01 << 0);
+				Clear_TP3();
+				Clear_TP3();
+				Registers.Debug_0.DataField = *ptr2CurrCTRLStreamingDebugData[1];
+				Registers.Debug_1.DataField = ((int32)*(ptr2CurrCTRLStreamingDebugData[1] + 1)) >> 12;
+				IOWR_ALTERA_AVALON_PIO_CLEAR_BITS(CURRCTRL_SYS_CURRCTRL_GPIO_BASE, 0x01 << 0);
+				break;
+
+			case FIFO_STREAMING_DEBUG_READ_2:
+				IOWR_ALTERA_AVALON_PIO_SET_BITS(CURRCTRL_SYS_CURRCTRL_GPIO_BASE, 0x01 << 0);
+				Clear_TP3();
+				Clear_TP3();
+				Registers.Debug_0.DataField = *ptr2CurrCTRLStreamingDebugData[2];
+				Registers.Debug_1.DataField = ((int32)*(ptr2CurrCTRLStreamingDebugData[2] + 1)) >> 12;
+				IOWR_ALTERA_AVALON_PIO_CLEAR_BITS(CURRCTRL_SYS_CURRCTRL_GPIO_BASE, 0x01 << 0);
+				break;
+
+			case FIFO_STREAMING_DEBUG_READ_3:
+				IOWR_ALTERA_AVALON_PIO_SET_BITS(CURRCTRL_SYS_CURRCTRL_GPIO_BASE, 0x01 << 0);
+				Clear_TP3();
+				Clear_TP3();
+				Registers.Debug_0.DataField = *ptr2CurrCTRLStreamingDebugData[3];
+				Registers.Debug_1.DataField = ((int32)*(ptr2CurrCTRLStreamingDebugData[3] + 1)) >> 12;
+				IOWR_ALTERA_AVALON_PIO_CLEAR_BITS(CURRCTRL_SYS_CURRCTRL_GPIO_BASE, 0x08  << 0);
+				break;
+#endif
+			default:
+				break;
+		}
+
+	DMA_Read_StackPointer++;
+	Clear_TP7();
+}
+
+/* -------------------------------------------------------------------------
+ * Process a received interrupt. Interrupts are generated when a transaction
+ * completes.
+ -------------------------------------------------------------------------- */
+int Trigger_FIFOmsgDMA_AsynchCall_2 (DMA_Queue* input) //void* ReadAddress, Uint32 WordsToTransfer)
+{
+volatile static int	ReturnFlag;
+volatile static Uint32	BytesToTransfer,
+					StatusRegister;
+
+
+	Set_TP6();
+
+		BytesToTransfer = input->BytesToTransfer; // WordsToTransfer << 2;
+		StatusRegister = IORD_ALTERA_MSGDMA_CSR_STATUS(MSGDMA_0_CSR_BASE);
+
+		if (StatusRegister & 0x01) // busy
+			{
+				return 98;
+			}
+
+		if (BytesToTransfer > MSGDMA_0_CSR_MAX_BYTE)
+			BytesToTransfer = MSGDMA_0_CSR_MAX_BYTE;
+
+
+		ReturnFlag = alt_msgdma_construct_extended_mm_to_mm_descriptor(  // this just writes data into dev structure as pointed too by STDATA_MSGDMA
+				FIFO_MSGDMA,
+				&FIFO_to_DDR3_Descriptor,
+				input->SourceAddress,
+				input->DestinationAddress, //NIOS_to_PC_Shared_RAM_base_write_address,
+				BytesToTransfer, //WordsToTransfer << 2,							// length
+				ALTERA_MSGDMA_DESCRIPTOR_CONTROL_TRANSFER_COMPLETE_IRQ_MASK,
+				1,							// sequence number ??????
+				0,							// read burst count, 0 sets it to maximum
+				0,							// write burst count, 0 sets it to maximum
+				input->FIFO_ReadFlag,		// read stride count, 0 - read from a fixed address
+				input->FIFO_WriteFlag		// write stride count,
+				);
+
+		if (ReturnFlag == 0)
+			{
+				ReturnFlag = alt_msgdma_extended_descriptor_async_transfer(FIFO_MSGDMA,
+						&FIFO_to_DDR3_Descriptor);
+			}
+		else
+			{
+			}
+
+		Clear_TP6();
+
+
+		return ReturnFlag;
+}
+
+
+/* ----------------------- */

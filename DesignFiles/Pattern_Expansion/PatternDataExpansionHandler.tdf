@@ -1,0 +1,648 @@
+CONSTANT RESET_STATE 								= 0;
+CONSTANT TRIGGER_FIFO_READ						 	= 1;
+CONSTANT	FIFO_SET_READ_FLAG_STATE				= 2;
+CONSTANT WAIT_STATE									= 3;
+CONSTANT	LATCH_DATA_WORD_1						 	= 4;
+CONSTANT	LATCH_DATA_WORD_2						 	= 5;
+CONSTANT	LATCH_DATA_WORD_3						 	= 6;
+CONSTANT	LATCH_DATA_WORD_4						 	= 7;
+CONSTANT	LATCH_DATA_WORD_5						 	= 8;
+CONSTANT	LATCH_DATA_WORD_6						 	= 9;
+CONSTANT	LATCH_DATA_WORD_7						 	= 10;
+CONSTANT	LATCH_DATA_WORD_8						 	= 11;
+CONSTANT WAIT_FOR_TRIGGER_TO_GO_INACTIVE		= 12;
+
+CONSTANT INDEX_COUNT 								= 0;
+CONSTANT ABSOLUTE_TIME 								= 1;
+CONSTANT X_CURRENT								 	= 2;
+CONSTANT	Y_CURRENT									= 3;
+CONSTANT X_INCREMENT									= 4;
+CONSTANT	Y_INCREMENT								 	= 5;
+CONSTANT	BEAM_CURRENT_BSD_ENABLE				 	= 6;
+CONSTANT SPARE											= 7;
+
+
+%
+CONSTANT NULL_REQUEST								= 0;
+CONSTANT STANDBY_REQUEST							= 1;
+CONSTANT LOAD_FIRST_DATA_SET_REQUEST			= 2;
+CONSTANT READ_MODE_REQUEST							= 3;
+CONSTANT CLEAR_FIFO_MODE_REQUEST				 	= 4;
+CONSTANT	RESET_MODE_REQUEST						= 5;
+CONSTANT MOVE_TO_RUN_MODE_REQUEST			 	= 6;
+
+
+CONSTANT RESET_OPERATING_STATE 					= 0;
+CONSTANT CLEAR_FIFO_OPERATING_STATE				= 1;
+CONSTANT STANDBY_OPERATING_STATE					= 2;
+CONSTANT LOAD_FIRST_DATASET_OPERATING_STATE	= 3;
+CONSTANT NORMAL_MODE_IDLE_STATE					= 4;
+CONSTANT NORMAL_MODE_RUN_STATE					= 5;
+CONSTANT ERROR_STATE									= 6;
+--CONSTANT CLEAR_FIFO_MODE_REQUEST				 	= 3;
+--CONSTANT	RESET_MODE_REQUEST						= 4;
+%
+
+
+CONSTANT PATTERN_EXPANSION_ENTRY_STATE							= 0;
+CONSTANT	PATTERN_EXPANSION_RESET_STATE							= 1;
+CONSTANT PATTERN_EXPANSION_IDLE_STATE							= 2;
+CONSTANT PATTERN_EXPANSION_RUN_STATE							= 3;
+CONSTANT PATTERN_EXPANSION_LOAD_FIRST_DATA_SET_STATE		= 4;
+CONSTANT PATTERN_EXPANSION_EMPTY_FIFO_STATE					= 5;
+
+
+SUBDESIGN PatternDataExpansionHandler
+(
+  Reset												: input;
+  StateDemandRequest[2..0]						: input;
+  BackPressure										: input;
+  CSR_Fill_Level[31..0]							: input;
+  FIFO_DATA[31..0]								: input;
+  clk_en												: input;
+  clk													: input;
+  
+
+  fifo_read											: output;
+  PD_Counter[31..0]								: output;
+  FIFO_ReadMode[3..0]							: output;
+  FIFO_OperatingStateMode[2..0]				: output;
+  Difference_MSB									: output;
+  TimesEqualFlag 									: output;
+  PG_Debug_Addr[3..0] 							: output;
+  PG_Debug_Data[31..0]							: output;
+  X_data[19..0]									: output;
+  Y_data[19..0]									: output;
+)	 
+
+VARIABLE
+	ReadFlag_node									: node;
+	FIFO_ReadMode_dff[3..0]						: dff;
+	FIFO_OperatingStateMode_dff[2..0]		: dff;
+	
+	fifo_read_node									: node;
+	fifo_read_dff									: dff;
+	
+	FIFO_Read_Data_dffe[7..0][31..0]			: dffe;	
+	
+	PD_Counter_dffe[31..0]						: dffe;		
+	
+	ReadNextDataPoint_node						: node;
+	
+	PG_DebugWriteMode_dff[3..0]				: dff;
+	
+	
+	difference_node[31..0]						: node;	
+	
+
+BEGIN 
+
+	FIFO_ReadMode_dff[].clk = clk;
+	FIFO_ReadMode[] = FIFO_ReadMode_dff[].q;
+
+	
+	fifo_read_dff.clk = clk;
+	fifo_read_dff.d = fifo_read_node;
+	fifo_read = fifo_read_dff.q;
+	
+	FIFO_Read_Data_dffe[][].clk = clk;
+
+	if ((ReadFlag_node == vcc) and (BackPressure == gnd)) then
+		fifo_read_node = vcc;	
+	else
+		fifo_read_node = gnd;
+	end if;
+	
+	PD_Counter[] = PD_Counter_dffe[].q;
+			
+	FIFO_OperatingStateMode_dff[].clk = clk;
+	FIFO_OperatingStateMode_dff[].d = StateDemandRequest[];
+	
+	
+	X_data[19..0] = FIFO_Read_Data_dffe[X_CURRENT][31..12].q;
+	Y_data[19..0] = FIFO_Read_Data_dffe[Y_CURRENT][31..12].q;	
+
+	if (Reset == gnd) then
+	
+				FIFO_ReadMode_dff[].d = RESET_STATE;	
+				FIFO_Read_Data_dffe[ABSOLUTE_TIME][].d = h"ffffffff";
+				FIFO_Read_Data_dffe[ABSOLUTE_TIME][].ena = vcc;		
+	
+	else	
+	
+	
+		case FIFO_OperatingStateMode_dff[].q is
+		
+		
+-- ******************************************************************	
+	
+	
+			when PATTERN_EXPANSION_ENTRY_STATE =>	
+	
+				FIFO_ReadMode_dff[].d = RESET_STATE;	
+				FIFO_Read_Data_dffe[ABSOLUTE_TIME][].d = h"ffffffff";
+				FIFO_Read_Data_dffe[ABSOLUTE_TIME][].ena = vcc;
+
+						
+-- ******************************************************************	
+
+	
+			when PATTERN_EXPANSION_RESET_STATE =>
+			
+				if (CSR_Fill_Level[31..0] != 0) then
+				
+					ReadFlag_node = vcc;
+		
+				else
+				
+					ReadFlag_node = gnd;					
+				
+				end if;
+				
+				FIFO_ReadMode_dff[].d = RESET_STATE;	
+							
+			
+	-- ******************************************************************	
+
+
+			when PATTERN_EXPANSION_EMPTY_FIFO_STATE =>
+			
+				if (CSR_Fill_Level[31..0] != 0) then
+				
+					ReadFlag_node = vcc;
+		
+				else
+				
+					ReadFlag_node = gnd;					
+				
+				end if;
+				
+				FIFO_ReadMode_dff[].d = RESET_STATE;	
+							
+			
+%	-- ******************************************************************	
+		
+			when STANDBY_OPERATING_STATE =>
+			
+				if (StateDemandRequest[] == LOAD_FIRST_DATA_SET_REQUEST) then
+				
+					FIFO_OperatingStateMode_dff[].d = LOAD_FIRST_DATASET_OPERATING_STATE;
+				
+				else
+				
+					FIFO_OperatingStateMode_dff[].d = STANDBY_OPERATING_STATE;
+					
+				end if;
+			
+-- ******************************************************************	
+	
+			when LOAD_FIRST_DATASET_OPERATING_STATE =>
+			
+			
+				if (StateDemandRequest[] == CLEAR_FIFO_MODE_REQUEST) then
+				
+					FIFO_OperatingStateMode_dff[].d = CLEAR_FIFO_OPERATING_STATE;	
+				
+				else
+				
+					if (FIFO_ReadMode_dff[].q == WAIT_FOR_TRIGGER_TO_GO_INACTIVE) then
+					
+
+						if (difference_node[31] == gnd) then -- the target time is ahead of the current time
+						
+							FIFO_OperatingStateMode_dff[].d = NORMAL_MODE_IDLE_STATE;
+							
+						else
+						
+							FIFO_OperatingStateMode_dff[].d = ERROR_STATE;	
+							
+						end if;		
+						
+					
+					else
+	
+						FIFO_OperatingStateMode_dff[].d = LOAD_FIRST_DATASET_OPERATING_STATE;	
+						
+					end if;
+					
+					
+				end if;		
+								
+
+	-- ******************************************************************		
+
+	
+			when NORMAL_MODE_IDLE_STATE =>
+			
+				if (StateDemandRequest[] == CLEAR_FIFO_MODE_REQUEST) then
+				
+					FIFO_OperatingStateMode_dff[].d = CLEAR_FIFO_OPERATING_STATE;	
+				
+				elsif (StateDemandRequest[] == MOVE_TO_RUN_MODE_REQUEST) then
+				
+					FIFO_OperatingStateMode_dff[].d = NORMAL_MODE_RUN_STATE;	
+				
+				else
+			
+					FIFO_OperatingStateMode_dff[].d = NORMAL_MODE_IDLE_STATE;	
+					
+				end if;
+					
+	
+	-- ******************************************************************	
+
+			when NORMAL_MODE_RUN_STATE =>
+			
+				if (StateDemandRequest[] == CLEAR_FIFO_MODE_REQUEST) then
+				
+					FIFO_OperatingStateMode_dff[].d = CLEAR_FIFO_OPERATING_STATE;	
+				
+				else
+			
+					FIFO_OperatingStateMode_dff[].d = NORMAL_MODE_RUN_STATE;	
+					
+				end if;
+					
+	
+	-- ******************************************************************	
+	
+
+			when ERROR_STATE =>
+			
+				if (StateDemandRequest[] == CLEAR_FIFO_MODE_REQUEST) then
+				
+					FIFO_OperatingStateMode_dff[].d = CLEAR_FIFO_OPERATING_STATE;	
+				
+				else
+			
+					FIFO_OperatingStateMode_dff[].d = ERROR_STATE;	
+					
+				end if;
+					
+	
+	-- ******************************************************************		
+	
+			when others =>	
+			
+					FIFO_OperatingStateMode_dff[].d = RESET_OPERATING_STATE;	
+	%				
+			end case;
+												
+	
+	
+	end if;  
+	
+-- ******************************************************************
+-- ******************************************************************
+	
+	PD_Counter_dffe[].clk = clk;
+	PD_Counter_dffe[].ena = clk_en;
+
+	case FIFO_OperatingStateMode_dff[].q is
+
+		when PATTERN_EXPANSION_RUN_STATE =>
+		
+			if (CSR_Fill_Level[] > 8) then
+		
+				PD_Counter_dffe[].d = PD_Counter_dffe[].q + 1;	
+				
+			else
+			
+				PD_Counter_dffe[].d = PD_Counter_dffe[].q; 			
+			
+			end if;
+	
+		when others =>
+		
+			PD_Counter_dffe[].d = 0; 		
+		
+	end case;
+	
+-- ******************************************************************
+-- ******************************************************************	
+
+
+	difference_node[] = FIFO_Read_Data_dffe[ABSOLUTE_TIME][].q - PD_Counter_dffe[].q;
+	
+	Difference_MSB = difference_node[31];
+
+
+--	if (FIFO_Read_Data_dffe[ABSOLUTE_TIME][].q == PD_Counter_dffe[].q) then
+	if (difference_node[] == 0) then
+	
+		ReadNextDataPoint_node = vcc;
+		TimesEqualFlag = vcc;
+		
+	else
+	
+		ReadNextDataPoint_node = gnd;
+		TimesEqualFlag = gnd;
+		
+	end if;
+	
+	
+-- ******************************************************************
+-- ******************************************************************		
+
+
+if (reset == vcc) then
+	
+	
+	FIFO_Read_Data_dffe[INDEX_COUNT][].d = FIFO_DATA[31..0];	
+	FIFO_Read_Data_dffe[ABSOLUTE_TIME][].d = FIFO_DATA[31..0];
+	FIFO_Read_Data_dffe[X_CURRENT][31..12].d = FIFO_DATA[19..0];
+	FIFO_Read_Data_dffe[X_CURRENT][11..0].d = 0;
+	FIFO_Read_Data_dffe[Y_CURRENT][31..12].d = FIFO_DATA[19..0];
+	FIFO_Read_Data_dffe[Y_CURRENT][11..0].d = 0;		
+	FIFO_Read_Data_dffe[X_INCREMENT][].d = FIFO_DATA[31..0];
+	FIFO_Read_Data_dffe[Y_INCREMENT][].d = FIFO_DATA[31..0];
+	FIFO_Read_Data_dffe[BEAM_CURRENT_BSD_ENABLE][].d = FIFO_DATA[31..0];		
+	FIFO_Read_Data_dffe[SPARE][].d = FIFO_DATA[31..0];				
+
+
+
+	
+		case FIFO_ReadMode_dff[].q is
+			
+			when RESET_STATE =>
+			
+					
+				case FIFO_OperatingStateMode_dff[].q is
+				
+					when PATTERN_EXPANSION_LOAD_FIRST_DATA_SET_STATE =>
+					
+						FIFO_ReadMode_dff[].d = TRIGGER_FIFO_READ;			
+						
+					when others =>
+			
+						FIFO_ReadMode_dff[].d = RESET_STATE;	
+						
+				end case;	
+					
+					
+				
+	-- ******************************************************************				
+			
+
+			when TRIGGER_FIFO_READ =>
+			
+					if (FIFO_OperatingStateMode_dff[].q == PATTERN_EXPANSION_RESET_STATE) then
+					
+						FIFO_ReadMode_dff[].d = RESET_STATE;					
+			
+					elsif (CSR_Fill_Level[] > 8) then
+					
+						FIFO_ReadMode_dff[].d = FIFO_SET_READ_FLAG_STATE;		
+						
+					else
+						FIFO_ReadMode_dff[].d = FIFO_ReadMode_dff[].q;	
+						
+					end if;
+												
+				
+	-- ******************************************************************	
+	
+				when FIFO_SET_READ_FLAG_STATE =>	
+		
+					ReadFlag_node = vcc;  -- read flag count 1
+					FIFO_ReadMode_dff[].d = WAIT_STATE;		
+					
+	-- ******************************************************************
+	
+				when WAIT_STATE =>	
+		
+					ReadFlag_node = vcc;  -- read flag count 2
+					FIFO_ReadMode_dff[].d = LATCH_DATA_WORD_1;		
+					
+	-- ******************************************************************	
+
+				when LATCH_DATA_WORD_1 =>	-- 
+		
+					ReadFlag_node = vcc;  -- read flag count 3
+					FIFO_ReadMode_dff[].d = LATCH_DATA_WORD_2;
+			
+					FIFO_Read_Data_dffe[INDEX_COUNT][].ena = vcc;		
+					
+	-- ******************************************************************
+	
+				when LATCH_DATA_WORD_2 =>	
+		
+					ReadFlag_node = vcc;  -- read flag count 4
+					FIFO_ReadMode_dff[].d = LATCH_DATA_WORD_3;	
+				
+					FIFO_Read_Data_dffe[ABSOLUTE_TIME][].ena = vcc;	
+					
+	-- ******************************************************************	
+
+				when LATCH_DATA_WORD_3 =>	
+		
+					ReadFlag_node = vcc;  -- read flag count 5
+					FIFO_ReadMode_dff[].d = LATCH_DATA_WORD_4;
+			
+					FIFO_Read_Data_dffe[X_CURRENT][].ena = vcc;				
+					
+	-- ******************************************************************
+	
+				when LATCH_DATA_WORD_4 =>	
+		
+					ReadFlag_node = vcc;  -- read flag count 6
+					FIFO_ReadMode_dff[].d = LATCH_DATA_WORD_5;	
+					
+					FIFO_Read_Data_dffe[Y_CURRENT][].ena = vcc;						
+					
+	-- ******************************************************************
+	
+				when LATCH_DATA_WORD_5 =>	
+		
+					ReadFlag_node = vcc;  -- read flag count 7
+					FIFO_ReadMode_dff[].d = LATCH_DATA_WORD_6;
+			
+					FIFO_Read_Data_dffe[X_INCREMENT][].ena = vcc;				
+					
+	-- ******************************************************************
+	
+				when LATCH_DATA_WORD_6 =>	
+		
+					ReadFlag_node = vcc;  -- read flag count 8
+					FIFO_ReadMode_dff[].d = LATCH_DATA_WORD_7;	
+					
+					FIFO_Read_Data_dffe[Y_INCREMENT][].ena = vcc;						
+					
+	-- ******************************************************************
+	
+				when LATCH_DATA_WORD_7 =>	
+		
+					ReadFlag_node = gnd;  -- read line deasserted
+					FIFO_ReadMode_dff[].d = LATCH_DATA_WORD_8;
+			
+					FIFO_Read_Data_dffe[BEAM_CURRENT_BSD_ENABLE][].ena = vcc;				
+					
+	-- ******************************************************************	
+	
+				when LATCH_DATA_WORD_8 =>	
+		
+					ReadFlag_node = gnd;  -- read line deasserted
+					FIFO_ReadMode_dff[].d = WAIT_FOR_TRIGGER_TO_GO_INACTIVE;	
+					
+					FIFO_Read_Data_dffe[SPARE][].ena = vcc;						
+					
+	-- ******************************************************************	
+					
+			when WAIT_FOR_TRIGGER_TO_GO_INACTIVE =>
+						
+				case FIFO_OperatingStateMode_dff[].q is
+				
+					when PATTERN_EXPANSION_RUN_STATE =>
+					
+						if ((difference_node[31] == vcc) and (clk_en == vcc)) then -- the target time is ahead of the current time
+					
+							FIFO_ReadMode_dff[].d = TRIGGER_FIFO_READ;	
+		
+						else
+						
+							FIFO_ReadMode_dff[].d = WAIT_FOR_TRIGGER_TO_GO_INACTIVE;								
+						
+						end if;
+						
+					when PATTERN_EXPANSION_RESET_STATE =>
+					
+						FIFO_ReadMode_dff[].d = RESET_STATE;	
+					
+	
+					when PATTERN_EXPANSION_EMPTY_FIFO_STATE =>
+					
+						FIFO_ReadMode_dff[].d = RESET_STATE;	
+						
+	-- ******************************************************************							
+	
+					
+					when others =>
+				
+						FIFO_ReadMode_dff[].d = WAIT_FOR_TRIGGER_TO_GO_INACTIVE;		
+
+				end case;
+
+
+	-- ******************************************************************					
+	
+			when others =>	
+			
+					FIFO_ReadMode_dff[].d = TRIGGER_FIFO_READ;	
+					
+			end case;
+			
+	-- ******************************************************************	
+				
+				
+	else
+			
+		FIFO_ReadMode_dff[].d = RESET_STATE;	
+		FIFO_Read_Data_dffe[ABSOLUTE_TIME][].d = h"ffffffff";
+		FIFO_Read_Data_dffe[ABSOLUTE_TIME][].ena = vcc;
+			
+	end if;
+	
+	
+	
+	
+	
+	
+	
+	
+-- ******************************************************************
+-- ******************************************************************	
+	
+	PG_DebugWriteMode_dff[].clk = clk;
+	PG_Debug_Addr[3..0] = PG_DebugWriteMode_dff[].q;
+
+	case PG_DebugWriteMode_dff[].q is
+			
+			when RESET_STATE =>
+			
+				if (clk_en == vcc) then
+					PG_DebugWriteMode_dff[].d = 0;
+				else
+					PG_DebugWriteMode_dff[].d = 1;
+				end if;
+				
+				PG_Debug_Data[31..0] = 0;
+					
+					
+	-- ******************************************************************						
+					
+			when 1 =>
+
+				PG_DebugWriteMode_dff[].d = 2;				
+				PG_Debug_Data[31..0] = FIFO_Read_Data_dffe[INDEX_COUNT][].q;					
+					
+	-- ******************************************************************	
+
+			when 2 =>
+
+				PG_DebugWriteMode_dff[].d = 3;				
+				PG_Debug_Data[31..0] = FIFO_Read_Data_dffe[ABSOLUTE_TIME][].q;				
+					
+	-- ******************************************************************	
+					
+			when 3 =>
+
+				PG_DebugWriteMode_dff[].d = 4;				
+				PG_Debug_Data[31..0] = FIFO_Read_Data_dffe[X_CURRENT][].q;	
+					
+	-- ******************************************************************	
+
+			when 4 =>
+
+				PG_DebugWriteMode_dff[].d = 5;				
+				PG_Debug_Data[31..0] = FIFO_Read_Data_dffe[Y_CURRENT][].q;				
+					
+	-- ******************************************************************	
+
+			when 5 =>
+
+				PG_DebugWriteMode_dff[].d = 6;				
+				PG_Debug_Data[31..0] = FIFO_Read_Data_dffe[X_INCREMENT][].q;				
+					
+	-- ******************************************************************	
+					
+			when 6 =>
+
+				PG_DebugWriteMode_dff[].d = 7;				
+				PG_Debug_Data[31..0] = FIFO_Read_Data_dffe[Y_INCREMENT][].q;				
+					
+	-- ******************************************************************	
+
+			when 7 =>
+
+				PG_DebugWriteMode_dff[].d = 8;				
+				PG_Debug_Data[31..0] = FIFO_Read_Data_dffe[BEAM_CURRENT_BSD_ENABLE][].q;	
+	
+		-- ******************************************************************	
+
+			when 8 =>
+
+				PG_DebugWriteMode_dff[].d = 9;				
+				PG_Debug_Data[2..0] = FIFO_OperatingStateMode_dff[].q;	
+				PG_Debug_Data[6..3] = FIFO_ReadMode_dff[].q;
+				PG_Debug_Data[31..7] = 0;					
+	
+	-- ******************************************************************	
+
+			when 9 =>
+
+				PG_DebugWriteMode_dff[].d = 10;				
+				PG_Debug_Data[31..0] = difference_node[];		
+	
+		-- ******************************************************************		
+
+			when others =>
+			
+				PG_DebugWriteMode_dff[].d = 0;				
+				PG_Debug_Data[31..0] = 0;				
+					
+	-- ******************************************************************		
+
+	end case;	
+			
+		  
+END;

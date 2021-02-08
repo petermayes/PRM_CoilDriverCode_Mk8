@@ -1,0 +1,59 @@
+08:08:55 **** Build of configuration Nios II for project Temp_inlineCode ****
+make mem_init_generate 
+Info: Building ../Temp_Inline_BSP/
+C:/intelFPGA_lite/18.1/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../Temp_Inline_BSP/
+[BSP build complete]
+Post-processing to create mem_init/Mk8_InlineController_CPU_CurrCTRL_SYS_CurrCTRL_Register_RAM.hex...
+elf2hex Temp_inlineCode.elf 0x02000000 0x020003ff --width=32 --little-endian-mem --create-lanes=0 mem_init/Mk8_InlineController_CPU_CurrCTRL_SYS_CurrCTRL_Register_RAM.hex
+Post-processing to create mem_init/Mk8_InlineController_CPU_Data_Memory.hex...
+elf2hex Temp_inlineCode.elf 0x00018000 0x0001a3ff --width=32 --little-endian-mem --create-lanes=0 mem_init/Mk8_InlineController_CPU_Data_Memory.hex
+Post-processing to create mem_init/Mk8_InlineController_CPU_Parameter_SYS_Parameter_RX_RAM.hex...
+elf2hex Temp_inlineCode.elf 0x00006000 0x00007003 --width=32 --little-endian-mem --create-lanes=0 mem_init/Mk8_InlineController_CPU_Parameter_SYS_Parameter_RX_RAM.hex
+Post-processing to create mem_init/Mk8_InlineController_CPU_Parameter_SYS_Parameter_TX_RAM.hex...
+elf2hex Temp_inlineCode.elf 0x0101c000 0x0101d003 --width=32 --little-endian-mem --create-lanes=0 mem_init/Mk8_InlineController_CPU_Parameter_SYS_Parameter_TX_RAM.hex
+Post-processing to create mem_init/Mk8_InlineController_CPU_Program_Memory.hex...
+elf2hex Temp_inlineCode.elf 0x00010000 0x00017fff --width=32 --little-endian-mem --create-lanes=0 mem_init/Mk8_InlineController_CPU_Program_Memory.hex
+Post-processing to create mem_init/Mk8_InlineController_CPU_USB_Data_SYS_USB_RX_RAM.hex...
+elf2hex Temp_inlineCode.elf 0x00004000 0x00005003 --width=32 --little-endian-mem --create-lanes=0 mem_init/Mk8_InlineController_CPU_USB_Data_SYS_USB_RX_RAM.hex
+Post-processing to create mem_init/hdl_sim/Mk8_InlineController_CPU_CurrCTRL_SYS_CurrCTRL_Register_RAM.dat...
+elf2dat --infile=Temp_inlineCode.elf --outfile=mem_init/hdl_sim/Mk8_InlineController_CPU_CurrCTRL_SYS_CurrCTRL_Register_RAM.dat \
+		--base=0x02000000 --end=0x020003ff --width=32 \
+		--little-endian-mem --create-lanes=0 
+Post-processing to create mem_init/hdl_sim/Mk8_InlineController_CPU_Data_Memory.dat...
+elf2dat --infile=Temp_inlineCode.elf --outfile=mem_init/hdl_sim/Mk8_InlineController_CPU_Data_Memory.dat \
+		--base=0x00018000 --end=0x0001a3ff --width=32 \
+		--little-endian-mem --create-lanes=0 
+Post-processing to create mem_init/hdl_sim/Mk8_InlineController_CPU_Parameter_SYS_Parameter_RX_RAM.dat...
+elf2dat --infile=Temp_inlineCode.elf --outfile=mem_init/hdl_sim/Mk8_InlineController_CPU_Parameter_SYS_Parameter_RX_RAM.dat \
+		--base=0x00006000 --end=0x00007003 --width=32 \
+		--little-endian-mem --create-lanes=0 
+Post-processing to create mem_init/hdl_sim/Mk8_InlineController_CPU_Parameter_SYS_Parameter_TX_RAM.dat...
+elf2dat --infile=Temp_inlineCode.elf --outfile=mem_init/hdl_sim/Mk8_InlineController_CPU_Parameter_SYS_Parameter_TX_RAM.dat \
+		--base=0x0101c000 --end=0x0101d003 --width=32 \
+		--little-endian-mem --create-lanes=0 
+Post-processing to create mem_init/hdl_sim/Mk8_InlineController_CPU_Program_Memory.dat...
+elf2dat --infile=Temp_inlineCode.elf --outfile=mem_init/hdl_sim/Mk8_InlineController_CPU_Program_Memory.dat \
+		--base=0x00010000 --end=0x00017fff --width=32 \
+		--little-endian-mem --create-lanes=0 
+Post-processing to create mem_init/hdl_sim/Mk8_InlineController_CPU_USB_Data_SYS_USB_RX_RAM.dat...
+elf2dat --infile=Temp_inlineCode.elf --outfile=mem_init/hdl_sim/Mk8_InlineController_CPU_USB_Data_SYS_USB_RX_RAM.dat \
+		--base=0x00004000 --end=0x00005003 --width=32 \
+		--little-endian-mem --create-lanes=0 
+Post-processing to create mem_init/hdl_sim/Mk8_InlineController_CPU_CurrCTRL_SYS_CurrCTRL_Register_RAM.sym...
+nios2-elf-nm -n Temp_inlineCode.elf > mem_init/hdl_sim/Mk8_InlineController_CPU_CurrCTRL_SYS_CurrCTRL_Register_RAM.sym
+Post-processing to create mem_init/hdl_sim/Mk8_InlineController_CPU_Data_Memory.sym...
+nios2-elf-nm -n Temp_inlineCode.elf > mem_init/hdl_sim/Mk8_InlineController_CPU_Data_Memory.sym
+Post-processing to create mem_init/hdl_sim/Mk8_InlineController_CPU_Parameter_SYS_Parameter_RX_RAM.sym...
+nios2-elf-nm -n Temp_inlineCode.elf > mem_init/hdl_sim/Mk8_InlineController_CPU_Parameter_SYS_Parameter_RX_RAM.sym
+Post-processing to create mem_init/hdl_sim/Mk8_InlineController_CPU_Parameter_SYS_Parameter_TX_RAM.sym...
+nios2-elf-nm -n Temp_inlineCode.elf > mem_init/hdl_sim/Mk8_InlineController_CPU_Parameter_SYS_Parameter_TX_RAM.sym
+Post-processing to create mem_init/hdl_sim/Mk8_InlineController_CPU_Program_Memory.sym...
+nios2-elf-nm -n Temp_inlineCode.elf > mem_init/hdl_sim/Mk8_InlineController_CPU_Program_Memory.sym
+Post-processing to create mem_init/hdl_sim/Mk8_InlineController_CPU_USB_Data_SYS_USB_RX_RAM.sym...
+nios2-elf-nm -n Temp_inlineCode.elf > mem_init/hdl_sim/Mk8_InlineController_CPU_USB_Data_SYS_USB_RX_RAM.sym
+10:06:22 **** Incremental Build of configuration Nios II for project Temp_inlineCode ****
+make all 
+Info: Building ../Temp_Inline_BSP/
+C:/intelFPGA_lite/18.1/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../Temp_Inline_BSP/
+[BSP build complete]
+[Temp_inlineCode build complete]

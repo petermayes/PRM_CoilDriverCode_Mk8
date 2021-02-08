@@ -1,0 +1,185 @@
+CONSTANT RESET_STATE 								= 0;
+CONSTANT TRIGGER_FIFO_READ						 	= 1;
+CONSTANT	FIFO_SET_READ_FLAG_STATE				= 2;
+CONSTANT WAIT_STATE									= 3;
+CONSTANT	LATCH_DATA_WORD_1						 	= 4;
+CONSTANT	LATCH_DATA_WORD_2						 	= 5;
+CONSTANT	LATCH_DATA_WORD_3						 	= 6;
+CONSTANT	LATCH_DATA_WORD_4						 	= 7;
+CONSTANT WAIT_FOR_TRIGGER_TO_GO_INACTIVE		= 8;
+
+SUBDESIGN PD_FIFO_Read_v1
+(
+  Reset												: input;
+  Trigger											: input;
+  BackPressure										: input;
+  CSR_Fill_Level[31..0]							: input;
+  FIFO_DATA[31..0]								: input;
+  clk_en												: input;
+  clk													: input;
+  
+
+  fifo_read											: output;
+  OutputData[3..0][31..0]						: output;
+  PD_Counter[31..0]								: output;
+			
+)	 
+
+VARIABLE
+	ReadFlag_node									: node;
+	ControlMode[4..0]								: dff;
+	
+	fifo_read_node									: node;
+	fifo_read_dff									: dff;
+	
+	OutputData_dffe[3..0][31..0]				: dffe;	
+	
+	PD_Counter_dffe[31..0]						: dffe;		
+
+BEGIN 
+
+	ControlMode[].clk = clk;
+	
+	PD_Counter_dffe[].clk = clk;
+	PD_Counter_dffe[].ena = clk_en;
+	
+	fifo_read_dff.clk = clk;
+	fifo_read_dff.d = fifo_read_node;
+	fifo_read = fifo_read_dff.q;
+	
+	
+	OutputData_dffe[][].clk = clk;
+
+	
+	OutputData[3..0][31..0] = OutputData_dffe[3..0][31..0].q;
+	
+	PD_Counter[] = PD_Counter_dffe[].q;
+
+	if (Reset == gnd) then
+		ControlMode[].d = RESET_STATE;
+		
+		OutputData_dffe[0][].d = 0;
+		OutputData_dffe[1][].d = 1000;
+		OutputData_dffe[2][].d = FIFO_DATA[31..0];
+		OutputData_dffe[3][].d = FIFO_DATA[31..0];
+		
+		OutputData_dffe[][].ena = vcc;
+		
+		PD_Counter_dffe[].d = 0; --h"ffffff56";
+
+	
+	else	
+	
+		PD_Counter_dffe[].d = PD_Counter_dffe[].q + 1;	
+	
+		OutputData_dffe[0][].d = FIFO_DATA[31..0];
+		OutputData_dffe[1][].d = FIFO_DATA[31..0];
+		OutputData_dffe[2][].d = FIFO_DATA[31..0];
+		OutputData_dffe[3][].d = FIFO_DATA[31..0];
+	
+		case ControlMode[].q is
+		
+		
+
+		
+			when RESET_STATE =>
+			
+					ControlMode[].d = TRIGGER_FIFO_READ;		
+					
+				
+	-- ******************************************************************				
+			
+
+			when TRIGGER_FIFO_READ =>
+			
+					if (Trigger == vcc) then
+					
+						ControlMode[].d = FIFO_SET_READ_FLAG_STATE;		
+						
+					else
+						ControlMode[].d = ControlMode[].q;	
+						
+					end if;
+												
+				
+	-- ******************************************************************	
+	
+				when FIFO_SET_READ_FLAG_STATE =>	
+		
+					ReadFlag_node = vcc;
+					ControlMode[].d = WAIT_STATE;		
+					
+	-- ******************************************************************
+	
+				when WAIT_STATE =>	
+		
+					ReadFlag_node = vcc;
+					ControlMode[].d = LATCH_DATA_WORD_1;		
+					
+	-- ******************************************************************	
+
+				when LATCH_DATA_WORD_1 =>	
+		
+					ReadFlag_node = vcc;
+					ControlMode[].d = LATCH_DATA_WORD_2;
+			
+					OutputData_dffe[0][].ena = vcc;		
+					
+	-- ******************************************************************
+	
+				when LATCH_DATA_WORD_2 =>	
+		
+					ReadFlag_node = vcc;
+					ControlMode[].d = LATCH_DATA_WORD_3;	
+				
+					OutputData_dffe[1][].ena = vcc;	
+					
+	-- ******************************************************************	
+
+				when LATCH_DATA_WORD_3 =>	
+		
+				--	ReadFlag_node = vcc;
+					ControlMode[].d = LATCH_DATA_WORD_4;
+			
+					OutputData_dffe[2][].ena = vcc;				
+					
+	-- ******************************************************************
+	
+				when LATCH_DATA_WORD_4 =>	
+		
+				--	ReadFlag_node = vcc;
+					ControlMode[].d = WAIT_FOR_TRIGGER_TO_GO_INACTIVE;	
+					
+					OutputData_dffe[3][].ena = vcc;						
+					
+	-- ******************************************************************
+					
+			when WAIT_FOR_TRIGGER_TO_GO_INACTIVE =>
+			
+					if (Trigger == gnd) then
+					
+						ControlMode[].d = TRIGGER_FIFO_READ;
+															
+					else
+						ControlMode[].d = WAIT_FOR_TRIGGER_TO_GO_INACTIVE;		
+					end if;
+
+	-- ******************************************************************					
+	
+			when others =>	
+			
+					ControlMode[].d = TRIGGER_FIFO_READ;	
+					
+			end case;		
+
+	
+	end if;
+	
+	if ((ReadFlag_node == vcc) and (BackPressure == gnd)) then
+		fifo_read_node = vcc;	
+	else
+		fifo_read_node = gnd;
+	end if;
+	
+		  
+END;

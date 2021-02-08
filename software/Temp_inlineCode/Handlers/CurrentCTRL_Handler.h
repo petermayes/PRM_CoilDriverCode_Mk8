@@ -1,0 +1,120 @@
+/*
+ * CurrentCTRL_Handler.h
+ *
+ *  Created on: 3 Feb 2021
+ *      Author: Pete.Mayes
+ */
+
+#ifndef HANDLERS_CURRENTCTRL_HANDLER_H_
+#define HANDLERS_CURRENTCTRL_HANDLER_H_
+
+
+#define DRIVE_STATE_INITIALISATION						0
+#define PM_MOTOR_INIT									1
+#define PM_MOTOR_DISABLED								2
+#define PM_MOTOR_ENABLED								3
+#define PM_MOTOR_DISABLED_REQ							4
+#define PM_MOTOR_ENABLED_REQ							5
+#define PM_MOTOR_COMMS_ERROR							6
+#define PM_MOTOR_FAULT									7
+#define PM_MOTOR_FAULTRESET								8
+#define PM_MOTOR_PRECHARGE_OUTPUT_FILTERS				9
+#define PM_MOTOR_DISCHARGE_OUTPUT_FILTERS				10
+#define PM_MOTOR_WAIT_FOR_SYNCH_ENABLE					11
+#define PM_MOTOR_HOLD_CURRENT_POSITION					12
+#define DRIVE_STATE_FIRST_FAULT_RESET					13
+
+#define DRIVE_STATE_COMMAND_MOVE_TO_RUN_STATE					0x1  // bit 0
+#define DRIVE_STATE_COMMAND_MOVE_TO_STOPPED_STATE 				0x2  // bit 1
+#define DRIVE_STATE_COMMAND_MOVE_TO_RESET_FAULT_STATE 			0x4  // bit 2
+// torque direction id on bit 0x800									   // bit 3
+#define DRIVE_STATE_COMMAND_MOVE_TO_WAIT_FOR_SYNC_CMD_STATE 	0x10 // bit 4
+#define DRIVE_STATE_COMMAND_MOVE_TO_HOLD_STATE 					0x20 // bit 5
+#define DRIVE_STATE_INVERT_TORQUE_DIRECTION_BIT					0x40 // bit 6
+
+
+#define NULL_MODE										0
+#define VOLTAGE_MODE_CTRL								1
+#define CURRENT_MODE_CTRL								2
+#define LOCAL_CIRCULAR_CTRL								3
+#define LOCAL_RASTER_MODE_CTRL							4
+#define REMOTE_FIBRE_DEMAND_MODE_CTRL					5
+#define PRE_HEAT_MODE_CTRL								6
+#define VERTICAL_PRE_HEAT_MODE_CTRL						7
+#define HORIZONTAL_PRE_HEAT_MODE_CTRL					8
+
+typedef struct  {
+	Uint16 	DriveStateDemand;
+	Uint16 	ControlModeRequest;
+}InputDemand_Data_Struc;
+
+typedef struct  {
+	float P_Gain;
+	float I_Gain;
+	int32 P_Gain_Scaled;
+	int32 I_Gain_Scaled;
+}GainParameter_Data_Struc;
+
+typedef struct  {
+   Uint32 Output;
+   Uint32 Increment;
+   Uint32 UnEnergisedDemand;
+	 int32 SignedOutput;
+   int32 SignedIncrement;
+   int32 SignedUnEnergisedDemand;
+}RampRateFnc_Struc;
+
+typedef struct  {
+	Uint16 UnsignedInput;
+	int16	SignedInput;
+	Uint16 CurrentLimit;
+	Uint16 UnsignedClampedValue;
+	int16	SignedClampedValue;
+	int16  SignedDemandValue;
+	int16  SignedDemandValueAfterRamp;
+	int16  SignedControllerOutput;
+	Uint16 UnsignedOutputValue;
+	Uint16 TorqueDirectionFlag;
+	Uint16 Limit;
+	Uint16 RampRateParameter;
+	int16	ErrorTerm;
+	int16 ActualValue;
+	int32 ActualPosition;
+	int32 PositionError;
+	int32 ReferencePosition;
+	int16 FeedFowardterm;
+	int32 Debug1;
+	GainParameter_Data_Struc Gains;
+	RampRateFnc_Struc	CL_ramp;
+}ControlloopData_Struc;
+
+typedef struct  {
+	Uint16 DriveAddress;
+	Uint16 DriveState;
+	Uint16 DriveStateDemand;
+	Uint16 StatusFlags;
+	Uint32 SystemFaultFlags;
+	Uint32 FPGA_FaultFlags;
+	Uint16 ControlMode;
+	Uint16 ControlModeRequest;
+	Uint16 InitialisationCompleteFlag;
+	Uint16 ResetFaultFlag;
+/*	Uint16 DAC_value;
+	Uint16 TorqueDirectionFlag;
+	Uint16 InitialisationCompleteFlag;
+	Uint16 InvertTorqueDirectionBit;
+	Uint16 ResetFaultFlag;
+	Uint16 EnableAbsoluteEncoderReading;
+	Uint16 SynchMessageCount;
+	Uint32 RemoteModeTimeOutCount;
+	ControlloopData_Struc	SpeedLoop;
+	ControlloopData_Struc	PositionLoop;*/
+	ControlloopData_Struc	CurrentLoop;
+	InputDemand_Data_Struc	InputDemand_Data;
+}ControlModuleDataStruc;
+
+extern void ControlLoopHandler(void);
+extern void Init_ControlLoopHandler(void);
+extern Uint16 ControlSupplyRailsInBounds(Uint16 Data);
+
+#endif /* HANDLERS_CURRENTCTRL_HANDLER_H_ */

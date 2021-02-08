@@ -1,0 +1,169 @@
+CONSTANT RESET_STATE 								= 0;
+CONSTANT IDLE_STATE 									= 1;
+CONSTANT WRITE_MODE_TRIGGERED_STATE 			= 2;
+CONSTANT WRITE_MODE_DELAY_STATE 					= 3;
+CONSTANT WRITE_MODE_TRANSFER						= 4;
+CONSTANT WRITE_MODE_FINISHED						= 5;
+CONSTANT READ_MODE_TRIGGERED_STATE 				= 6;
+CONSTANT READ_MODE_TRANSFER						= 7;
+CONSTANT READ_MODE_FINISHED						= 8;
+CONSTANT READ_MODE_FINISHED_EXTRA				= 9;
+CONSTANT RECHECK_RXF_LINE							= 10;
+CONSTANT WAIT_FOR_DATA_READ_ACK					= 11;
+
+
+
+SUBDESIGN LocalCopyMemoryWriteBlock
+(
+	Resetn									: input;
+	Input_Data[9..0][31..0]				: input;	
+	WriteTrigger							: input;
+	clk										: input;
+	
+	RAM_Data[31..0]						: output;
+	RAM_addr[5..0]							: output;
+	RAM_CS									: output;	
+	BufferEn									: output;
+
+)	 
+
+VARIABLE
+	
+	StateMode_dff[3..0]					: dff;
+	OutputAddrCount_dff[1..0][5..0]	: dff;
+	RAM_Data_dff[31..0]					: dff;
+	RAM_CS_dff								: dff;
+	RAM_CS_node								: node;
+
+	LocalBufferEn_node					: node;
+	LocalBufferEn_dff						: dff;	
+
+BEGIN 
+
+	StateMode_dff[].clk = clk;
+	OutputAddrCount_dff[][].clk = clk;	
+	RAM_CS_dff.clk = clk;
+	RAM_Data_dff[].clk = clk;
+	
+	RAM_CS_dff.d = RAM_CS_node;
+	RAM_CS = RAM_CS_dff.q;
+	
+	LocalBufferEn_dff.d = LocalBufferEn_node;
+	BufferEn = LocalBufferEn_dff.q;
+	
+
+	if (resetn == gnd) then
+	
+			StateMode_dff[].d = RESET_STATE;
+			OutputAddrCount_dff[0][].d = 0; 
+			RAM_CS_node = gnd;
+
+	
+	else
+	
+			CASE  StateMode_dff[].q IS
+		
+					When RESET_STATE =>
+					
+						StateMode_dff[].d = IDLE_STATE;
+
+						OutputAddrCount_dff[0][].d = 0; 
+						RAM_CS_node = gnd;
+									
+							
+					When IDLE_STATE =>
+			
+					
+						if (WriteTrigger == gnd)  then
+						
+							StateMode_dff[].d = READ_MODE_TRANSFER;
+					
+						else
+						
+							StateMode_dff[].d = StateMode_dff[].q;	
+								
+						end if;
+						
+						OutputAddrCount_dff[0][].d = 0; 
+						RAM_CS_node = gnd;
+						LocalBufferEn_node = vcc;
+				
+		
+					When READ_MODE_TRANSFER =>			
+					
+						
+						if (OutputAddrCount_dff[0][].q >= 8)  then 
+													
+							StateMode_dff[].d = WAIT_FOR_DATA_READ_ACK;			
+							
+						else
+
+							StateMode_dff[].d = StateMode_dff[].q;	
+								
+						end if;		
+
+						OutputAddrCount_dff[0][].d = OutputAddrCount_dff[0][].q + 1;
+						RAM_CS_node = vcc;						
+						
+						
+					when WAIT_FOR_DATA_READ_ACK =>
+						
+						if (WriteTrigger == vcc) then
+
+							StateMode_dff[].d = IDLE_STATE;					
+							
+						else
+						
+							StateMode_dff[].d = StateMode_dff[].q;	
+				
+						end if;		
+			
+						OutputAddrCount_dff[0][].d = OutputAddrCount_dff[0][].q;
+						RAM_CS_node = gnd;				
+			
+
+					When others =>
+					
+						StateMode_dff[].d = RESET_STATE;	
+								
+						
+			
+			end case;
+
+
+			
+	end if;
+	
+	OutputAddrCount_dff[1][].d = OutputAddrCount_dff[0][].q;
+	RAM_addr[] = OutputAddrCount_dff[1][].q;
+	
+	RAM_Data[] = RAM_Data_dff[].q;
+	
+	case OutputAddrCount_dff[0][].q is
+	
+		when 0 =>
+			RAM_Data_dff[].d = 2340;
+			
+		when 1 =>
+			RAM_Data_dff[].d = 100; --Input_Data[0][];		
+
+		when 2 =>
+			RAM_Data_dff[].d = Input_Data[0][];	
+
+		when 3 =>
+			RAM_Data_dff[].d = Input_Data[1][];	
+			
+		when 4 =>
+			RAM_Data_dff[].d = Input_Data[2][];	
+			
+		when 5 =>
+			RAM_Data_dff[].d = Input_Data[3][];	
+						
+		when others =>
+			RAM_Data_dff[].d = 21567;
+
+	end case;
+
+
+
+END;

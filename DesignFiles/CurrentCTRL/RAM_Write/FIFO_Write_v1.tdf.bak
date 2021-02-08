@@ -1,0 +1,150 @@
+INCLUDE "single_high_pulse";
+
+CONSTANT RESET_STATE 								= 0;
+CONSTANT TRIGGER_FIFO_WRITE					 	= 1;
+CONSTANT	FIFO_WRITE_STATE 							= 2;
+CONSTANT	ERROR										 	= 3;
+CONSTANT WAIT_FOR_TRIGGER_TO_GO_INACTIVE		= 4;
+CONSTANT IS_THIS_ARE_OWN_TX_MESSAGE				= 5;
+CONSTANT DOES_THE_DESTINATION_ADDR_MATCH		= 6;
+
+
+SUBDESIGN FIFO_Write_v1
+(
+  Reset												: input;
+  Trigger											: input;
+  FIF0_CSR_Data[31..0]							: input;
+  BackPressure										: input;
+  Input_Data[9..0][31..0]						: input;	
+  clk													: input;
+  
+  FIFO_Data[31..0]								: output;
+  FIFO_write										: output;
+
+)	 
+
+VARIABLE
+	AddressCount_dff[4..0]						: dff;
+	ControlMode_dff[4..0]						: dff;
+	FIFO_Write_node[0]							: node;	
+	FIFO_Data_node[31..0]						: node;
+
+BEGIN 
+
+
+-- ******************************************************************	
+
+
+	ControlMode_dff[].clk = clk;
+	AddressCount_dff[].clk = clk;
+	
+	FIFO_Data[] = FIFO_Data_node[];
+
+
+	if (Reset == gnd) then
+	
+		ControlMode_dff[].d = RESET_STATE;
+
+	
+	else	
+	
+		case ControlMode_dff[].q is
+		
+			when RESET_STATE =>
+			
+					ControlMode_dff[].d = TRIGGER_FIFO_WRITE;		
+					
+				
+	-- ******************************************************************				
+			
+
+			when TRIGGER_FIFO_WRITE =>
+			
+					if (Trigger == vcc) then
+					
+						ControlMode_dff[].d = FIFO_WRITE_STATE;										
+						
+					else
+					
+						ControlMode_dff[].d = ControlMode_dff[].q;
+						
+					end if;
+					
+				--	FIFO_Data_node[7..0] = DebugData[];
+					AddressCount_dff[].d = 0;
+												
+				
+	-- ******************************************************************	
+
+			when FIFO_WRITE_STATE =>	
+		
+					AddressCount_dff[].d = AddressCount_dff[].q + 1;	
+
+					FIFO_Write_node[0] = vcc;				
+						
+					case AddressCount_dff[].q is	
+					
+							when 0 =>								
+								FIFO_Data_node[] = h"55aa55aa";
+								ControlMode_dff[].d = FIFO_WRITE_STATE;
+
+							when 1 =>							
+								FIFO_Data_node[] = Input_Data[0][31..0];
+								ControlMode_dff[].d = FIFO_WRITE_STATE;								
+
+							when 2 =>							
+								FIFO_Data_node[] = Input_Data[1][31..0];
+								ControlMode_dff[].d = FIFO_WRITE_STATE;									
+								
+							when 3 =>						
+								FIFO_Data_node[] = Input_Data[2][31..0];
+								ControlMode_dff[].d = WAIT_FOR_TRIGGER_TO_GO_INACTIVE;	
+									
+							when others =>
+								FIFO_Data_node[] = 0;
+								ControlMode_dff[].d = FIFO_WRITE_STATE;
+						
+					end case;		
+	
+					
+	-- ******************************************************************
+					
+			when WAIT_FOR_TRIGGER_TO_GO_INACTIVE =>
+			
+					if (Trigger == gnd) then
+						ControlMode_dff[].d = TRIGGER_FIFO_WRITE;
+															
+					else
+						ControlMode_dff[].d = WAIT_FOR_TRIGGER_TO_GO_INACTIVE;		
+					end if;
+
+	-- ******************************************************************					
+	
+			when others =>	
+			
+					ControlMode_dff[].d = TRIGGER_FIFO_WRITE;	
+		
+
+					
+			end case;		
+
+	
+	end if;
+	
+	if (FIF0_CSR_Data[] > 100) then
+	
+	
+		FIFO_write = gnd;
+	
+	else
+	
+		if ((FIFO_Write_node[0] == vcc) and (BackPressure == gnd)) then
+			FIFO_write = vcc;	
+		else
+			FIFO_write = gnd;
+		end if;
+		
+	end if;
+	
+		  
+END;

@@ -1,0 +1,32 @@
+# # File gsaved with Nlview version 6.3.8  2013-12-19 bk=1.2992 VDI=34 GEI=35
+# 
+preplace inst PatternGeneratorSYS.PD_GPIO -pg 1 -lvl 3 -y 350
+preplace inst PatternGeneratorSYS.PD_FIFO -pg 1 -lvl 3 -y 170
+preplace inst PatternGeneratorSYS.clk_PD -pg 1 -lvl 2 -y 190
+preplace inst PatternGeneratorSYS.Reset_PD -pg 1 -lvl 3 -y 450
+preplace inst PatternGeneratorSYS.mm_clock_crossing_bridge_0 -pg 1 -lvl 2 -y 290
+preplace inst PatternGeneratorSYS.PD_DebugRAM -pg 1 -lvl 3 -y 30
+preplace inst PatternGeneratorSYS.clk_0 -pg 1 -lvl 1 -y 390
+preplace inst PatternGeneratorSYS.clk_1 -pg 1 -lvl 1 -y 270
+preplace inst PatternGeneratorSYS -pg 1 -lvl 1 -y 40 -regy -20
+preplace netloc EXPORT<net_container>PatternGeneratorSYS</net_container>(SLAVE)PatternGeneratorSYS.slave_clk_1,(SLAVE)clk_1.clk_in) 1 0 1 NJ
+preplace netloc EXPORT<net_container>PatternGeneratorSYS</net_container>(SLAVE)Reset_PD.external_connection,(SLAVE)PatternGeneratorSYS.reset_out) 1 0 3 NJ 480 NJ 480 NJ
+preplace netloc FAN_OUT<net_container>PatternGeneratorSYS</net_container>(SLAVE)PD_DebugRAM.reset2,(SLAVE)PD_FIFO.reset_out,(MASTER)clk_PD.clk_reset) 1 2 1 710
+preplace netloc EXPORT<net_container>PatternGeneratorSYS</net_container>(SLAVE)PatternGeneratorSYS.pd_gpio,(SLAVE)PD_GPIO.external_connection) 1 0 3 NJ 380 NJ 420 NJ
+preplace netloc EXPORT<net_container>PatternGeneratorSYS</net_container>(SLAVE)PatternGeneratorSYS.mapped_slave,(SLAVE)mm_clock_crossing_bridge_0.s0) 1 0 2 NJ 340 NJ
+preplace netloc FAN_OUT<net_container>PatternGeneratorSYS</net_container>(MASTER)clk_0.clk_reset,(SLAVE)mm_clock_crossing_bridge_0.m0_reset,(SLAVE)Reset_PD.reset,(SLAVE)PD_GPIO.reset,(SLAVE)PD_FIFO.reset_in,(SLAVE)PD_DebugRAM.reset1) 1 1 2 320 500 690
+preplace netloc FAN_OUT<net_container>PatternGeneratorSYS</net_container>(MASTER)clk_PD.clk,(SLAVE)PD_DebugRAM.clk2,(SLAVE)PD_FIFO.clk_out) 1 2 1 630
+preplace netloc EXPORT<net_container>PatternGeneratorSYS</net_container>(SLAVE)PatternGeneratorSYS.pheriphal_clk,(SLAVE)clk_0.clk_in) 1 0 1 NJ
+preplace netloc EXPORT<net_container>PatternGeneratorSYS</net_container>(SLAVE)PatternGeneratorSYS.pd_reset,(SLAVE)clk_PD.clk_in_reset) 1 0 2 NJ 220 NJ
+preplace netloc EXPORT<net_container>PatternGeneratorSYS</net_container>(SLAVE)clk_PD.clk_in,(SLAVE)PatternGeneratorSYS.pd_clk) 1 0 2 NJ 200 NJ
+preplace netloc POINT_TO_POINT<net_container>PatternGeneratorSYS</net_container>(MASTER)clk_1.clk_reset,(SLAVE)mm_clock_crossing_bridge_0.s0_reset) 1 1 1 360
+preplace netloc EXPORT<net_container>PatternGeneratorSYS</net_container>(SLAVE)PatternGeneratorSYS.pheriphal_reset,(SLAVE)clk_0.clk_in_reset) 1 0 1 NJ
+preplace netloc EXPORT<net_container>PatternGeneratorSYS</net_container>(SLAVE)PatternGeneratorSYS.pd_fifo_out,(SLAVE)PD_FIFO.out) 1 0 3 NJ 160 NJ 160 NJ
+preplace netloc FAN_OUT<net_container>PatternGeneratorSYS</net_container>(MASTER)clk_0.clk,(SLAVE)PD_FIFO.clk_in,(SLAVE)mm_clock_crossing_bridge_0.m0_clk,(SLAVE)PD_GPIO.clk,(SLAVE)PD_DebugRAM.clk1,(SLAVE)Reset_PD.clk) 1 1 2 380 440 670
+preplace netloc EXPORT<net_container>PatternGeneratorSYS</net_container>(SLAVE)clk_1.clk_in_reset,(SLAVE)PatternGeneratorSYS.slave_reset_1) 1 0 1 NJ
+preplace netloc FAN_OUT<net_container>PatternGeneratorSYS</net_container>(SLAVE)PD_GPIO.s1,(SLAVE)PD_FIFO.in_csr,(SLAVE)Reset_PD.s1,(MASTER)mm_clock_crossing_bridge_0.m0,(SLAVE)PD_FIFO.in,(SLAVE)PD_DebugRAM.s1) 1 2 1 750
+preplace netloc POINT_TO_POINT<net_container>PatternGeneratorSYS</net_container>(MASTER)clk_1.clk,(SLAVE)mm_clock_crossing_bridge_0.s0_clk) 1 1 1 400
+preplace netloc EXPORT<net_container>PatternGeneratorSYS</net_container>(SLAVE)PatternGeneratorSYS.pd_debugram_s2,(SLAVE)PD_DebugRAM.s2) 1 0 3 NJ 140 NJ 140 NJ
+preplace netloc EXPORT<net_container>PatternGeneratorSYS</net_container>(SLAVE)PD_FIFO.out_csr,(SLAVE)PatternGeneratorSYS.pd_fifo_out_csr) 1 0 3 NJ 180 NJ 180 NJ
+levelinfo -pg 1 0 110 940
+levelinfo -hier PatternGeneratorSYS 120 150 460 780 930

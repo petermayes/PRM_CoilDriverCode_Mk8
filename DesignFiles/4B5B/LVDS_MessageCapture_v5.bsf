@@ -1,0 +1,128 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 2019  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and any partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details, at
+https://fpgasoftware.intel.com/eula.
+*/
+(header "symbol" (version "1.1"))
+(symbol
+	(rect 16 16 272 256)
+	(text "LVDS_MessageCapture_v5" (rect 5 0 123 12)(font "Arial" ))
+	(text "inst" (rect 8 224 20 236)(font "Arial" ))
+	(port
+		(pt 0 32)
+		(input)
+		(text "Reset" (rect 0 0 24 12)(font "Arial" ))
+		(text "Reset" (rect 21 27 45 39)(font "Arial" ))
+		(line (pt 0 32)(pt 16 32)(line_width 1))
+	)
+	(port
+		(pt 0 48)
+		(input)
+		(text "DataStream" (rect 0 0 48 12)(font "Arial" ))
+		(text "DataStream" (rect 21 43 69 55)(font "Arial" ))
+		(line (pt 0 48)(pt 16 48)(line_width 1))
+	)
+	(port
+		(pt 0 64)
+		(input)
+		(text "BaudCLK_x4" (rect 0 0 56 12)(font "Arial" ))
+		(text "BaudCLK_x4" (rect 21 59 77 71)(font "Arial" ))
+		(line (pt 0 64)(pt 16 64)(line_width 1))
+	)
+	(port
+		(pt 256 32)
+		(output)
+		(text "LatchedDataByte[7..0]" (rect 0 0 89 12)(font "Arial" ))
+		(text "LatchedDataByte[7..0]" (rect 146 27 235 39)(font "Arial" ))
+		(line (pt 256 32)(pt 240 32)(line_width 3))
+	)
+	(port
+		(pt 256 48)
+		(output)
+		(text "CDR_Clk_Enable" (rect 0 0 74 12)(font "Arial" ))
+		(text "CDR_Clk_Enable" (rect 161 43 235 55)(font "Arial" ))
+		(line (pt 256 48)(pt 240 48)(line_width 1))
+	)
+	(port
+		(pt 256 64)
+		(output)
+		(text "Clk_Enable_Nibble" (rect 0 0 75 12)(font "Arial" ))
+		(text "Clk_Enable_Nibble" (rect 160 59 235 71)(font "Arial" ))
+		(line (pt 256 64)(pt 240 64)(line_width 1))
+	)
+	(port
+		(pt 256 80)
+		(output)
+		(text "Nibble_Clk_Count[3..0]" (rect 0 0 92 12)(font "Arial" ))
+		(text "Nibble_Clk_Count[3..0]" (rect 143 75 235 87)(font "Arial" ))
+		(line (pt 256 80)(pt 240 80)(line_width 3))
+	)
+	(port
+		(pt 256 96)
+		(output)
+		(text "IdleBitPatternFlag" (rect 0 0 67 12)(font "Arial" ))
+		(text "IdleBitPatternFlag" (rect 168 91 235 103)(font "Arial" ))
+		(line (pt 256 96)(pt 240 96)(line_width 1))
+	)
+	(port
+		(pt 256 112)
+		(output)
+		(text "PreambleBitPatternFlag" (rect 0 0 92 12)(font "Arial" ))
+		(text "PreambleBitPatternFlag" (rect 143 107 235 119)(font "Arial" ))
+		(line (pt 256 112)(pt 240 112)(line_width 1))
+	)
+	(port
+		(pt 256 128)
+		(output)
+		(text "PostambleBitPatternFlag" (rect 0 0 95 12)(font "Arial" ))
+		(text "PostambleBitPatternFlag" (rect 140 123 235 135)(font "Arial" ))
+		(line (pt 256 128)(pt 240 128)(line_width 1))
+	)
+	(port
+		(pt 256 144)
+		(output)
+		(text "CaptureStateMode[3..0]" (rect 0 0 94 12)(font "Arial" ))
+		(text "CaptureStateMode[3..0]" (rect 141 139 235 151)(font "Arial" ))
+		(line (pt 256 144)(pt 240 144)(line_width 3))
+	)
+	(port
+		(pt 256 160)
+		(output)
+		(text "ErrorFlag" (rect 0 0 38 12)(font "Arial" ))
+		(text "ErrorFlag" (rect 197 155 235 167)(font "Arial" ))
+		(line (pt 256 160)(pt 240 160)(line_width 1))
+	)
+	(port
+		(pt 256 176)
+		(output)
+		(text "IdleErrorFlag" (rect 0 0 51 12)(font "Arial" ))
+		(text "IdleErrorFlag" (rect 184 171 235 183)(font "Arial" ))
+		(line (pt 256 176)(pt 240 176)(line_width 1))
+	)
+	(port
+		(pt 256 192)
+		(output)
+		(text "RollingBitCapture[9..0]" (rect 0 0 87 12)(font "Arial" ))
+		(text "RollingBitCapture[9..0]" (rect 148 187 235 199)(font "Arial" ))
+		(line (pt 256 192)(pt 240 192)(line_width 3))
+	)
+	(drawing
+		(rectangle (rect 16 16 240 224)(line_width 1))
+	)
+)

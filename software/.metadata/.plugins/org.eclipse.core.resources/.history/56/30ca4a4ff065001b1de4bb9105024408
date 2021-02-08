@@ -1,0 +1,39 @@
+/*
+ * CurrentCTRL_Handler.h
+ *
+ *  Created on: 3 Feb 2021
+ *      Author: Pete.Mayes
+ */
+
+#ifndef HANDLERS_CURRENTCTRL_HANDLER_H_
+#define HANDLERS_CURRENTCTRL_HANDLER_H_
+
+
+typedef struct  {
+	Uint16 UnsignedInput;
+	int16	SignedInput;
+	Uint16 CurrentLimit;
+	Uint16 UnsignedClampedValue;
+	int16	SignedClampedValue;
+	int16  SignedDemandValue;
+	int16  SignedDemandValueAfterRamp;
+	int16  SignedControllerOutput;
+	Uint16 UnsignedOutputValue;
+	Uint16 TorqueDirectionFlag;
+	Uint16 Limit;
+	Uint16 RampRateParameter;
+	int16	ErrorTerm;
+	int16 ActualValue;
+	int32 ActualPosition;
+	int32 PositionError;
+	int32 ReferencePosition;
+	int16 FeedFowardterm;
+	int32 Debug1;
+	GainParameter_Data_Struc Gains;
+	RampRateFnc_Struc	CL_ramp;
+}ControlloopData_Struc;
+
+extern void ControlLoopHandler(void);
+
+
+#endif /* HANDLERS_CURRENTCTRL_HANDLER_H_ */

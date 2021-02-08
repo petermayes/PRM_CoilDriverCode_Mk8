@@ -1,0 +1,16 @@
+/*
+ * FIFO_Driver.h
+ *
+ *  Created on: 8 Jun 2019
+ *      Author: prm
+ */
+
+#ifndef DRIVERS_FIFO_DRIVER_H_
+#define DRIVERS_FIFO_DRIVER_H_
+
+
+extern Uint32 Read_DDR3_FIFO_FillLevel(void);
+extern Uint32 FIFO_DDR3_Full(void);
+extern Uint32 FIFO_StreamingDebug_Full(void);
+
+#endif /* DRIVERS_FIFO_DRIVER_H_ */

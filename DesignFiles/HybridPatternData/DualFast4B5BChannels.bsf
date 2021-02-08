@@ -1,0 +1,135 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 2020  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and any partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details, at
+https://fpgasoftware.intel.com/eula.
+*/
+(header "symbol" (version "1.2"))
+(symbol
+	(rect 16 16 432 240)
+	(text "DualFast4B5BChannels" (rect 5 0 143 19)(font "Intel Clear" (font_size 8)))
+	(text "inst" (rect 8 203 24 220)(font "Intel Clear" ))
+	(port
+		(pt 0 32)
+		(input)
+		(text "Single_Ended_Loop_RX[1..0]" (rect 0 0 172 19)(font "Intel Clear" (font_size 8)))
+		(text "Single_Ended_Loop_RX[1..0]" (rect 21 27 193 46)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 32)(pt 16 32)(line_width 3))
+	)
+	(port
+		(pt 0 48)
+		(input)
+		(text "BaudCLKx4" (rect 0 0 68 19)(font "Intel Clear" (font_size 8)))
+		(text "BaudCLKx4" (rect 21 43 89 62)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 48)(pt 16 48))
+	)
+	(port
+		(pt 0 64)
+		(input)
+		(text "clk_100M" (rect 0 0 59 19)(font "Intel Clear" (font_size 8)))
+		(text "clk_100M" (rect 21 59 80 78)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 64)(pt 16 64))
+	)
+	(port
+		(pt 0 80)
+		(input)
+		(text "SysCLK" (rect 0 0 44 19)(font "Intel Clear" (font_size 8)))
+		(text "SysCLK" (rect 21 75 65 94)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 80)(pt 16 80))
+	)
+	(port
+		(pt 416 32)
+		(output)
+		(text "Latched_OutputData[1..0][71..0]" (rect 0 0 193 19)(font "Intel Clear" (font_size 8)))
+		(text "Latched_OutputData[1..0][71..0]" (rect 202 27 395 46)(font "Intel Clear" (font_size 8)))
+		(line (pt 416 32)(pt 400 32)(line_width 3))
+	)
+	(port
+		(pt 416 48)
+		(output)
+		(text "CRC_Success_Flag[2..0]" (rect 0 0 140 19)(font "Intel Clear" (font_size 8)))
+		(text "CRC_Success_Flag[2..0]" (rect 255 43 395 62)(font "Intel Clear" (font_size 8)))
+		(line (pt 416 48)(pt 400 48)(line_width 3))
+	)
+	(port
+		(pt 416 64)
+		(output)
+		(text "BitPatternFlags[1..0][4..0]" (rect 0 0 152 19)(font "Intel Clear" (font_size 8)))
+		(text "BitPatternFlags[1..0][4..0]" (rect 243 59 395 78)(font "Intel Clear" (font_size 8)))
+		(line (pt 416 64)(pt 400 64)(line_width 3))
+	)
+	(port
+		(pt 416 80)
+		(output)
+		(text "DebugFlag[1..0]" (rect 0 0 94 19)(font "Intel Clear" (font_size 8)))
+		(text "DebugFlag[1..0]" (rect 301 75 395 94)(font "Intel Clear" (font_size 8)))
+		(line (pt 416 80)(pt 400 80)(line_width 3))
+	)
+	(port
+		(pt 416 96)
+		(output)
+		(text "LatchedDataByte[1..0][7..0]" (rect 0 0 164 19)(font "Intel Clear" (font_size 8)))
+		(text "LatchedDataByte[1..0][7..0]" (rect 231 91 395 110)(font "Intel Clear" (font_size 8)))
+		(line (pt 416 96)(pt 400 96)(line_width 3))
+	)
+	(port
+		(pt 416 112)
+		(output)
+		(text "CRC_DecodeState[1..0][3..0]" (rect 0 0 169 19)(font "Intel Clear" (font_size 8)))
+		(text "CRC_DecodeState[1..0][3..0]" (rect 226 107 395 126)(font "Intel Clear" (font_size 8)))
+		(line (pt 416 112)(pt 400 112)(line_width 3))
+	)
+	(port
+		(pt 416 128)
+		(output)
+		(text "Capture_DecodeState[1..0][3..0]" (rect 0 0 192 19)(font "Intel Clear" (font_size 8)))
+		(text "Capture_DecodeState[1..0][3..0]" (rect 203 123 395 142)(font "Intel Clear" (font_size 8)))
+		(line (pt 416 128)(pt 400 128)(line_width 3))
+	)
+	(port
+		(pt 416 144)
+		(output)
+		(text "DAC_CSn" (rect 0 0 56 19)(font "Intel Clear" (font_size 8)))
+		(text "DAC_CSn" (rect 339 139 395 158)(font "Intel Clear" (font_size 8)))
+		(line (pt 416 144)(pt 400 144))
+	)
+	(port
+		(pt 416 160)
+		(output)
+		(text "DAC_CLK" (rect 0 0 56 19)(font "Intel Clear" (font_size 8)))
+		(text "DAC_CLK" (rect 339 155 395 174)(font "Intel Clear" (font_size 8)))
+		(line (pt 416 160)(pt 400 160))
+	)
+	(port
+		(pt 416 176)
+		(output)
+		(text "DAC_Data_A" (rect 0 0 76 19)(font "Intel Clear" (font_size 8)))
+		(text "DAC_Data_A" (rect 319 171 395 190)(font "Intel Clear" (font_size 8)))
+		(line (pt 416 176)(pt 400 176))
+	)
+	(port
+		(pt 416 192)
+		(output)
+		(text "DAC_Data_B" (rect 0 0 76 19)(font "Intel Clear" (font_size 8)))
+		(text "DAC_Data_B" (rect 319 187 395 206)(font "Intel Clear" (font_size 8)))
+		(line (pt 416 192)(pt 400 192))
+	)
+	(drawing
+		(rectangle (rect 16 16 400 208))
+	)
+)

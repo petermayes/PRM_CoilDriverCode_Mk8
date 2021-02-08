@@ -1,0 +1,16 @@
+# # File gsaved with Nlview version 6.3.8  2013-12-19 bk=1.2992 VDI=34 GEI=35
+# 
+preplace inst subsystemA.LED_GPIO -pg 1 -lvl 3 -y 70
+preplace inst subsystemA -pg 1 -lvl 1 -y 40 -regy -20
+preplace inst subsystemA.TP_GPIO -pg 1 -lvl 3 -y 170
+preplace inst subsystemA.clk_0 -pg 1 -lvl 1 -y 70
+preplace netloc EXPORT<net_container>subsystemA</net_container>(SLAVE)subsystemA.led_gpio_s1,(SLAVE)LED_GPIO.s1) 1 0 3 NJ 60 NJ 140 NJ
+preplace netloc EXPORT<net_container>subsystemA</net_container>(SLAVE)clk_0.clk_in_reset,(SLAVE)subsystemA.pheriphal_reset) 1 0 1 NJ
+preplace netloc EXPORT<net_container>subsystemA</net_container>(SLAVE)TP_GPIO.external_connection,(SLAVE)subsystemA.tp_gpio_external_connection) 1 0 3 NJ 200 NJ 200 NJ
+preplace netloc FAN_OUT<net_container>subsystemA</net_container>(MASTER)clk_0.clk_reset,(SLAVE)TP_GPIO.reset,(SLAVE)LED_GPIO.reset) 1 1 2 390 220 530
+preplace netloc FAN_OUT<net_container>subsystemA</net_container>(SLAVE)LED_GPIO.clk,(MASTER)clk_0.clk,(SLAVE)TP_GPIO.clk) 1 1 2 410 160 510
+preplace netloc EXPORT<net_container>subsystemA</net_container>(SLAVE)TP_GPIO.s1,(SLAVE)subsystemA.tp_gpio_s1) 1 0 3 NJ 240 NJ 240 NJ
+preplace netloc EXPORT<net_container>subsystemA</net_container>(SLAVE)subsystemA.pheriphal_clk,(SLAVE)clk_0.clk_in) 1 0 1 NJ
+preplace netloc EXPORT<net_container>subsystemA</net_container>(SLAVE)subsystemA.led_gpio_external_connection,(SLAVE)LED_GPIO.external_connection) 1 0 3 NJ 40 NJ 100 NJ
+levelinfo -pg 1 0 180 850
+levelinfo -hier subsystemA 190 220 490 690 840

@@ -1,0 +1,52 @@
+/*
+ * FPGA_Driver.c
+ *
+ *  Created on: 3 Feb 2021
+ *      Author: Pete.Mayes
+ */
+
+#include "system.h"
+#include "alt_types.h"
+#include "io.h"
+#include "altera_avalon_pio_regs.h"
+
+#include "..\Includes\Types.h"
+#include "..\Handlers\CurrentCTRL_Handler.h"
+#include "FPGA_Driver.h"
+#include "..\Handlers\Registers_Handler.h"
+
+/*------------------------------------------------------------------------------
+ * ControlLoops
+ *
+ * ----------------------------------------------------------------------------*/
+Uint32 CheckForFPGAFaultFlags(ControlModuleDataStruc* ptr2data)
+{
+Uint16	FPGA_Flag_Register;
+
+	FPGA_Flag_Register = IORD(CURRCTRL_SYS_CURRCTRL_GPIO_BASE, 0);
+
+	if (FPGA_Flag_Register & 0x08)
+		ptr2data->FPGA_FaultFlags |= FAULT_FLAG_1;
+
+	if (FPGA_Flag_Register & 0x10)
+		ptr2data->FPGA_FaultFlags |= FAULT_FLAG_17;
+
+	if (FPGA_Flag_Register & 0x20)
+		ptr2data->FPGA_FaultFlags |= FAULT_FLAG_3;
+
+	if (FPGA_Flag_Register & 0x40)
+		ptr2data->FPGA_FaultFlags |= FAULT_FLAG_18;
+
+	if (FPGA_Flag_Register & 0x80)
+		ptr2data->FPGA_FaultFlags |= FAULT_FLAG_19;
+
+	if (ptr2data->FPGA_FaultFlags)
+		ptr2data->SystemFaultFlags |= 0x01;
+	else
+		ptr2data->SystemFaultFlags &= ~0x01;
+
+return ptr2data->FaultFlags;
+}
+
+
+/* --------------------------------------- eof -----------------------------------------*/

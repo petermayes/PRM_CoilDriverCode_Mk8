@@ -1,0 +1,52 @@
+Info: Starting: Create block symbol file (.bsf)
+Info: qsys-generate C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\ip\TimerSYS.qsys --block-symbol-file --output-directory=C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\ip\TimerSYS --family="MAX 10" --part=10M50DAF484I7G
+Progress: Loading ip/TimerSYS.qsys
+Progress: Reading input file
+Progress: Adding Slave_Clk [clock_source 18.1]
+Progress: Parameterizing module Slave_Clk
+Progress: Adding Timer_clk [clock_source 18.1]
+Progress: Parameterizing module Timer_clk
+Progress: Adding mm_clock_crossing_bridge_0 [altera_avalon_mm_clock_crossing_bridge 18.1]
+Progress: Parameterizing module mm_clock_crossing_bridge_0
+Progress: Adding timer_0 [altera_avalon_timer 18.1]
+Progress: Parameterizing module timer_0
+Progress: Adding timer_1 [altera_avalon_timer 18.1]
+Progress: Parameterizing module timer_1
+Progress: Adding timer_2 [altera_avalon_timer 18.1]
+Progress: Parameterizing module timer_2
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: qsys-generate succeeded.
+Info: Finished: Create block symbol file (.bsf)
+Info: 
+Info: Starting: Create HDL design files for synthesis
+Info: qsys-generate C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\ip\TimerSYS.qsys --synthesis=VERILOG --output-directory=C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\ip\TimerSYS\synthesis --family="MAX 10" --part=10M50DAF484I7G
+Progress: Loading ip/TimerSYS.qsys
+Progress: Reading input file
+Progress: Adding Slave_Clk [clock_source 18.1]
+Progress: Parameterizing module Slave_Clk
+Progress: Adding Timer_clk [clock_source 18.1]
+Progress: Parameterizing module Timer_clk
+Progress: Adding mm_clock_crossing_bridge_0 [altera_avalon_mm_clock_crossing_bridge 18.1]
+Progress: Parameterizing module mm_clock_crossing_bridge_0
+Progress: Adding timer_0 [altera_avalon_timer 18.1]
+Progress: Parameterizing module timer_0
+Progress: Adding timer_1 [altera_avalon_timer 18.1]
+Progress: Parameterizing module timer_1
+Progress: Adding timer_2 [altera_avalon_timer 18.1]
+Progress: Parameterizing module timer_2
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: TimerSYS: Generating TimerSYS "TimerSYS" for QUARTUS_SYNTH
+Info: timer_0: Starting RTL generation for module 'TimerSYS_timer_0'
+Info: timer_0:   Generation command is [exec C:/intelFPGA_lite/18.1/quartus/bin64//perl/bin/perl.exe -I C:/intelFPGA_lite/18.1/quartus/bin64//perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_timer -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_timer/generate_rtl.pl --name=TimerSYS_timer_0 --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8660_2498861490301955353.dir/0004_timer_0_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8660_2498861490301955353.dir/0004_timer_0_gen//TimerSYS_timer_0_component_configuration.pl  --do_build_sim=0  ]
+Info: timer_0: Done RTL generation for module 'TimerSYS_timer_0'
+Info: timer_0: "TimerSYS" instantiated altera_avalon_timer "timer_0"
+Info: rst_controller: "TimerSYS" instantiated altera_reset_controller "rst_controller"
+Info: TimerSYS: Done "TimerSYS" with 3 modules, 5 files
+Info: qsys-generate succeeded.
+Info: Finished: Create HDL design files for synthesis

@@ -1,0 +1,176 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 2019  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and any partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details, at
+https://fpgasoftware.intel.com/eula.
+*/
+(header "symbol" (version "1.1"))
+(symbol
+	(rect 0 0 544 448)
+	(text "subsystemA" (rect 236 -1 289 11)(font "Arial" (font_size 10)))
+	(text "inst" (rect 8 432 20 444)(font "Arial" ))
+	(port
+		(pt 0 72)
+		(input)
+		(text "led_gpio_external_connection_in_port[7..0]" (rect 0 0 168 12)(font "Arial" (font_size 8)))
+		(text "led_gpio_external_connection_in_port[7..0]" (rect 4 61 256 72)(font "Arial" (font_size 8)))
+		(line (pt 0 72)(pt 240 72)(line_width 3))
+	)
+	(port
+		(pt 0 128)
+		(input)
+		(text "led_gpio_s1_address[2..0]" (rect 0 0 103 12)(font "Arial" (font_size 8)))
+		(text "led_gpio_s1_address[2..0]" (rect 4 117 154 128)(font "Arial" (font_size 8)))
+		(line (pt 0 128)(pt 240 128)(line_width 3))
+	)
+	(port
+		(pt 0 144)
+		(input)
+		(text "led_gpio_s1_write_n" (rect 0 0 80 12)(font "Arial" (font_size 8)))
+		(text "led_gpio_s1_write_n" (rect 4 133 118 144)(font "Arial" (font_size 8)))
+		(line (pt 0 144)(pt 240 144)(line_width 1))
+	)
+	(port
+		(pt 0 160)
+		(input)
+		(text "led_gpio_s1_writedata[31..0]" (rect 0 0 109 12)(font "Arial" (font_size 8)))
+		(text "led_gpio_s1_writedata[31..0]" (rect 4 149 172 160)(font "Arial" (font_size 8)))
+		(line (pt 0 160)(pt 240 160)(line_width 3))
+	)
+	(port
+		(pt 0 176)
+		(input)
+		(text "led_gpio_s1_chipselect" (rect 0 0 89 12)(font "Arial" (font_size 8)))
+		(text "led_gpio_s1_chipselect" (rect 4 165 136 176)(font "Arial" (font_size 8)))
+		(line (pt 0 176)(pt 240 176)(line_width 1))
+	)
+	(port
+		(pt 0 232)
+		(input)
+		(text "pheriphal_clk_clk" (rect 0 0 67 12)(font "Arial" (font_size 8)))
+		(text "pheriphal_clk_clk" (rect 4 221 106 232)(font "Arial" (font_size 8)))
+		(line (pt 0 232)(pt 240 232)(line_width 1))
+	)
+	(port
+		(pt 0 272)
+		(input)
+		(text "pheriphal_reset_reset_n" (rect 0 0 96 12)(font "Arial" (font_size 8)))
+		(text "pheriphal_reset_reset_n" (rect 4 261 142 272)(font "Arial" (font_size 8)))
+		(line (pt 0 272)(pt 240 272)(line_width 1))
+	)
+	(port
+		(pt 0 352)
+		(input)
+		(text "tp_gpio_s1_address[2..0]" (rect 0 0 100 12)(font "Arial" (font_size 8)))
+		(text "tp_gpio_s1_address[2..0]" (rect 4 341 148 352)(font "Arial" (font_size 8)))
+		(line (pt 0 352)(pt 240 352)(line_width 3))
+	)
+	(port
+		(pt 0 368)
+		(input)
+		(text "tp_gpio_s1_write_n" (rect 0 0 76 12)(font "Arial" (font_size 8)))
+		(text "tp_gpio_s1_write_n" (rect 4 357 112 368)(font "Arial" (font_size 8)))
+		(line (pt 0 368)(pt 240 368)(line_width 1))
+	)
+	(port
+		(pt 0 384)
+		(input)
+		(text "tp_gpio_s1_writedata[31..0]" (rect 0 0 106 12)(font "Arial" (font_size 8)))
+		(text "tp_gpio_s1_writedata[31..0]" (rect 4 373 166 384)(font "Arial" (font_size 8)))
+		(line (pt 0 384)(pt 240 384)(line_width 3))
+	)
+	(port
+		(pt 0 400)
+		(input)
+		(text "tp_gpio_s1_chipselect" (rect 0 0 86 12)(font "Arial" (font_size 8)))
+		(text "tp_gpio_s1_chipselect" (rect 4 389 130 400)(font "Arial" (font_size 8)))
+		(line (pt 0 400)(pt 240 400)(line_width 1))
+	)
+	(port
+		(pt 0 88)
+		(output)
+		(text "led_gpio_external_connection_out_port[7..0]" (rect 0 0 174 12)(font "Arial" (font_size 8)))
+		(text "led_gpio_external_connection_out_port[7..0]" (rect 4 77 262 88)(font "Arial" (font_size 8)))
+		(line (pt 0 88)(pt 240 88)(line_width 3))
+	)
+	(port
+		(pt 0 192)
+		(output)
+		(text "led_gpio_s1_readdata[31..0]" (rect 0 0 109 12)(font "Arial" (font_size 8)))
+		(text "led_gpio_s1_readdata[31..0]" (rect 4 181 166 192)(font "Arial" (font_size 8)))
+		(line (pt 0 192)(pt 240 192)(line_width 3))
+	)
+	(port
+		(pt 0 312)
+		(output)
+		(text "tp_gpio_external_connection_export[7..0]" (rect 0 0 162 12)(font "Arial" (font_size 8)))
+		(text "tp_gpio_external_connection_export[7..0]" (rect 4 301 244 312)(font "Arial" (font_size 8)))
+		(line (pt 0 312)(pt 240 312)(line_width 3))
+	)
+	(port
+		(pt 0 416)
+		(output)
+		(text "tp_gpio_s1_readdata[31..0]" (rect 0 0 106 12)(font "Arial" (font_size 8)))
+		(text "tp_gpio_s1_readdata[31..0]" (rect 4 405 160 416)(font "Arial" (font_size 8)))
+		(line (pt 0 416)(pt 240 416)(line_width 3))
+	)
+	(drawing
+		(text "led_gpio_external_connection" (rect 69 43 306 99)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "in_port" (rect 245 67 532 144)(font "Arial" (color 0 0 0)))
+		(text "out_port" (rect 245 83 538 176)(font "Arial" (color 0 0 0)))
+		(text "led_gpio_s1" (rect 172 99 410 211)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "address" (rect 245 123 532 256)(font "Arial" (color 0 0 0)))
+		(text "write_n" (rect 245 139 532 288)(font "Arial" (color 0 0 0)))
+		(text "writedata" (rect 245 155 544 320)(font "Arial" (color 0 0 0)))
+		(text "chipselect" (rect 245 171 550 352)(font "Arial" (color 0 0 0)))
+		(text "readdata" (rect 245 187 538 384)(font "Arial" (color 0 0 0)))
+		(text "pheriphal_clk" (rect 164 203 406 419)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "clk" (rect 245 227 508 464)(font "Arial" (color 0 0 0)))
+		(text "pheriphal_reset" (rect 150 243 390 499)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "reset_n" (rect 245 267 532 544)(font "Arial" (color 0 0 0)))
+		(text "tp_gpio_external_connection" (rect 75 283 312 579)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "export" (rect 245 307 526 624)(font "Arial" (color 0 0 0)))
+		(text "tp_gpio_s1" (rect 178 323 416 659)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "address" (rect 245 347 532 704)(font "Arial" (color 0 0 0)))
+		(text "write_n" (rect 245 363 532 736)(font "Arial" (color 0 0 0)))
+		(text "writedata" (rect 245 379 544 768)(font "Arial" (color 0 0 0)))
+		(text "chipselect" (rect 245 395 550 800)(font "Arial" (color 0 0 0)))
+		(text "readdata" (rect 245 411 538 832)(font "Arial" (color 0 0 0)))
+		(text " subsystemA " (rect 486 432 1044 874)(font "Arial" ))
+		(line (pt 240 32)(pt 304 32)(line_width 1))
+		(line (pt 304 32)(pt 304 432)(line_width 1))
+		(line (pt 240 432)(pt 304 432)(line_width 1))
+		(line (pt 240 32)(pt 240 432)(line_width 1))
+		(line (pt 241 52)(pt 241 92)(line_width 1))
+		(line (pt 242 52)(pt 242 92)(line_width 1))
+		(line (pt 241 108)(pt 241 196)(line_width 1))
+		(line (pt 242 108)(pt 242 196)(line_width 1))
+		(line (pt 241 212)(pt 241 236)(line_width 1))
+		(line (pt 242 212)(pt 242 236)(line_width 1))
+		(line (pt 241 252)(pt 241 276)(line_width 1))
+		(line (pt 242 252)(pt 242 276)(line_width 1))
+		(line (pt 241 292)(pt 241 316)(line_width 1))
+		(line (pt 242 292)(pt 242 316)(line_width 1))
+		(line (pt 241 332)(pt 241 420)(line_width 1))
+		(line (pt 242 332)(pt 242 420)(line_width 1))
+		(line (pt 0 0)(pt 544 0)(line_width 1))
+		(line (pt 544 0)(pt 544 448)(line_width 1))
+		(line (pt 0 448)(pt 544 448)(line_width 1))
+		(line (pt 0 0)(pt 0 448)(line_width 1))
+	)
+)

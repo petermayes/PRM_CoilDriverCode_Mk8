@@ -1,0 +1,37 @@
+/*
+ * FPGA_Driver.c
+ *
+ *  Created on: 3 Feb 2021
+ *      Author: Pete.Mayes
+ */
+
+
+/*------------------------------------------------------------------------------
+ * ControlLoops
+ *
+ * ----------------------------------------------------------------------------*/
+void CheckForFPGAFaultFlags(Uint16 TargetDrive)
+{
+Uint16	FPGA_Flag_Register;
+
+	FPGA_Flag_Register = Read_ExternalBusRegister(15);
+
+	if (FPGA_Flag_Register & 0x08)
+		DriveData[TargetDrive].FaultFlags |= FAULT_FLAG_1;
+
+	if (FPGA_Flag_Register & 0x10)
+		DriveData[TargetDrive].FaultFlags |= FAULT_FLAG_17;
+
+	if (FPGA_Flag_Register & 0x20)
+		DriveData[TargetDrive].FaultFlags |= FAULT_FLAG_3;
+
+	if (FPGA_Flag_Register & 0x40)
+		DriveData[TargetDrive].FaultFlags |= FAULT_FLAG_18;
+
+	if (FPGA_Flag_Register & 0x80)
+		DriveData[TargetDrive].FaultFlags |= FAULT_FLAG_19;
+
+}
+
+
+/* --------------------------------------- eof -----------------------------------------*/

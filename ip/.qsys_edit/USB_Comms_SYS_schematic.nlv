@@ -1,0 +1,29 @@
+# # File gsaved with Nlview version 6.3.8  2013-12-19 bk=1.2992 VDI=34 GEI=35
+# 
+preplace inst USB_Comms_SYS.Slave_CLK -pg 1 -lvl 1 -y 150
+preplace inst USB_Comms_SYS.Reset -pg 1 -lvl 3 -y 310
+preplace inst USB_Comms_SYS -pg 1 -lvl 1 -y 40 -regy -20
+preplace inst USB_Comms_SYS.USB_GPIO -pg 1 -lvl 3 -y 190
+preplace inst USB_Comms_SYS.pheriphal_clk -pg 1 -lvl 1 -y 350
+preplace inst USB_Comms_SYS.USB_RX_RAM -pg 1 -lvl 3 -y 30
+preplace inst USB_Comms_SYS.USB_Ext_CLK -pg 1 -lvl 1 -y 50
+preplace netloc EXPORT<net_container>USB_Comms_SYS</net_container>(SLAVE)pheriphal_clk.clk_in,(SLAVE)USB_Comms_SYS.pheriphal_clk) 1 0 1 NJ
+preplace netloc EXPORT<net_container>USB_Comms_SYS</net_container>(SLAVE)USB_RX_RAM.s2,(SLAVE)USB_Comms_SYS.usb_data_ram_s2) 1 0 3 NJ 120 NJ 120 NJ
+preplace netloc EXPORT<net_container>USB_Comms_SYS</net_container>(SLAVE)USB_Comms_SYS.slave_reset,(SLAVE)Slave_CLK.clk_in_reset) 1 0 1 NJ
+preplace netloc EXPORT<net_container>USB_Comms_SYS</net_container>(SLAVE)USB_RX_RAM.s1,(SLAVE)USB_Comms_SYS.usb_rx_ram_s1) 1 0 3 NJ 140 NJ 140 NJ
+preplace netloc EXPORT<net_container>USB_Comms_SYS</net_container>(SLAVE)USB_Ext_CLK.clk_in,(SLAVE)USB_Comms_SYS.clk_usb_ext_clk) 1 0 1 NJ
+preplace netloc FAN_OUT<net_container>USB_Comms_SYS</net_container>(MASTER)pheriphal_clk.clk,(SLAVE)USB_GPIO.clk,(SLAVE)Reset.clk) 1 1 2 370 320 490
+preplace netloc INTERCONNECT<net_container>USB_Comms_SYS</net_container>(SLAVE)USB_RX_RAM.reset2,(MASTER)Slave_CLK.clk_reset,(MASTER)USB_Ext_CLK.clk_reset,(SLAVE)USB_RX_RAM.reset1) 1 1 2 330 80 490
+preplace netloc EXPORT<net_container>USB_Comms_SYS</net_container>(SLAVE)USB_Comms_SYS.usb_data_gpio_irq,(SLAVE)USB_GPIO.irq) 1 0 3 NJ 240 NJ 240 NJ
+preplace netloc EXPORT<net_container>USB_Comms_SYS</net_container>(SLAVE)USB_GPIO.s1,(SLAVE)USB_Comms_SYS.usb_gpio_s1) 1 0 3 NJ 280 NJ 280 NJ
+preplace netloc EXPORT<net_container>USB_Comms_SYS</net_container>(SLAVE)USB_Comms_SYS.slave_clk,(SLAVE)Slave_CLK.clk_in) 1 0 1 NJ
+preplace netloc EXPORT<net_container>USB_Comms_SYS</net_container>(SLAVE)USB_Comms_SYS.reset_s1,(SLAVE)Reset.s1) 1 0 3 NJ 340 NJ 380 NJ
+preplace netloc EXPORT<net_container>USB_Comms_SYS</net_container>(SLAVE)Reset.external_connection,(SLAVE)USB_Comms_SYS.reset_out) 1 0 3 NJ 320 NJ 340 NJ
+preplace netloc FAN_OUT<net_container>USB_Comms_SYS</net_container>(SLAVE)USB_GPIO.reset,(MASTER)pheriphal_clk.clk_reset,(SLAVE)Reset.reset) 1 1 2 390 360 510
+preplace netloc EXPORT<net_container>USB_Comms_SYS</net_container>(SLAVE)USB_Comms_SYS.reset_usb_ext_clk,(SLAVE)USB_Ext_CLK.clk_in_reset) 1 0 1 NJ
+preplace netloc POINT_TO_POINT<net_container>USB_Comms_SYS</net_container>(MASTER)USB_Ext_CLK.clk,(SLAVE)USB_RX_RAM.clk2) 1 1 2 N 60 NJ
+preplace netloc EXPORT<net_container>USB_Comms_SYS</net_container>(SLAVE)USB_Comms_SYS.usb_data_gpio,(SLAVE)USB_GPIO.external_connection) 1 0 3 NJ 220 NJ 220 NJ
+preplace netloc POINT_TO_POINT<net_container>USB_Comms_SYS</net_container>(SLAVE)USB_RX_RAM.clk1,(MASTER)Slave_CLK.clk) 1 1 2 350 40 NJ
+preplace netloc EXPORT<net_container>USB_Comms_SYS</net_container>(SLAVE)USB_Comms_SYS.pheriphal_reset,(SLAVE)pheriphal_clk.clk_in_reset) 1 0 1 NJ
+levelinfo -pg 1 0 120 870
+levelinfo -hier USB_Comms_SYS 130 160 470 710 860

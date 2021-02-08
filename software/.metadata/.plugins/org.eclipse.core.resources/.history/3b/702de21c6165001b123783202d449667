@@ -1,0 +1,224 @@
+/*
+ * TimerHandler.c
+ *
+ *  Created on: 7 Jun 2019
+ *      Author: prm
+ */
+
+#include "system.h"
+#include "alt_types.h"
+#include "altera_avalon_pio_regs.h"
+
+#include "..\Includes\Types.h"
+#include "..\Drivers\TimerDriver.h"
+#include "..\Drivers\GPIO_Driver.h"
+#include "..\Drivers\FIFO_Driver.h"
+#include "..\Handlers\Registers_Handler.h"
+#include "..\Handlers\msgDMA_Handler.h"
+//#include "..\Handlers\USB_Data_Handler.h"
+//#include "..\Handlers\PatternDataHandler.h"
+
+static void TimerInterruptCallback_HighPriority(int);
+static void TimerInterruptCallback_MediumPriority(int);
+static void TimerInterruptCallback_LowPriority(int);
+
+alt_u32 *slow_timer_base = (alt_u32*)TIMERSYS_TIMER_0_BASE;
+alt_u32 *medium_timer_base  = (alt_u32*)TIMERSYS_TIMER_1_BASE;
+alt_u32 *fast_timer_base = (alt_u32*)TIMERSYS_TIMER_2_BASE;
+
+//static const Uint16 TimeData[8] = {1000, 2000, 1500, 2500, 250, 1500, 330, 200};
+
+timer_dev	FastTimerDEV, MediumTimerDEV, SlowTimerDEV;
+
+Uint32 TimerTickCounter = 0;
+Uint32 FastTimerTickCounter = 0;
+
+/* -------------------------------------------------------------------------
+ * Process a received interrupt. Interrupts are generated when a transaction
+ * completes.
+ -------------------------------------------------------------------------- */
+ void Init_TimerHandler(void)
+{
+	init_timer_interrupt(&SlowTimerDEV, slow_timer_base,
+										TIMERSYS_TIMER_0_IRQ_INTERRUPT_CONTROLLER_ID,
+										TIMERSYS_TIMER_0_IRQ, 500000,
+										&TimerInterruptCallback_LowPriority); // 2
+	init_timer_interrupt(&MediumTimerDEV, medium_timer_base ,
+										TIMERSYS_TIMER_1_IRQ_INTERRUPT_CONTROLLER_ID,
+										TIMERSYS_TIMER_1_IRQ, 20000,
+										&TimerInterruptCallback_MediumPriority); // 3
+
+	init_timer_interrupt(&FastTimerDEV, fast_timer_base,
+										TIMERSYS_TIMER_2_IRQ_INTERRUPT_CONTROLLER_ID,
+										TIMERSYS_TIMER_2_IRQ, 2000,
+										&TimerInterruptCallback_HighPriority); // 3
+}
+
+/* -------------------------------------------------------------------------
+ * Process a received interrupt. Interrupts are generated when a transaction
+ * completes.
+ -------------------------------------------------------------------------- */
+static void TimerInterruptCallback_LowPriority(int dummy)
+{
+static Uint16	LED_count, LED_ToggleCount = 0;
+//static Uint32	FalseDelayCount = 0, DelayCount2 = 0;
+
+	Set_TP4();
+	Registers.SlowTimerCount.DataField++;
+
+	if (TRUE)
+		{
+			// Flash LEDS slowly
+			LED_count++;
+			if (LED_count > 20)
+			{
+				LED_count = 0;
+				LED_ToggleCount++;
+			}
+		}
+	else
+		{
+			LED_count++;
+			LED_ToggleCount++;
+		}
+
+	if (LED_ToggleCount & 0x01)
+		IOWR_ALTERA_AVALON_PIO_SET_BITS(PHERIPHALS_LED_GPIO_BASE, 0x01f);
+	else
+		IOWR_ALTERA_AVALON_PIO_CLEAR_BITS(PHERIPHALS_LED_GPIO_BASE, 0x01f);
+
+#ifdef CURRCTRL_SYS_USB_RX_RAM_BASE
+
+	Registers.CurrCTRL_0.DataField = IORD(CURRCTRL_SYS_USB_RX_RAM_BASE, 1) >> 12;
+	Registers.CurrCTRL_1.DataField = IORD(CURRCTRL_SYS_USB_RX_RAM_BASE, 2) >> 12;
+	Registers.CurrCTRL_2.DataField = IORD(CURRCTRL_SYS_USB_RX_RAM_BASE, 3) >> 12;
+	Registers.CurrCTRL_3.DataField = IORD(CURRCTRL_SYS_USB_RX_RAM_BASE, 4) >> 12;
+	Registers.CurrCTRL_4.DataField = IORD(CURRCTRL_SYS_USB_RX_RAM_BASE, 5) >> 12;
+	Registers.CurrCTRL_5.DataField = IORD(CURRCTRL_SYS_USB_RX_RAM_BASE, 6) >> 12;
+	Registers.CurrCTRL_6.DataField = IORD(CURRCTRL_SYS_USB_RX_RAM_BASE, 7) >> 12;
+	Registers.CurrCTRL_7.DataField = IORD(CURRCTRL_SYS_USB_RX_RAM_BASE, 8) >> 12;
+	Registers.CurrCTRL_8.DataField = IORD(CURRCTRL_SYS_USB_RX_RAM_BASE, 9) >> 12;
+	Registers.CurrCTRL_9.DataField = IORD(CURRCTRL_SYS_USB_RX_RAM_BASE, 10);
+	Registers.CurrCTRL_10.DataField = IORD(CURRCTRL_SYS_USB_RX_RAM_BASE, 11);
+	Registers.CurrCTRL_11.DataField = IORD(CURRCTRL_SYS_USB_RX_RAM_BASE, 12);
+
+
+	IOWR_32DIRECT(CURRCTRL_SYS_CURRCTRLSYS_BRIDGE_BASE, 0, (100 << 12));
+	IOWR_32DIRECT(CURRCTRL_SYS_CURRCTRLSYS_BRIDGE_BASE, 4, (200 << 12));
+	IOWR_32DIRECT(CURRCTRL_SYS_CURRCTRLSYS_BRIDGE_BASE, 8, (300 << 12));
+	IOWR_32DIRECT(CURRCTRL_SYS_CURRCTRLSYS_BRIDGE_BASE, 12, (400 << 12));
+	IOWR_32DIRECT(CURRCTRL_SYS_CURRCTRLSYS_BRIDGE_BASE, 16, (500 << 12));
+	IOWR_32DIRECT(CURRCTRL_SYS_CURRCTRLSYS_BRIDGE_BASE, 20, (600 << 12));
+	IOWR_32DIRECT(CURRCTRL_SYS_CURRCTRLSYS_BRIDGE_BASE, 24, (700 << 12));
+	IOWR_32DIRECT(CURRCTRL_SYS_CURRCTRLSYS_BRIDGE_BASE, 28, (800 << 12));
+
+	IOWR_32DIRECT(CURRCTRL_SYS_CURRCTRLSYS_BRIDGE_BASE, (11*4), (1 << 2));
+
+	IOWR_32DIRECT(CURRCTRL_SYS_CURRCTRLSYS_BRIDGE_BASE, (12*4), 0x8000);
+
+#endif
+
+	Clear_TP4();
+
+}
+
+
+/* -------------------------------------------------------------------------
+ * Process a received interrupt. Interrupts are generated when a transaction
+ * completes.
+ -------------------------------------------------------------------------- */
+static void TimerInterruptCallback_MediumPriority(int dummy)
+{
+static Uint32	FIFO_FillLevelinWords;
+static Uint32	TestWord[3] = {0,0,0};
+
+	Set_TP4();  // called every 100us
+	TimerTickCounter++;
+
+#if 0
+	DataInterfaceOperatingModeStatemachine();
+#endif
+
+#if 0
+	(void)USB_Data_CommsHandler(Decode_USB_Text_String());
+#endif
+
+#if 0
+	PatternDataHandler();
+#endif
+
+
+#ifdef CURRCTRL_SYS_MAINDIAGNOSTICFIFO_OUT_CSR_BASE
+
+	FIFO_FillLevelinWords = Read_DDR3_FIFO_FillLevel() >> 2;
+	Registers.CurrCTRL_FIFO_Fill_Level.DataField = FIFO_FillLevelinWords;
+
+	if (FIFO_DDR3_Full())
+		TransferDataFromFIFOtoDDR3(2048, 0);
+	else
+		{
+			if (FIFO_FillLevelinWords > 1025)
+				{
+					if (Registers.CurrCTRL_Data0.DataField == 0x55aa55aa)
+						TransferDataFromFIFOtoDDR3(1024, 0);
+					else
+						{
+							(void)IORD(CURRCTRL_SYS_MAINDIAGNOSTICFIFO_OUT_BASE, 0);
+							TransferDataFromFIFOtoDDR3(1024, 0);
+						}
+				}
+		}
+
+#endif
+
+#ifdef CURRCTRL_SYS_CURRCTRL_DEBUG_RAM_0_BASE
+
+	FIFO_FillLevelinWords = Read_StreamingDebug_FIFO_FillLevel() >> 2;
+	Registers.CurrCTRL_FIFO_Fill_Level.DataField = FIFO_FillLevelinWords;
+
+	if ((FIFO_StreamingDebug_Full()) && (TRUE))
+		{
+			TransferDataFromDebugFIFOtoExtBuffer(1024, 0);
+			TransferDataFromDebugFIFOtoExtBuffer(1024, 0);
+			TransferDataFromDebugFIFOtoExtBuffer(1024, 0);
+			TransferDataFromDebugFIFOtoExtBuffer(1024, 0);
+		}
+	else
+		{
+			if (FIFO_FillLevelinWords > 1027)
+				{
+					if (Registers.Debug_0.DataField == 0x55aa55aa)
+						TransferDataFromDebugFIFOtoExtBuffer(1024, 0);
+					else
+						{
+							TestWord[0] = IORD(CURRCTRL_SYS_DEBUGFIFO_OUT_BASE, 0);
+							TestWord[1] = IORD(CURRCTRL_SYS_DEBUGFIFO_OUT_BASE, 0);
+							TestWord[2] = IORD(CURRCTRL_SYS_DEBUGFIFO_OUT_BASE, 0);
+							TransferDataFromDebugFIFOtoExtBuffer(1024, 0);
+						}
+				}
+
+		}
+
+#endif
+
+
+	Clear_TP4();
+}
+
+/* -------------------------------------------------------------------------
+ * Process a received interrupt. Interrupts are generated when a transaction
+ * completes.
+ -------------------------------------------------------------------------- */
+static void TimerInterruptCallback_HighPriority(int dummy)
+{
+	Set_TP5();  // called every 100us
+	TimerTickCounter++;
+	FastTimerTickCounter++;
+	Registers.Debug_2.DataField++;
+
+	DMA_Handler();
+	Clear_TP5();
+}
+
+/* ----------------------- EOF ---------------------------*/

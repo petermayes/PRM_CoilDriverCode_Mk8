@@ -1,0 +1,861 @@
+
+INCLUDE "LVDS_MessageCapture_v5";
+INCLUDE "single_high_pulse";
+
+
+CONSTANT NIBBLE_RESET_STATE 							= 0;
+CONSTANT NIBBLE_IDLE_DETECT_STATE					= 1;
+CONSTANT	NIBBLE_IDLE_DETECT_COUNT_STATE			= 2;
+CONSTANT	NIBBLE_IDLE_NIBBLE_STATE					= 3;
+CONSTANT	NIBBLE_PREAMBLE_NIBBLE_STATE				= 4;
+CONSTANT NIBBLE_DATA_NIBBLES_STATE					= 5;
+CONSTANT	POSTAMBLE_NIBBLE_STATE											= 6;
+CONSTANT	DUMMY_STOP_STATE													= 7;
+
+
+CONSTANT RESET_STATE 									= 0;
+CONSTANT IDLE_STATE										= 1;
+CONSTANT LATCH_EXPECTED_BYTES_STATE					= 2;
+CONSTANT CAPTURE_FIRST_BYTE_STATE					= 3;
+--CONSTANT CAPTURE_SECOND_BYTE_STATE					= 4;
+CONSTANT DATA_BYTES_READ_STATE						= 5;
+CONSTANT CRC_COMPARISON_STATE							= 6;
+CONSTANT CRC_SUCCESS_STATE								= 7;
+CONSTANT CRC_FAILURE_STATE								= 8;
+CONSTANT VALIDATE_POSTAMBLE_STATE					= 9;
+CONSTANT WRITE_STATUS_WORDS							= 10;
+CONSTANT LATCH_SECOND_BYTE_STATE						= 11;
+
+CONSTANT DIVISOR											= 263; -- hex 107
+
+
+CONSTANT	CLK_COUNT_SAMPLE								= 5; -- counts down remember
+CONSTANT CLK_COUNT_SAMPLE_FIRST_BIT					= 8;
+CONSTANT CLK_COUNT_SAMPLE_LAST_BIT					= 9;
+
+
+SUBDESIGN LVDS_ExtendedStreamingByteDataHandler_v1
+(
+	Reset													: input;
+	Diagnostics											: input;
+	DataStream											: input;
+	Fault_Reset											: input;
+	DebugOption[2..0]									: input;
+	BaudCLK_x4											: input;
+	SysCLK												: input;
+
+	WordData[31..0]									: output;  -- 1
+	ByteWriteAddress[12..0]							: output;  -- 2
+	CRC_MonoStableSuccessFlag						: output;  -- 3
+	WatchdogTimeoutFaultFlag						: output;  -- 4
+	WatchdogTimeoutFlag								: output;  -- 6
+--	ByteAddress[1..0]									: output;  -- 7
+	DebugDataByte[7..0]								: output;  -- 8
+	CRC_SuccessFlag									: output;  -- 9
+	CRC_FailureFlag									: output;  -- 10
+	ClkNibbleEnable									: output;  -- 11
+	IdleBitPatternFlag								: output;  -- 12
+	PreambleBitPatternFlag							: output;  -- 13
+	ProtocolStateMode[3..0]							: output;  -- 14
+	CaptureStateMode[3..0]							: output;  -- 15
+	Nibble_Clk_Count[3..0]							: output;  -- 16
+	ErrorFlag											: output;  -- 17
+	CRC_Flag[1..0]										: output;  -- 18		
+	DebugTriggerFlag									: output;  -- 19
+	GoodMessageCount[31..0]							: output;  -- 20
+	FailedMessageCount[31..0]						: output;  -- 21		
+	CRC_CalculationByte[7..0]						: output;
+	RollingBitCapture[9..0]							: output;
+	InterruptFlag										: output;
+	RAM_Write_p											: output;
+)
+VARIABLE
+	
+-- ************************************************************	
+		
+	ProtocolStateMode_dffe[3..0]					: dffe;
+	LatchedFinalDataByte_dffe[7..0]				: dffe;	
+	ReceivedDataByteCount_dffe[15..0]			: dffe;
+	WriteAddress_dffe[12..0]						: dffe;
+	DelayedWriteAddress_dffe[12..0]				: dffe;
+	WriteWord_dffe[31..0]							: dffe;
+	Clk_Enable_dff										: dff;
+	CRC_Calculation_dffe[15..0]					: dffe;
+	RightAlignedDivisor[15..0]						: node;
+	TestNodeCRC[15..0]								: node;
+	LatchedInputData_dffe[7..0]					: dffe;
+	
+	GoodMessageCount_dffe[31..0]					: dffe;
+	FailedMessageCount_dffe[31..0]				: dffe;	
+	GoodMessageCountEnableNode						: node;
+	FailedMessageCountEnableNode					: node;	
+	
+	Extended_Data_WriteFlag_dffe[3..0]			: dffe;
+	
+	LatchedControlBytes_dffe[4..0][7..0]		: dffe;
+	
+	Latched_Expacted_Data_Bytes_dffe[7..0]		: dffe;	
+	
+-- ************************************************************
+
+	LatchedDataByteNode[7..0]						: node;
+	CDR_Clk_Enable_node								: node;
+	Clk_Enable_Nibble_node							: node;	
+	Nibble_Clk_Count_node[3..0]					: node;
+	PostambleBitPatternFlagNode					: node;
+	CaptureStateModeNode[3..0]						: node;
+	IdleErrorFlagnode									: node;
+	RollingBitCaptureNode[9..0]					: node;
+	CRC_TestState_node[7..0]						: node;
+	Extended_Data_Write_En_Node					: node;
+	
+-- ************************************************************	
+
+	WatchdogCount_dff[19..0]						: dff;
+	WatchdogTrip_dffe									: dffe;	
+	WatchdogTripSync_dff[1..0]						: dff;
+	CRC_MonoStableSuccessFlag_dffe[5..0]		: dffe;
+	
+	RAM_Write_Line_dff[3..0]						: dff;
+	
+	ByteWriteAddress_sync_dff[1..0][12..0]		: dff;
+	ByteWriteAddress_sync_node[12..0]			: node;
+	
+	Data_sync_dff[1..0][31..0]						: dff;
+	Data_sync_node[31..0]							: node;	
+	
+	
+-- ************************************************************	
+	
+BEGIN 
+
+-- ************************************************************	
+-- SYS_Clk
+-- ************************************************************	
+
+	RAM_Write_Line_dff[].clk = SysCLK;
+	RAM_Write_Line_dff[0].d = ByteWriteAddress[0] and ByteWriteAddress[1];  -- i.e. when the output address == 3
+	RAM_Write_Line_dff[1].d = RAM_Write_Line_dff[0].q;
+	(RAM_Write_Line_dff[2].d) = single_high_pulse(RAM_Write_Line_dff[1].q, SysCLK);
+	RAM_Write_Line_dff[3].d = RAM_Write_Line_dff[2].q;
+	RAM_Write_p = RAM_Write_Line_dff[3].q;
+	
+	ByteWriteAddress_sync_dff[][].clk = SysCLK;
+	ByteWriteAddress_sync_dff[0][].d = ByteWriteAddress_sync_node[];	
+	ByteWriteAddress_sync_dff[1][].d = ByteWriteAddress_sync_dff[0][].q;		
+	ByteWriteAddress[12..0] = ByteWriteAddress_sync_dff[1][].q;	
+	
+	Data_sync_dff[][].clk = SysCLK;
+	Data_sync_dff[0][].d = Data_sync_node[];	
+	Data_sync_dff[1][].d = Data_sync_dff[0][].q;		
+	WordData[] = Data_sync_dff[1][].q;		
+	
+	
+-- ************************************************************		
+	
+	
+	
+
+	ProtocolStateMode_dffe[].clk = BaudCLK_x4;
+	ProtocolStateMode_dffe[].ena = Clk_Enable_dff.q;
+	
+	ProtocolStateMode[] = ProtocolStateMode_dffe[].q;
+	
+	LatchedFinalDataByte_dffe[].clk = BaudCLK_x4;
+	LatchedFinalDataByte_dffe[].d = LatchedDataByteNode[];
+
+
+	
+	case DebugOption[2..0] is
+	
+		when 0 =>
+			DebugDataByte[] = LatchedDataByteNode[7..0];
+		
+		when 1 =>		
+			DebugDataByte[] = WriteAddress_dffe[7..0].q;
+			
+		when 2 =>
+			DebugDataByte[] = ByteWriteAddress_sync_dff[1][7..0].q;
+			
+		when 3 =>
+			DebugDataByte[] = Data_sync_dff[1][7..0].q;
+			
+		when 4 =>
+			DebugDataByte[] = Data_sync_dff[1][15..8].q;		
+		
+		when 5 =>
+			DebugDataByte[] = Data_sync_dff[1][23..16].q;	
+			
+		when 6 =>
+			DebugDataByte[] = Data_sync_dff[1][31..24].q;	
+			
+		when others =>
+			DebugDataByte[] = LatchedDataByteNode[7..0];			
+			
+	end case;		
+	
+	ReceivedDataByteCount_dffe[].clk = BaudCLK_x4;
+	ReceivedDataByteCount_dffe[].ena = Clk_Enable_dff.q;
+	
+	WriteAddress_dffe[].clk = BaudCLK_x4;
+	WriteAddress_dffe[].ena = Clk_Enable_dff.q;	
+	
+	GoodMessageCount_dffe[31..0].clk = BaudCLK_x4;
+	FailedMessageCount_dffe[31..0].clk = BaudCLK_x4;	
+	GoodMessageCount_dffe[31..0].ena = GoodMessageCountEnableNode and Clk_Enable_dff.q;		
+	FailedMessageCount_dffe[31..0].ena = FailedMessageCountEnableNode and Clk_Enable_dff.q;		
+	
+	GoodMessageCount[31..0] = GoodMessageCount_dffe[31..0].q;
+	FailedMessageCount[31..0] = FailedMessageCount_dffe[31..0].q;	
+	
+	
+	DelayedWriteAddress_dffe[].d = WriteAddress_dffe[].q;
+	DelayedWriteAddress_dffe[].clk = BaudCLK_x4;	
+	DelayedWriteAddress_dffe[].ena = Clk_Enable_dff.q;	
+
+	ClkNibbleEnable = Clk_Enable_dff.q;
+		
+	LatchedInputData_dffe[7..0].clk = BaudCLK_x4;
+	LatchedInputData_dffe[7..0].ena = Clk_Enable_dff.q;
+	LatchedInputData_dffe[7..0].d = LatchedDataByteNode[7..0];
+
+	WriteWord_dffe[].clk = BaudCLK_x4;
+	LatchedControlBytes_dffe[][].clk = BaudCLK_x4;
+	LatchedControlBytes_dffe[0][].d = LatchedDataByteNode[];		
+	LatchedControlBytes_dffe[1][].d = LatchedDataByteNode[];	
+	LatchedControlBytes_dffe[2][].d = LatchedDataByteNode[];		
+	LatchedControlBytes_dffe[3][].d = LatchedFinalDataByte_dffe[].q;	
+	LatchedControlBytes_dffe[4][].d = CRC_TestState_node[];
+		
+	CRC_CalculationByte[7..0] = CRC_Calculation_dffe[15..8].q;
+
+	case WriteAddress_dffe[1..0].q is
+
+		when 0 =>
+			WriteWord_dffe[7..0].d = LatchedInputData_dffe[7..0].q;
+			WriteWord_dffe[7..0].ena = Clk_Enable_dff.q;
+		
+		when 1 =>		
+			WriteWord_dffe[15..8].d = LatchedInputData_dffe[7..0].q;
+			WriteWord_dffe[15..8].ena = Clk_Enable_dff.q;
+			
+		when 2 =>
+			WriteWord_dffe[23..16].d = LatchedInputData_dffe[7..0].q;
+			WriteWord_dffe[23..16].ena = Clk_Enable_dff.q;
+			
+		when 3 =>
+			WriteWord_dffe[31..24].d = LatchedInputData_dffe[7..0].q;
+			WriteWord_dffe[31..24].ena = Clk_Enable_dff.q;
+			
+	end case;
+
+
+	Clk_Enable_dff.clk = BaudCLK_x4;
+	Clk_Enable_dff.d = CDR_Clk_Enable_node and Clk_Enable_Nibble_node;	
+	
+	Latched_Expacted_Data_Bytes_dffe[].clk = BaudCLK_x4;
+	
+
+	Extended_Data_WriteFlag_dffe[].clk = BaudCLK_x4;
+	Extended_Data_WriteFlag_dffe[].ena = Extended_Data_Write_En_Node and Clk_Enable_dff.q;
+
+
+
+	case Extended_Data_WriteFlag_dffe[3..0].q is	
+
+		when 9 =>	
+			Data_sync_node[7..0] = LatchedControlBytes_dffe[0][].q;
+			Data_sync_node[15..8] = LatchedControlBytes_dffe[1][].q;
+			Data_sync_node[23..16] = LatchedControlBytes_dffe[2][].q;	
+			Data_sync_node[31..24] = LatchedControlBytes_dffe[3][].q;		
+
+			ByteWriteAddress_sync_node[] = (4096 + 3);
+			
+		when 7 =>				
+			Data_sync_node[31..0] = FailedMessageCount_dffe[31..0].q;		
+			ByteWriteAddress_sync_node[] = (4100 + 3);
+			
+		when 5 =>				
+			Data_sync_node[31..0] = GoodMessageCount_dffe[31..0].q;		
+			ByteWriteAddress_sync_node[] = (4104 + 3);
+			
+		when 3 =>				
+			Data_sync_node[7..0] = LatchedControlBytes_dffe[4][].q;
+			Data_sync_node[31..8] = 0;
+			ByteWriteAddress_sync_node[] = (4108 + 3);			
+			
+		when others =>	
+			Data_sync_node[] = WriteWord_dffe[].q;
+			ByteWriteAddress_sync_node[] = DelayedWriteAddress_dffe[12..0].q;
+	
+	end case;
+	
+	
+	
+-- *************************************************************
+-- *																				*
+-- *																				*
+-- *************************************************************
+	
+	
+	if (Reset == vcc) then
+	
+	
+		case ProtocolStateMode_dffe[].q is
+
+			when RESET_STATE =>
+	
+				ProtocolStateMode_dffe[].d = IDLE_STATE; -- 
+				WriteAddress_dffe[].d = 0;
+				
+				GoodMessageCount_dffe[31..0].d = 0;
+				FailedMessageCount_dffe[31..0].d = 0;	
+				
+				GoodMessageCountEnableNode = vcc;
+				FailedMessageCountEnableNode = vcc;				
+				
+				
+			-- ************************************************************					
+			-- ************************************************************	
+				
+			when IDLE_STATE =>  
+			
+				if (CaptureStateModeNode[] == NIBBLE_PREAMBLE_NIBBLE_STATE) then
+
+					ProtocolStateMode_dffe[].d = LATCH_EXPECTED_BYTES_STATE;
+					
+				else
+	
+					ProtocolStateMode_dffe[].d = IDLE_STATE;			
+	
+				end if;	
+				
+				WriteAddress_dffe[].d = 0;
+				Extended_Data_WriteFlag_dffe[].d = 0;
+				Extended_Data_Write_En_Node = vcc;				
+				
+			-- ************************************************************					
+			-- ************************************************************	
+
+
+			when LATCH_EXPECTED_BYTES_STATE =>  
+			
+				if (CaptureStateModeNode[] == NIBBLE_IDLE_NIBBLE_STATE) then
+
+					ProtocolStateMode_dffe[].d = RESET_STATE;
+					
+				else
+	
+					ProtocolStateMode_dffe[].d = LATCH_SECOND_BYTE_STATE;			
+	
+				end if;	
+			
+				WriteAddress_dffe[].d = 0;			
+
+				DebugTriggerFlag = vcc;
+				
+
+				LatchedControlBytes_dffe[0][].ena = vcc;
+				
+				Latched_Expacted_Data_Bytes_dffe[].d = LatchedDataByteNode[];
+				Latched_Expacted_Data_Bytes_dffe[].ena = vcc;					
+				
+			-- ************************************************************					
+			-- ************************************************************	
+			
+			when LATCH_SECOND_BYTE_STATE =>  
+			
+				if (CaptureStateModeNode[] == NIBBLE_IDLE_NIBBLE_STATE) then
+
+					ProtocolStateMode_dffe[].d = RESET_STATE;
+					
+				else
+	
+					ProtocolStateMode_dffe[].d = CAPTURE_FIRST_BYTE_STATE;			
+	
+				end if;	
+			
+				WriteAddress_dffe[].d = 0;			
+				DebugTriggerFlag = vcc;
+				
+				LatchedControlBytes_dffe[1][].ena = vcc;					
+				
+				
+			-- ************************************************************					
+			-- ************************************************************			
+
+
+			when CAPTURE_FIRST_BYTE_STATE =>  
+			
+				ProtocolStateMode_dffe[].d = DATA_BYTES_READ_STATE;		
+				
+				ReceivedDataByteCount_dffe[3..0].d = 15;
+				ReceivedDataByteCount_dffe[11..4].d = Latched_Expacted_Data_Bytes_dffe[].q;
+				ReceivedDataByteCount_dffe[15..12].d = 0;	
+
+				
+				WriteAddress_dffe[].d = 0;
+				
+
+				LatchedControlBytes_dffe[2][].ena = vcc;				
+				
+				
+			-- ************************************************************					
+			-- ************************************************************	
+			
+%			when CAPTURE_SECOND_BYTE_STATE =>  
+			
+				ProtocolStateMode_dffe[].d = DATA_BYTES_READ_STATE;							
+				ReceivedDataByteCount_dffe[].d = ReceivedDataByteCount_dffe[].q - 1;
+				
+				WriteAddress_dffe[].d = 1;	%
+				
+				
+			-- ************************************************************					
+			-- ************************************************************			
+
+			
+			when DATA_BYTES_READ_STATE =>  
+			
+			
+				if (CaptureStateModeNode[] == POSTAMBLE_NIBBLE_STATE) then 
+				
+						ProtocolStateMode_dffe[].d = CRC_FAILURE_STATE;	
+						
+				else
+			
+					if (ReceivedDataByteCount_dffe[].q == 0) then
+
+						ProtocolStateMode_dffe[].d = VALIDATE_POSTAMBLE_STATE;
+						
+					else
+		
+						ProtocolStateMode_dffe[].d = DATA_BYTES_READ_STATE;			
+		
+					end if;	
+					
+				end if;
+				
+				ReceivedDataByteCount_dffe[].d = ReceivedDataByteCount_dffe[].q - 1;
+
+
+				LatchedFinalDataByte_dffe[].ena = vcc;
+				
+				WriteAddress_dffe[].d = WriteAddress_dffe[].q + 1;
+				
+				
+			-- ************************************************************					
+			-- ************************************************************
+			
+			when VALIDATE_POSTAMBLE_STATE =>  
+			
+				ProtocolStateMode_dffe[].d = CRC_COMPARISON_STATE;
+
+				
+			-- ************************************************************					
+			-- ************************************************************			
+				
+			when CRC_COMPARISON_STATE =>  
+			
+				if (LatchedFinalDataByte_dffe[].q == CRC_Calculation_dffe[15..8].q) then
+
+					ProtocolStateMode_dffe[].d = CRC_SUCCESS_STATE;
+					
+				else
+	
+					ProtocolStateMode_dffe[].d = CRC_FAILURE_STATE;	
+			
+				end if;
+				
+				LatchedControlBytes_dffe[3][].ena = vcc;	
+
+				
+			-- ************************************************************					
+			-- ************************************************************	
+
+			when CRC_SUCCESS_STATE =>  
+			
+				ProtocolStateMode_dffe[].d = WRITE_STATUS_WORDS;
+				
+				CRC_SuccessFlag = vcc;
+				
+				GoodMessageCount_dffe[31..0].d = GoodMessageCount_dffe[31..0].q + 1;
+				GoodMessageCountEnableNode = vcc;
+
+				Extended_Data_WriteFlag_dffe[].d = 10;			
+				Extended_Data_Write_En_Node = Diagnostics;	
+				
+				CRC_TestState_node[] = 0;
+				LatchedControlBytes_dffe[4][].ena = vcc;
+
+				
+			-- ************************************************************					
+			-- ************************************************************				
+				
+				
+			when CRC_FAILURE_STATE =>  
+			
+				ProtocolStateMode_dffe[].d = WRITE_STATUS_WORDS;
+				
+				
+				FailedMessageCount_dffe[31..0].d = FailedMessageCount_dffe[31..0].q + 1;
+				FailedMessageCountEnableNode = vcc;	
+
+				CRC_FailureFlag = vcc;
+				
+				Extended_Data_WriteFlag_dffe[].d = 10;
+				Extended_Data_Write_En_Node = Diagnostics;	
+			
+
+				CRC_TestState_node[] = 100;
+				LatchedControlBytes_dffe[4][].ena = vcc;			
+			
+				
+			-- ************************************************************					
+			-- ************************************************************		
+	
+			when WRITE_STATUS_WORDS =>  
+			
+				if (Extended_Data_WriteFlag_dffe[].q == 0) then
+
+					ProtocolStateMode_dffe[].d = IDLE_STATE;
+					Extended_Data_WriteFlag_dffe[].d = 0;
+					
+				else
+	
+					ProtocolStateMode_dffe[].d = WRITE_STATUS_WORDS;	
+					Extended_Data_WriteFlag_dffe[].d = Extended_Data_WriteFlag_dffe[].q - 1;
+			
+				end if;
+				
+				Extended_Data_Write_En_Node = vcc;				
+				InterruptFlag = vcc;
+		
+		
+			when others =>
+			
+				ProtocolStateMode_dffe[].d = RESET_STATE; -- 
+
+			
+		end case;	
+	
+	else
+	
+		ProtocolStateMode_dffe[].d = RESET_STATE;
+	
+	end if;			
+	
+	
+	
+	-- *************************************************************
+	-- *																				*	
+	-- *																				*
+	-- *************************************************************	
+	
+	
+	RightAlignedDivisor[15..7] = DIVISOR;
+	RightAlignedDivisor[6..0] = 0;
+	
+	CRC_Calculation_dffe[].clk = BaudCLK_x4;
+	CRC_Calculation_dffe[].ena = CDR_Clk_Enable_node;
+	
+	
+	case ProtocolStateMode_dffe[].q is
+	
+	
+	
+
+			when LATCH_SECOND_BYTE_STATE =>
+	
+				case Nibble_Clk_Count_node[] is
+				
+					when CLK_COUNT_SAMPLE_FIRST_BIT =>	-- first bit
+						CRC_Calculation_dffe[15..8].d = LatchedDataByteNode[7..0];
+						CRC_Calculation_dffe[7..0].d = 0;
+						CRC_Flag[0] = vcc;
+
+					when others =>
+				
+						CRC_Calculation_dffe[].d = CRC_Calculation_dffe[].q;					
+						CRC_Flag[1] = vcc;			
+					
+				end case;	
+				
+				
+				
+			-- ************************************************************				
+			when CAPTURE_FIRST_BYTE_STATE =>
+			
+				case Nibble_Clk_Count_node[] is
+				
+					when CLK_COUNT_SAMPLE_FIRST_BIT =>	-- first bit
+						CRC_Calculation_dffe[15..8].d = CRC_Calculation_dffe[15..8].q;
+						CRC_Calculation_dffe[7..0].d = LatchedDataByteNode[7..0]; --DataWord[7..0];
+						CRC_Flag[0] = vcc;
+						
+					when CLK_COUNT_SAMPLE_LAST_BIT =>  -- last bit
+					
+						CRC_Calculation_dffe[].d = CRC_Calculation_dffe[].q;
+						
+					when others =>
+						
+						if (CRC_Calculation_dffe[15].q == vcc) then
+								TestNodeCRC[] = CRC_Calculation_dffe[].q $ RightAlignedDivisor[];	
+						else			
+								TestNodeCRC[] = CRC_Calculation_dffe[].q;
+						end if;
+						
+						CRC_Calculation_dffe[15..1].d = TestNodeCRC[14..0];		
+		
+						CRC_Flag[1] = vcc;		
+					
+				end case;				
+							
+				
+			-- ************************************************************				
+%			when CAPTURE_SECOND_BYTE_STATE =>
+			
+				case Nibble_Clk_Count_node[] is
+				
+					when CLK_COUNT_SAMPLE_FIRST_BIT =>	-- first bit
+						CRC_Calculation_dffe[15..8].d = CRC_Calculation_dffe[15..8].q;
+						CRC_Calculation_dffe[7..0].d = LatchedDataByteNode[7..0]; --DataWord[7..0];
+						CRC_Flag[0] = vcc;
+						
+					when CLK_COUNT_SAMPLE_LAST_BIT =>  -- last bit
+					
+						CRC_Calculation_dffe[].d = CRC_Calculation_dffe[].q;
+						
+					when others =>
+						
+						if (CRC_Calculation_dffe[15].q == vcc) then
+								TestNodeCRC[] = CRC_Calculation_dffe[].q $ RightAlignedDivisor[];	
+						else			
+								TestNodeCRC[] = CRC_Calculation_dffe[].q;
+						end if;
+						
+						CRC_Calculation_dffe[15..1].d = TestNodeCRC[14..0];		
+		
+						CRC_Flag[1] = vcc;		
+					
+				end case;
+				%
+				
+			-- ************************************************************			
+
+			when DATA_BYTES_READ_STATE =>
+			
+				case Nibble_Clk_Count_node[] is
+				
+					when CLK_COUNT_SAMPLE_FIRST_BIT =>	-- first bit
+						CRC_Calculation_dffe[15..8].d = CRC_Calculation_dffe[15..8].q;
+						CRC_Calculation_dffe[7..0].d = LatchedDataByteNode[7..0]; --DataWord[7..0];
+						CRC_Flag[0] = vcc;
+						
+					when CLK_COUNT_SAMPLE_LAST_BIT =>  -- last bit
+					
+						CRC_Calculation_dffe[].d = CRC_Calculation_dffe[].q;
+						
+					when others =>
+						
+						if (CRC_Calculation_dffe[15].q == vcc) then
+								TestNodeCRC[] = CRC_Calculation_dffe[].q $ RightAlignedDivisor[];	
+						else			
+								TestNodeCRC[] = CRC_Calculation_dffe[].q;
+						end if;
+						
+						CRC_Calculation_dffe[15..1].d = TestNodeCRC[14..0];		
+		
+						CRC_Flag[1] = vcc;		
+					
+				end case;
+				
+			-- ************************************************************	
+
+			when VALIDATE_POSTAMBLE_STATE =>
+			
+				case Nibble_Clk_Count_node[] is
+				
+					when CLK_COUNT_SAMPLE_FIRST_BIT =>	-- first bit
+						CRC_Calculation_dffe[15..8].d = CRC_Calculation_dffe[15..8].q;
+						CRC_Calculation_dffe[7..0].d = 0; --LatchedDataByteNode[7..0]; --DataWord[7..0];
+						CRC_Flag[0] = vcc;
+						
+					when CLK_COUNT_SAMPLE_LAST_BIT =>  -- last bit
+					
+						CRC_Calculation_dffe[].d = CRC_Calculation_dffe[].q;
+						
+					when others =>
+						
+						if (CRC_Calculation_dffe[15].q == vcc) then
+								TestNodeCRC[] = CRC_Calculation_dffe[].q $ RightAlignedDivisor[];	
+						else			
+								TestNodeCRC[] = CRC_Calculation_dffe[].q;
+						end if;
+						
+						CRC_Calculation_dffe[15..1].d = TestNodeCRC[14..0];		
+		
+						CRC_Flag[1] = vcc;		
+					
+				end case;				
+						
+			-- ************************************************************												
+	
+
+			when others =>
+		
+						CRC_Calculation_dffe[].d = CRC_Calculation_dffe[].q;	
+
+				
+			
+		end case;	
+		
+		
+	-- *************************************************************
+	-- *																				*
+	-- *																				*
+	-- *************************************************************	
+
+	WatchdogCount_dff[].clk = BaudCLK_x4;
+	CRC_MonoStableSuccessFlag_dffe[].clk = BaudCLK_x4;
+	CRC_MonoStableSuccessFlag_dffe[].ena = Clk_Enable_dff.q;
+	
+		
+	if (Reset == vcc) then
+		
+		case ProtocolStateMode_dffe[].q is
+
+			when RESET_STATE =>
+	
+				WatchdogCount_dff[].d = 500000;  
+			
+				
+			-- ************************************************************					
+			-- ************************************************************
+			
+			when CRC_SUCCESS_STATE =>  
+			
+				WatchdogCount_dff[].d = 500000; 
+			--	WatchdogCount_dff[].d = 5000; 				
+				
+				CRC_MonoStableSuccessFlag_dffe[].d = 25;	
+				CRC_MonoStableSuccessFlag = vcc;
+				
+			-- ************************************************************					
+			-- ************************************************************				
+			
+			when others =>
+			
+				if (WatchdogCount_dff[].q == 0) then
+				
+					WatchdogCount_dff[].d = WatchdogCount_dff[].q; 
+					WatchdogTimeoutFlag = vcc;
+					
+				else
+				
+					WatchdogCount_dff[].d = WatchdogCount_dff[].q - 1; 
+					
+				end if;
+				
+				if (CRC_MonoStableSuccessFlag_dffe[].q == 0) then
+				
+					CRC_MonoStableSuccessFlag_dffe[].d = 0; 
+					
+				else
+				
+					CRC_MonoStableSuccessFlag_dffe[].d = CRC_MonoStableSuccessFlag_dffe[].q - 1; 
+					CRC_MonoStableSuccessFlag = vcc;
+					
+				end if;
+
+			
+		end case;	
+	
+	else
+	
+		WatchdogCount_dff[].d = 10000;  
+	
+	end if;
+
+	-- *************************************************************
+	-- *																				*	
+	-- *																				*
+	-- *************************************************************	
+	
+	WatchdogTrip_dffe.clk = SysCLK;	
+	WatchdogTimeoutFaultFlag = WatchdogTrip_dffe.q;
+	
+	WatchdogTripSync_dff[1..0].clk = SysCLK;
+	WatchdogTripSync_dff[0].d = WatchdogTimeoutFlag;
+	WatchdogTripSync_dff[1].d = WatchdogTripSync_dff[0].q;	
+	
+	if (Reset == gnd) then	
+	
+		WatchdogTrip_dffe.d = gnd;
+		WatchdogTrip_dffe.ena = vcc;
+		
+	
+	else
+	
+	
+			if (Fault_Reset == vcc) then
+			
+				WatchdogTrip_dffe.d = gnd;
+				WatchdogTrip_dffe.ena = vcc;
+				
+			else
+			
+				if (WatchdogTripSync_dff[1].q == vcc) then
+			
+						WatchdogTrip_dffe.d = vcc;
+						WatchdogTrip_dffe.ena = vcc;
+						
+				end if;
+				
+			end if;
+			
+	end if;
+	
+
+
+	-- *************************************************************
+	-- *																				*
+	-- *	Reset											: input;					*
+	-- *	DataStream									: input;					*
+	-- *	BaudCLK_x4									: input;					*
+	-- *																				*
+	-- *	LatchedDataByte[7..0]					: output;				*
+	-- *	CDR_Clk_Enable								: output;				*
+	-- *	Clk_Enable_Nibble							: output					*
+	-- *	Nibble_Clk_Count[3..0]					: output; 				* 
+	-- *	IdleBitPatternFlag						: output;				*
+	-- *	PreambleBitPatternFlag					: output;				*
+	-- *	PostambleBitPatternFlag					: output;				*
+	-- *	CaptureStateMode[3..0]					: output;				*
+	-- *	ErrorFlag									: output;				*
+	-- *	IdleErrorFlag								: output;				*
+	-- *	RollingBitCapture[9..0]					: output;				*
+	-- *																				*
+	-- *************************************************************
+	
+	(	LatchedDataByteNode[7..0], 
+		CDR_Clk_Enable_node, 
+		Clk_Enable_Nibble_node, 
+		Nibble_Clk_Count_node[3..0], 
+		IdleBitPatternFlag, 
+		PreambleBitPatternFlag,
+		PostambleBitPatternFlagNode,	
+		CaptureStateModeNode[3..0], 
+		ErrorFlag,
+		IdleErrorFlagnode,
+		RollingBitCaptureNode[9..0]) = LVDS_MessageCapture_v5(Reset, DataStream, BaudCLK_x4); 
+		
+	-- ************************************************************			
+	
+	CaptureStateMode[3..0] = CaptureStateModeNode[3..0];
+	Nibble_Clk_Count[3..0] = Nibble_Clk_Count_node[3..0];	
+	
+	RollingBitCapture[9..0] = RollingBitCaptureNode[9..0];
+	
+	
+END;	

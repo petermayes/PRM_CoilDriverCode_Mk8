@@ -1,0 +1,24 @@
+# # File gsaved with Nlview version 6.3.8  2013-12-19 bk=1.2992 VDI=34 GEI=35
+# 
+preplace inst TimerSYS.timer_1 -pg 1 -lvl 3 -y 150
+preplace inst TimerSYS.timer_2 -pg 1 -lvl 3 -y 50
+preplace inst TimerSYS -pg 1 -lvl 1 -y 40 -regy -20
+preplace inst TimerSYS.mm_clock_crossing_bridge_0 -pg 1 -lvl 2 -y 30
+preplace inst TimerSYS.Timer_clk -pg 1 -lvl 1 -y 110
+preplace inst TimerSYS.Slave_Clk -pg 1 -lvl 1 -y 50
+preplace inst TimerSYS.timer_0 -pg 1 -lvl 3 -y 250
+preplace netloc EXPORT<net_container>TimerSYS</net_container>(SLAVE)TimerSYS.timer_2_irq,(SLAVE)timer_2.irq) 1 0 3 NJ 180 NJ 160 NJ
+preplace netloc EXPORT<net_container>TimerSYS</net_container>(SLAVE)Slave_Clk.clk_in_reset,(SLAVE)TimerSYS.slave_reset) 1 0 1 NJ
+preplace netloc EXPORT<net_container>TimerSYS</net_container>(SLAVE)TimerSYS.timer_reset,(SLAVE)Timer_clk.clk_in_reset) 1 0 1 NJ
+preplace netloc POINT_TO_POINT<net_container>TimerSYS</net_container>(SLAVE)mm_clock_crossing_bridge_0.s0_reset,(MASTER)Slave_Clk.clk_reset) 1 1 1 300
+preplace netloc EXPORT<net_container>TimerSYS</net_container>(SLAVE)Timer_clk.clk_in,(SLAVE)TimerSYS.timer_clk) 1 0 1 NJ
+preplace netloc FAN_OUT<net_container>TimerSYS</net_container>(SLAVE)timer_1.clk,(SLAVE)timer_0.clk,(MASTER)Timer_clk.clk,(SLAVE)timer_2.clk,(SLAVE)mm_clock_crossing_bridge_0.m0_clk) 1 1 2 360 200 610
+preplace netloc EXPORT<net_container>TimerSYS</net_container>(SLAVE)TimerSYS.timer_1_irq,(SLAVE)timer_1.irq) 1 0 3 NJ 200 NJ 180 NJ
+preplace netloc EXPORT<net_container>TimerSYS</net_container>(SLAVE)timer_0.irq,(SLAVE)TimerSYS.timer_0_irq) 1 0 3 NJ 280 NJ 280 NJ
+preplace netloc EXPORT<net_container>TimerSYS</net_container>(SLAVE)TimerSYS.slave_clk,(SLAVE)Slave_Clk.clk_in) 1 0 1 NJ
+preplace netloc EXPORT<net_container>TimerSYS</net_container>(SLAVE)TimerSYS.mapped_slave,(SLAVE)mm_clock_crossing_bridge_0.s0) 1 0 2 NJ 40 NJ
+preplace netloc POINT_TO_POINT<net_container>TimerSYS</net_container>(MASTER)Slave_Clk.clk,(SLAVE)mm_clock_crossing_bridge_0.s0_clk) 1 1 1 320
+preplace netloc FAN_OUT<net_container>TimerSYS</net_container>(SLAVE)timer_1.reset,(MASTER)Timer_clk.clk_reset,(SLAVE)mm_clock_crossing_bridge_0.m0_reset,(SLAVE)timer_0.reset,(SLAVE)timer_2.reset) 1 1 2 380 300 630
+preplace netloc FAN_OUT<net_container>TimerSYS</net_container>(SLAVE)timer_1.s1,(MASTER)mm_clock_crossing_bridge_0.m0,(SLAVE)timer_0.s1,(SLAVE)timer_2.s1) 1 2 1 570
+levelinfo -pg 1 0 90 750
+levelinfo -hier TimerSYS 100 130 440 660 740

@@ -1,0 +1,9 @@
+	component ADC_pll is
+		port (
+			clk_clk       : in  std_logic := 'X'; -- clk
+			clk_320m_clk  : out std_logic;        -- clk
+			clk_80m_clk   : out std_logic;        -- clk
+			reset_reset_n : in  std_logic := 'X'  -- reset_n
+		);
+	end component ADC_pll;
+

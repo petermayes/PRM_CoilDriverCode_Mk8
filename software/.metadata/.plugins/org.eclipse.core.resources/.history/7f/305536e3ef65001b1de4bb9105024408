@@ -1,0 +1,138 @@
+/*
+ * CurrentCTRL_Handler.c
+ *
+ *  Created on: 3 Feb 2021
+ *      Author: Pete.Mayes
+ */
+
+#include "system.h"
+#include "alt_types.h"
+#include "altera_avalon_pio_regs.h"
+
+#include "..\Includes\Types.h"
+#include "..\Drivers\GPIO_Driver.h"
+
+
+#if 0
+
+/*------------------------------------------------------------------------------
+ * PM_MachineDriveStateCtrl
+ *
+ * ----------------------------------------------------------------------------*/
+Uint16 PM_MachineDriveStateCtrl(Uint16 TargetDriveAddress)
+{
+static Uint32 InitDelayCount = 0;
+
+	switch (DriveData[TargetDriveAddress].DriveState)
+		{
+			case PM_MOTOR_INITIALISATION:
+
+				if ((InitDelayCount++ > 2500) && (TRUE))
+					{
+						if (DriveData[TargetDriveAddress].InitialisationCompleteFlag && ControlSupplyRailsInBounds(TargetDriveAddress))
+							DriveData[TargetDriveAddress].DriveState = PM_MOTOR_FIRST_FAULT_RESET;
+					}
+
+				// this delay is so long as there is a disturbacnce on the -10V ref measurement after the code is started, why?????
+				// stopping the on-board LED flashing stops the disturbance
+				// the current for the leds is sourced from the psu, but must disturbe the psu enough to effect the ref
+
+				break;
+
+			case PM_MOTOR_FIRST_FAULT_RESET:  // added as the ADC readback block powers up into a trip state, which stops the DAC from initialising
+
+				DriveData[TargetDriveAddress].ResetFaultFlag = TRUE;
+
+				if ((InitDelayCount++ > 2500) && (TRUE))
+					{
+						DriveData[TargetDriveAddress].DriveState = PM_MOTOR_INIT;
+					}
+
+				break;
+
+			case PM_MOTOR_INIT:
+
+				IOWR_ALTERA_AVALON_PIO_SET_BITS(CPU_TESTPOINTS_BASE, 0x8000);
+
+				for (InitDelayCount = 0; InitDelayCount < 2; InitDelayCount++)
+				{
+					IOWR_ALTERA_AVALON_PIO_SET_BITS(CPU_TESTPOINTS_BASE, 0x8000);
+				}
+				IOWR_ALTERA_AVALON_PIO_CLEAR_BITS(CPU_TESTPOINTS_BASE, 0x8000);
+
+				DriveData[TargetDriveAddress].DriveState = PM_MOTOR_FAULTRESET;
+				// get adc offset voltages
+
+				// wait until the 15V control supplies have been established.
+
+
+
+			break;
+
+			case PM_MOTOR_DISABLED:
+
+				if (DriveData[TargetDriveAddress].UART_Data.DriveStateDemand & DRIVE_STATE_COMMAND_MOVE_TO_RUN_STATE)
+					{
+					DriveData[TargetDriveAddress].DriveState = PM_MOTOR_ENABLED;
+					}
+
+				if (DriveData[TargetDriveAddress].FaultFlags)
+					{
+					DriveData[TargetDriveAddress].DriveState = PM_MOTOR_FAULT;
+					}
+
+				DriveData[TargetDriveAddress].SpeedLoop.Gains.ItermSum = 0;
+				DriveData[TargetDriveAddress].PositionLoop.Gains.ItermSum = 0;
+//				PreviousDriveState[TargetDriveAddress] = TRUE;
+
+			//	SpeedLoopParameters[TargetDriveAddress].SignedUnEnergisedDemand = SpeedData[TargetDriveAddress].RAW_FPGA_Speedreading;
+			//	PositionLoopParameters[TargetDriveAddress].SignedUnEnergisedDemand = DriveData[TargetDriveAddress].PositionLoop.ActualPosition;
+
+			break;
+
+			case PM_MOTOR_ENABLED:
+			case PM_MOTOR_HOLD_CURRENT_POSITION:
+
+				if (DriveData[TargetDriveAddress].FaultFlags)
+					{
+					DriveData[TargetDriveAddress].DriveState = PM_MOTOR_FAULT;
+					}
+
+				else if ((DriveData[TargetDriveAddress].UART_Data.DriveStateDemand & DRIVE_STATE_COMMAND_MOVE_TO_STOPPED_STATE) == DRIVE_STATE_COMMAND_MOVE_TO_STOPPED_STATE)
+					{
+					DriveData[TargetDriveAddress].DriveState = PM_MOTOR_DISABLED;
+					}
+
+				else if (DriveData[TargetDriveAddress].UART_Data.DriveStateDemand & DRIVE_STATE_COMMAND_MOVE_TO_RUN_STATE)
+					{
+					DriveData[TargetDriveAddress].DriveState = PM_MOTOR_ENABLED;
+					}
+
+			break;
+
+			case PM_MOTOR_FAULT:
+
+				if (DriveData[TargetDriveAddress].UART_Data.DriveStateDemand & DRIVE_STATE_COMMAND_MOVE_TO_RESET_FAULT_STATE)
+					DriveData[TargetDriveAddress].DriveState = PM_MOTOR_FAULTRESET;
+
+			break;
+
+			case PM_MOTOR_FAULTRESET:
+			//	ToggleFaultResetLine(TargetDriveAddress);
+				DriveData[TargetDriveAddress].ResetFaultFlag = TRUE;
+				DriveData[TargetDriveAddress].DriveState = PM_MOTOR_DISABLED;
+				ParameterFloatTable[INPUT_TABLE][PARAMETER_DRIVE_STATE_DEMAND] = 0;
+			//	ResetFaultFlags(TargetDriveAddress);
+			break;
+
+			default:
+			//	ParameterFloatTable[TargetDriveAddress][OUTPUT_TABLE][43] = (float)DriveData[TargetDriveAddress].DriveState;
+				break;
+		}
+
+return 0;
+	}
+
+#endif
+
+/* --------------------------------------- eof -----------------------------------------*/

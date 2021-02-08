@@ -1,0 +1,504 @@
+
+CONSTANT RESET_STATE 														= 0;
+CONSTANT NEW_DATA_STATE														= 1;
+CONSTANT	IDLE_NIBBLE_TEST_STATE											= 2;
+CONSTANT	WRITE_DATA_TO_FIFO_STATE										= 3;
+CONSTANT	WAIT_FOR_NEW_DATA_INACTIVE										= 4;
+CONSTANT TX_IDLE_NIBBLE_TEST_STATE										= 5;
+CONSTANT	WRITE_TX_DATA_TO_FIFO_STATE									= 6;
+CONSTANT WAIT_FOR_TX_NEW_DATA_INACTIVE									= 7;
+
+CONSTANT IDLE_DATA_STATE													= 1;
+CONSTANT	READ_FIFO_CSR_STATE												= 2;
+CONSTANT	READ_FIFO_DATA_STATE												= 3;
+CONSTANT	TEST_FOR_EMPTY_FIFO_DATA_STATE								= 4;
+CONSTANT UPDATE_DATA_STATE													= 5;
+CONSTANT WAIT_STATE															= 6;
+
+
+SUBDESIGN FIFO_4B5B_Controller
+(
+	Reset													: input;
+	Input_5B_data[9..0]								: input;
+	NewdataFlag											: input;
+	FIFO_WaitRequest									: input;
+	FIFO_CSR_Data[31..0]								: input;
+	FIFO_ReadData[15..0]								: input;
+	TX_Active											: input;
+	NewTXdataFlag										: input;
+	TX_5B_data[9..0]									: input;	
+	clk													: input;
+
+	OutputData[15..0]									: output;
+	NewdataFlag_Sync									: output;
+	FIFO_Write											: output;
+	FIFO_State[3..0]									: output;
+	TX_BitCount[3..0]									: output;
+	TX_Data												: output;
+	DebugTX_UART										: output;
+	FIFO_TX_StateMode[3..0]							: output;
+	FIFO_Read											: output;
+	NextNibbleInputData[9..0]						: output;
+	
+)
+
+VARIABLE
+
+	FIFOStateMode_dffe[3..0]						: dffe;
+	FIFO_TX_StateMode_dffe[3..0]					: dffe;
+	FIFO_TX_ClkEn_node								: node;
+	
+	Input_data_buffer_dff[1..0][9..0]			: dff;
+	NewdataFlagBuffer_dff[1..0]					: dff;
+	
+	FIFO_Write_dff										: dff;
+	
+	TX_BitCount_dff[3..0]							: dff;
+	NibbleInputData_dffe[9..0]						: dffe;
+	NextNibbleInputData_dffe[9..0]				: dffe;	
+	NibbleInputData_En_node							: node;
+	
+	DebugTX_UART_node									: node;
+	DebugTX_UART_dff									: dff;
+	DebugUART_dffe[7..0]								: dffe;
+	NextDebugUART_dffe[7..0]						: dffe;
+	
+	FIFO_Read_dff										: dff;
+	
+	-- ************************************************************	
+
+
+	
+	
+BEGIN 
+
+
+	Input_data_buffer_dff[][].clk = clk;
+	Input_data_buffer_dff[0][].d = Input_5B_data[9..0];	
+	Input_data_buffer_dff[1][].d = Input_data_buffer_dff[0][].q;	
+	
+	
+	if (TX_Active == vcc) then 
+	
+			OutputData[9..0] = TX_5B_data[];
+			OutputData[15..10] = 0;	
+	
+	
+	else
+	
+			OutputData[9..0] = Input_data_buffer_dff[1][].q;
+			OutputData[15..10] = 0;
+			
+	end if;
+
+	
+	NewdataFlagBuffer_dff[].clk = clk;
+	NewdataFlagBuffer_dff[0].d = NewdataFlag;	
+	NewdataFlagBuffer_dff[1].d = NewdataFlagBuffer_dff[0].q;	
+	NewdataFlag_Sync = NewdataFlagBuffer_dff[1].q;	
+	
+	
+	FIFOStateMode_dffe[].clk = clk;
+	FIFOStateMode_dffe[].ena = vcc;
+
+	FIFO_State[3..0] = FIFOStateMode_dffe[].q;
+	
+	FIFO_Write_dff.clk = clk;
+	FIFO_Write = FIFO_Write_dff.q;
+	
+	
+	TX_BitCount_dff[].clk = clk;
+	TX_BitCount[] = TX_BitCount_dff[].q;
+	
+	if (TX_BitCount_dff[].q == 0) then
+		TX_BitCount_dff[].d = 9;
+		FIFO_TX_ClkEn_node = vcc;
+	else
+		TX_BitCount_dff[].d = TX_BitCount_dff[].q - 1;
+	end if;
+	
+	
+	
+	FIFO_TX_StateMode_dffe[].clk = clk;
+	FIFO_TX_StateMode_dffe[].ena = vcc;
+	
+	NibbleInputData_dffe[].clk = clk;
+	DebugUART_dffe[].clk = clk;
+	
+	NibbleInputData_dffe[].ena = NibbleInputData_En_node;
+	DebugUART_dffe[].ena = NibbleInputData_En_node;	
+	
+	NextNibbleInputData_dffe[].clk = clk;
+	NextDebugUART_dffe[].clk = clk;
+	
+	FIFO_TX_StateMode[] = FIFO_TX_StateMode_dffe[].q;
+	
+	FIFO_Read_dff.clk = clk;
+	FIFO_Read = FIFO_Read_dff.q;
+	
+	NextNibbleInputData[] = NextNibbleInputData_dffe[].q;
+	
+	if (Reset == vcc) then
+	
+	
+		case FIFO_TX_StateMode_dffe[].q is
+
+			when RESET_STATE =>
+	
+				FIFO_TX_StateMode_dffe[].d = IDLE_DATA_STATE; -- 
+				
+					NextNibbleInputData_dffe[].d = B"1111100000";
+					NextNibbleInputData_dffe[].ena = vcc;	
+		
+					NextDebugUART_dffe[].d = 255;
+					NextDebugUART_dffe[].ena = vcc;	
+				
+				
+			-- ************************************************************					
+			-- ************************************************************	
+				
+			when IDLE_DATA_STATE =>  
+			
+				if (TX_BitCount_dff[].q == 0) then
+			
+					FIFO_TX_StateMode_dffe[].d = READ_FIFO_CSR_STATE; -- 
+					
+					NibbleInputData_dffe[9..0].d = NextNibbleInputData_dffe[].q; 
+					NibbleInputData_En_node = vcc;
+
+					DebugUART_dffe[].d = NextDebugUART_dffe[].q;	
+					
+				else
+				
+					FIFO_TX_StateMode_dffe[].d = IDLE_DATA_STATE; -- 
+					
+				end if;
+
+			
+			-- ************************************************************					
+			-- ************************************************************	
+			
+			when READ_FIFO_CSR_STATE =>
+	
+				if (FIFO_CSR_Data[31..0] > 5) then
+				
+					FIFO_TX_StateMode_dffe[].d = READ_FIFO_DATA_STATE; -- 				
+				
+				
+				else
+				
+					NextNibbleInputData_dffe[].d = B"1111100000";
+					NextNibbleInputData_dffe[].ena = vcc;
+					
+					NextDebugUART_dffe[].d = 255;
+					NextDebugUART_dffe[].ena = vcc;					
+				
+					FIFO_TX_StateMode_dffe[].d = IDLE_DATA_STATE; -- 
+					
+				end if;
+				
+				
+			-- ************************************************************					
+			-- ************************************************************	
+	
+			when READ_FIFO_DATA_STATE =>
+	
+				FIFO_TX_StateMode_dffe[].d = WAIT_STATE; -- 	
+				FIFO_Read_dff.d = vcc;
+				
+							
+			-- ************************************************************					
+			-- ************************************************************	
+			
+			when WAIT_STATE =>
+	
+				FIFO_TX_StateMode_dffe[].d = UPDATE_DATA_STATE; -- 				
+				
+				
+			-- ************************************************************					
+			-- ************************************************************				
+		
+			when UPDATE_DATA_STATE =>  
+			
+				if (TX_BitCount_dff[].q == 0) then
+			
+					FIFO_TX_StateMode_dffe[].d = TEST_FOR_EMPTY_FIFO_DATA_STATE; -- 
+					
+					NibbleInputData_dffe[9..0].d = NextNibbleInputData_dffe[].q; 
+					NibbleInputData_En_node = vcc;
+
+					DebugUART_dffe[].d = NextDebugUART_dffe[].q;	
+					
+				else
+				
+					FIFO_TX_StateMode_dffe[].d = UPDATE_DATA_STATE; -- 
+					
+				end if;
+				
+									
+				NextNibbleInputData_dffe[].d = FIFO_ReadData[9..0];
+				NextNibbleInputData_dffe[].ena = vcc;
+
+				NextDebugUART_dffe[].d = FIFO_ReadData[7..0];
+				NextDebugUART_dffe[].ena = vcc;				
+
+			
+			-- ************************************************************					
+			-- ************************************************************		
+			
+			when TEST_FOR_EMPTY_FIFO_DATA_STATE =>
+	
+				if (FIFO_CSR_Data[31..0] == 0) then
+				
+					FIFO_TX_StateMode_dffe[].d = IDLE_DATA_STATE; -- 	
+					
+					NextNibbleInputData_dffe[].d = B"1111100000";
+					NextNibbleInputData_dffe[].ena = vcc;
+					
+					NextDebugUART_dffe[].d = 255;
+					NextDebugUART_dffe[].ena = vcc;					
+							
+				else
+								
+					FIFO_TX_StateMode_dffe[].d = READ_FIFO_DATA_STATE; -- 
+					
+				end if;			
+					
+				
+			when others =>
+			
+				FIFO_TX_StateMode_dffe[].d = IDLE_DATA_STATE; -- 
+
+			
+		end case;	
+	
+	else
+	
+		FIFO_TX_StateMode_dffe[].d = IDLE_DATA_STATE;
+	
+	end if;
+	
+							
+			-- ************************************************************				
+	
+	
+	
+
+	if (Reset == vcc) then
+	
+	
+		case FIFOStateMode_dffe[].q is
+
+			when RESET_STATE =>
+	
+				FIFOStateMode_dffe[].d = NEW_DATA_STATE; -- 
+				
+				
+			-- ************************************************************					
+			-- ************************************************************	
+				
+			when NEW_DATA_STATE =>  
+			
+				if (TX_Active == vcc) then
+				
+						if (NewTXdataFlag == vcc) then
+
+							FIFOStateMode_dffe[].d = TX_IDLE_NIBBLE_TEST_STATE;
+							
+						else
+			
+							FIFOStateMode_dffe[].d = NEW_DATA_STATE;			
+			
+						end if;
+				
+				else
+			
+						if (NewdataFlagBuffer_dff[1].q == vcc) then
+
+							FIFOStateMode_dffe[].d = IDLE_NIBBLE_TEST_STATE;
+							
+						else
+			
+							FIFOStateMode_dffe[].d = NEW_DATA_STATE;			
+			
+						end if;	
+						
+				end if;
+			
+				
+			-- ************************************************************					
+			-- ************************************************************		
+	
+			when IDLE_NIBBLE_TEST_STATE =>  
+			
+				if (Input_data_buffer_dff[1][9..0].q == 992) then
+	
+					FIFOStateMode_dffe[].d = WAIT_FOR_NEW_DATA_INACTIVE;	
+					
+				else
+			
+					FIFOStateMode_dffe[].d = WRITE_DATA_TO_FIFO_STATE;						
+	
+				end if;	
+				
+	
+				
+			-- ************************************************************					
+			-- ************************************************************		
+			
+			when WRITE_DATA_TO_FIFO_STATE =>  
+			
+							
+				FIFOStateMode_dffe[].d = WAIT_FOR_NEW_DATA_INACTIVE;	
+				
+				FIFO_Write_dff.d = !FIFO_WaitRequest;
+					
+				
+			-- ************************************************************					
+			-- ************************************************************	
+	
+			when WAIT_FOR_NEW_DATA_INACTIVE =>  
+			
+				
+				if (NewdataFlagBuffer_dff[1].q == gnd) then
+
+					FIFOStateMode_dffe[].d = NEW_DATA_STATE;
+					
+				else
+	
+					FIFOStateMode_dffe[].d = WAIT_FOR_NEW_DATA_INACTIVE;			
+	
+				end if;
+				
+			-- ************************************************************					
+			-- ************************************************************	
+			
+			
+			when TX_IDLE_NIBBLE_TEST_STATE =>  
+			
+				if (TX_5B_data[9..0] == 992) then
+	
+					FIFOStateMode_dffe[].d = WAIT_FOR_TX_NEW_DATA_INACTIVE;	
+					
+				else
+			
+					FIFOStateMode_dffe[].d = WRITE_TX_DATA_TO_FIFO_STATE;						
+	
+				end if;	
+				
+	
+				
+			-- ************************************************************					
+			-- ************************************************************		
+			
+			when WRITE_TX_DATA_TO_FIFO_STATE =>  
+			
+							
+				FIFOStateMode_dffe[].d = WAIT_FOR_TX_NEW_DATA_INACTIVE;	
+				
+				FIFO_Write_dff.d = !FIFO_WaitRequest;
+					
+				
+			-- ************************************************************					
+			-- ************************************************************	
+	
+			when WAIT_FOR_TX_NEW_DATA_INACTIVE =>  
+			
+				
+				if (NewTXdataFlag == gnd) then
+
+					FIFOStateMode_dffe[].d = NEW_DATA_STATE;
+					
+				else
+	
+					FIFOStateMode_dffe[].d = WAIT_FOR_TX_NEW_DATA_INACTIVE;			
+	
+				end if;
+				
+			-- ************************************************************					
+			-- ************************************************************			
+					
+				
+			when others =>
+			
+				FIFOStateMode_dffe[].d = RESET_STATE; -- 
+
+			
+		end case;	
+	
+	else
+	
+		FIFOStateMode_dffe[].d = RESET_STATE;
+	
+	end if;
+	
+							
+			-- ************************************************************	
+
+			
+
+	-- *************************************************************
+	-- *																				*
+	-- *																				*
+	-- *																				*
+	-- *																				*		
+	-- *************************************************************	
+	
+	
+	case TX_BitCount_dff[].q is
+		
+				when 0 =>		
+					TX_Data = NibbleInputData_dffe[0].q;
+					DebugTX_UART_node = vcc;  -- stop bit
+
+				when 1 =>		
+					TX_Data = NibbleInputData_dffe[1].q;
+					DebugTX_UART_node = DebugUART_dffe[7].q;
+		
+				when 2 =>		
+					TX_Data = NibbleInputData_dffe[2].q;
+					DebugTX_UART_node = DebugUART_dffe[6].q;					
+			
+				when 3 =>		
+					TX_Data = NibbleInputData_dffe[3].q;
+					DebugTX_UART_node = DebugUART_dffe[5].q;					
+			
+				when 4 =>		
+					TX_Data = NibbleInputData_dffe[4].q;
+					DebugTX_UART_node = DebugUART_dffe[4].q;
+				
+				when 5 =>		
+					TX_Data = NibbleInputData_dffe[5].q;
+					DebugTX_UART_node = DebugUART_dffe[3].q;					
+
+				when 6 =>		
+					TX_Data = NibbleInputData_dffe[6].q;
+					DebugTX_UART_node = DebugUART_dffe[2].q;					
+		
+				when 7 =>		
+					TX_Data = NibbleInputData_dffe[7].q;
+					DebugTX_UART_node = DebugUART_dffe[1].q;					
+			
+				when 8 =>		
+					TX_Data = NibbleInputData_dffe[8].q;	
+					DebugTX_UART_node = DebugUART_dffe[0].q;					
+			
+				when 9 =>		
+					TX_Data = NibbleInputData_dffe[9].q;
+					DebugTX_UART_node = gnd;  -- startbit
+			
+			-- ************************************************************								
+			
+				when others =>
+		
+					DebugTX_UART_node = gnd;
+					
+		end case;
+		
+	DebugTX_UART_dff.d = DebugTX_UART_node;
+	DebugTX_UART_dff.clk = clk;	
+	DebugTX_UART = DebugTX_UART_dff.q;			
+			
+
+	
+END;

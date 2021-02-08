@@ -1,0 +1,16 @@
+
+SUBDESIGN OverCurrentTripFnc
+(
+	reset										: input;
+	Synch_Pulse								: input;
+	Fault_Reset								: input;
+	ADC_Shift_Data_In[19..0]			: input;
+	PositiveCurrentTrip[19..0]			: input;
+	FilteredInputCurrent[19..0]		: input;
+
+
+				if (FilteredInputCurrent[19] == gnd) then				
+					StateMode_dff[].d = POSITIVE_TEST;							
+				else				
+					StateMode_dff[].d = NEGATIVE_TEST;				
+				end if;

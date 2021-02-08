@@ -1,0 +1,1240 @@
+Archive member included to satisfy reference by file (symbol)
+
+../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strcmp.o)
+                              obj/default/Handlers/USB_Data_Handler.o (strcmp)
+../Temp_Inline_BSP/\libhal_bsp.a(alt_main.o)
+                              ../Temp_Inline_BSP//obj/HAL/src/crt0.o (alt_main)
+../Temp_Inline_BSP/\libhal_bsp.a(alt_sys_init.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(alt_main.o) (alt_irq_init)
+../Temp_Inline_BSP/\libhal_bsp.a(altera_msgdma.o)
+                              obj/default/Handlers/msgDMA_Handler.o (alt_msgdma_construct_extended_mm_to_mm_descriptor)
+../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_0_vector_tbl.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(alt_sys_init.o) (VIC_0_VECTOR_TABLE)
+../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_funnel_non_preemptive.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_0_vector_tbl.o) (alt_shadow_non_preemptive_interrupt)
+../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_irq_init.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(alt_sys_init.o) (alt_vic_irq_init)
+../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_isr_register.o)
+                              obj/default/Drivers/TimerDriver.o (alt_ic_isr_register)
+../Temp_Inline_BSP/\libhal_bsp.a(alt_busy_sleep.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(altera_msgdma.o) (alt_busy_sleep)
+../Temp_Inline_BSP/\libhal_bsp.a(alt_close.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(alt_main.o) (close)
+../Temp_Inline_BSP/\libhal_bsp.a(alt_dcache_flush.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(altera_msgdma.o) (alt_dcache_flush)
+../Temp_Inline_BSP/\libhal_bsp.a(alt_dev.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(alt_close.o) (alt_fd_list)
+../Temp_Inline_BSP/\libhal_bsp.a(alt_dev_llist_insert.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(altera_msgdma.o) (alt_dev_llist_insert)
+../Temp_Inline_BSP/\libhal_bsp.a(alt_do_ctors.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(alt_main.o) (_do_ctors)
+../Temp_Inline_BSP/\libhal_bsp.a(alt_do_dtors.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(alt_main.o) (_do_dtors)
+../Temp_Inline_BSP/\libhal_bsp.a(alt_errno.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(altera_msgdma.o) (alt_errno)
+../Temp_Inline_BSP/\libhal_bsp.a(alt_find_dev.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(altera_msgdma.o) (alt_find_dev)
+../Temp_Inline_BSP/\libhal_bsp.a(alt_printf.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(altera_msgdma.o) (alt_printf)
+../Temp_Inline_BSP/\libhal_bsp.a(alt_putchar.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(alt_printf.o) (alt_putchar)
+../Temp_Inline_BSP/\libhal_bsp.a(alt_release_fd.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(alt_close.o) (alt_release_fd)
+../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-atexit.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(alt_main.o) (atexit)
+../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-exit.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(alt_main.o) (exit)
+../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-impure.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(alt_putchar.o) (_impure_ptr)
+../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-int_errno.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(altera_msgdma.o) (errno)
+../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-memcmp.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(alt_find_dev.o) (memcmp)
+../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-putc.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(alt_putchar.o) (putc)
+../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strlen.o)
+                              ../Temp_Inline_BSP/\libhal_bsp.a(alt_find_dev.o) (strlen)
+../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__atexit.o)
+                              ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-atexit.o) (__register_exitproc)
+../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__call_atexit.o)
+                              ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-exit.o) (__call_exitprocs)
+../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-fvwrite_small_dev.o)
+                              ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-putc.o) (__sfvwrite_small_dev)
+../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-writer.o)
+                              ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-fvwrite_small_dev.o) (_write_r)
+../Temp_Inline_BSP/\libhal_bsp.a(alt_exit.o)
+                              ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-exit.o) (_exit)
+../Temp_Inline_BSP/\libhal_bsp.a(alt_write.o)
+                              ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-writer.o) (write)
+
+Allocating common symbols
+Common symbol       size              file
+
+DMA_Stack           0x140             obj/default/Handlers/msgDMA_Handler.o
+errno               0x4               ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-int_errno.o)
+FIFO_to_DDR3_Descriptor
+                    0x20              obj/default/Handlers/msgDMA_Handler.o
+stringlength        0x4               obj/default/main.o
+MediumTimerDEV      0x20              obj/default/Handlers/TimerHandler.o
+FIFO_MSGDMA         0x4               obj/default/Handlers/msgDMA_Handler.o
+SlowTimerDEV        0x20              obj/default/Handlers/TimerHandler.o
+USB_Repeat_edge_capture
+                    0x4               obj/default/Drivers/USB_Data_Driver.o
+alt_vic_dev_list    0x4               ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_irq_init.o)
+DMA_Stack_Entry     0x14              obj/default/Handlers/msgDMA_Handler.o
+ptr2Uint32          0x4               obj/default/main.o
+FastTimerDEV        0x20              obj/default/Handlers/TimerHandler.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+reset            0x0000000000010000 0x0000000000000020
+Program_Memory   0x0000000000010020 0x0000000000007fe0
+FirstTextArea    0x0000000000018000 0x0000000000000040
+SecondTextArea   0x0000000000018040 0x0000000000000040
+Register_DataSpace 0x0000000000018080 0x0000000000000f80
+Second_Data_Memory_Page 0x0000000000019000 0x0000000000001000
+Data_Memory      0x000000000001a000 0x0000000000000400
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD ../Temp_Inline_BSP//obj/HAL/src/crt0.o
+LOAD obj/default/Drivers/Calculations_Driver.o
+LOAD obj/default/Drivers/DDR3_Driver.o
+LOAD obj/default/Drivers/FIFO_Driver.o
+LOAD obj/default/Drivers/FPGA_Driver.o
+LOAD obj/default/Drivers/GPIO_Drivers.o
+LOAD obj/default/Drivers/TimerDriver.o
+LOAD obj/default/Drivers/USB_Data_Driver.o
+LOAD obj/default/Handlers/CurrentCTRL_Handler.o
+LOAD obj/default/Handlers/DDR3_Handler.o
+LOAD obj/default/Handlers/RegisterData_RX_Handler.o
+LOAD obj/default/Handlers/Registers_Handler.o
+LOAD obj/default/Handlers/TimerHandler.o
+LOAD obj/default/Handlers/USB_Data_Handler.o
+LOAD obj/default/Handlers/msgDMA_Handler.o
+LOAD obj/default/main.o
+LOAD c:/intelfpga_lite/18.1/nios2eds/bin/gnu/h-x86_64-mingw32/bin/../lib/gcc/nios2-elf/5.3.0/../../../../../H-x86_64-mingw32/nios2-elf/lib/mhw-mulx\libstdc++.a
+LOAD ../Temp_Inline_BSP//newlib/nios2-elf/lib\libm.a
+LOAD c:/intelfpga_lite/18.1/nios2eds/bin/gnu/h-x86_64-mingw32/bin/../lib/gcc/nios2-elf/5.3.0/mhw-mulx\libgcc.a
+START GROUP
+LOAD ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a
+LOAD c:/intelfpga_lite/18.1/nios2eds/bin/gnu/h-x86_64-mingw32/bin/../lib/gcc/nios2-elf/5.3.0/mhw-mulx\libgcc.a
+LOAD ../Temp_Inline_BSP/\libhal_bsp.a
+LOAD ../Temp_Inline_BSP//newlib/nios2-elf/lib\libm.a
+END GROUP
+LOAD c:/intelfpga_lite/18.1/nios2eds/bin/gnu/h-x86_64-mingw32/bin/../lib/gcc/nios2-elf/5.3.0/mhw-mulx\libgcc.a
+                0x0000000000004000                __alt_mem_USB_Data_SYS_USB_RX_RAM = 0x4000
+                0x0000000000006000                __alt_mem_Parameter_SYS_Parameter_RX_RAM = 0x6000
+                0x0000000000010000                __alt_mem_Program_Memory = 0x10000
+                0x0000000000018000                __alt_mem_Data_Memory = 0x18000
+                0x000000000101c000                __alt_mem_Parameter_SYS_Parameter_TX_RAM = 0x101c000
+                0x0000000002000000                __alt_mem_CurrCTRL_SYS_CurrCTRL_Register_RAM = 0x2000000
+
+.entry          0x0000000000010000       0x20
+ *(.entry)
+ .entry         0x0000000000010000       0x20 ../Temp_Inline_BSP//obj/HAL/src/crt0.o
+                0x0000000000010000                __reset
+
+.exceptions     0x0000000000010020        0x0
+                [!provide]                        PROVIDE (__ram_exceptions_start, ABSOLUTE (.))
+                0x0000000000010020                . = ALIGN (0x20)
+ *(.irq)
+ *(.exceptions.entry.label)
+ *(.exceptions.entry.user)
+ *(.exceptions.entry.ecc_fatal)
+ *(.exceptions.entry)
+ *(.exceptions.irqtest.user)
+ *(.exceptions.irqtest)
+ *(.exceptions.irqhandler.user)
+ *(.exceptions.irqhandler)
+ *(.exceptions.irqreturn.user)
+ *(.exceptions.irqreturn)
+ *(.exceptions.notirq.label)
+ *(.exceptions.notirq.user)
+ *(.exceptions.notirq)
+ *(.exceptions.soft.user)
+ *(.exceptions.soft)
+ *(.exceptions.unknown.user)
+ *(.exceptions.unknown)
+ *(.exceptions.exit.label)
+ *(.exceptions.exit.user)
+ *(.exceptions.exit)
+ *(.exceptions)
+                [!provide]                        PROVIDE (__ram_exceptions_end, ABSOLUTE (.))
+                [!provide]                        PROVIDE (__flash_exceptions_start, LOADADDR (.exceptions))
+
+.SecondTextArea
+                0x0000000000018040       0x40
+                [!provide]                        PROVIDE (_alt_partition_SecondTextArea_start, ABSOLUTE (.))
+ *(.SecondTextArea .SecondTextArea.*)
+ .SecondTextArea
+                0x0000000000018040       0x40 obj/default/Handlers/Registers_Handler.o
+                0x0000000000018040                SecondTextArea
+                0x0000000000018080                . = ALIGN (0x4)
+                [!provide]                        PROVIDE (_alt_partition_SecondTextArea_end, ABSOLUTE (.))
+
+.FirstTextArea  0x0000000000018000       0x40
+                [!provide]                        PROVIDE (_alt_partition_FirstTextArea_start, ABSOLUTE (.))
+ *(.FirstTextArea .FirstTextArea.*)
+ .FirstTextArea
+                0x0000000000018000       0x40 obj/default/Handlers/Registers_Handler.o
+                0x0000000000018000                FirstTextArea
+                0x0000000000018040                . = ALIGN (0x4)
+                [!provide]                        PROVIDE (_alt_partition_FirstTextArea_end, ABSOLUTE (.))
+
+.Second_Data_Memory_Page
+                0x0000000000019000        0x4
+                [!provide]                        PROVIDE (_alt_partition_Second_Data_Memory_Page_start, ABSOLUTE (.))
+ *(.Second_Data_Memory_Page .Second_Data_Memory_Page.*)
+ .Second_Data_Memory_Page
+                0x0000000000019000        0x4 obj/default/Handlers/Registers_Handler.o
+                0x0000000000019000                CurrCTRLDebugdata
+                0x0000000000019004                . = ALIGN (0x4)
+                [!provide]                        PROVIDE (_alt_partition_Second_Data_Memory_Page_end, ABSOLUTE (.))
+
+.Register_DataSpace
+                0x0000000000018080      0x330
+                [!provide]                        PROVIDE (_alt_partition_Register_DataSpace_start, ABSOLUTE (.))
+ *(.Register_DataSpace .Register_DataSpace.*)
+ .Register_DataSpace
+                0x0000000000018080      0x330 obj/default/Handlers/Registers_Handler.o
+                0x0000000000018080                Registers
+                0x00000000000183b0                . = ALIGN (0x4)
+                [!provide]                        PROVIDE (_alt_partition_Register_DataSpace_end, ABSOLUTE (.))
+
+.text           0x0000000000010020     0x3d9c
+                [!provide]                        PROVIDE (stext, ABSOLUTE (.))
+ *(.interp)
+ *(.hash)
+ *(.dynsym)
+ *(.dynstr)
+ *(.gnu.version)
+ *(.gnu.version_d)
+ *(.gnu.version_r)
+ *(.rel.init)
+ *(.rela.init)
+ *(.rel.text .rel.text.* .rel.gnu.linkonce.t.*)
+ *(.rela.text .rela.text.* .rela.gnu.linkonce.t.*)
+ *(.rel.fini)
+ *(.rela.fini)
+ *(.rel.rodata .rel.rodata.* .rel.gnu.linkonce.r.*)
+ *(.rela.rodata .rela.rodata.* .rela.gnu.linkonce.r.*)
+ *(.rel.data .rel.data.* .rel.gnu.linkonce.d.*)
+ *(.rela.data .rela.data.* .rela.gnu.linkonce.d.*)
+ *(.rel.tdata .rel.tdata.* .rel.gnu.linkonce.td.*)
+ *(.rela.tdata .rela.tdata.* .rela.gnu.linkonce.td.*)
+ *(.rel.tbss .rel.tbss.* .rel.gnu.linkonce.tb.*)
+ *(.rela.tbss .rela.tbss.* .rela.gnu.linkonce.tb.*)
+ *(.rel.ctors)
+ *(.rela.ctors)
+ *(.rel.dtors)
+ *(.rela.dtors)
+ *(.rel.got)
+ *(.rela.got)
+ *(.rel.sdata .rel.sdata.* .rel.gnu.linkonce.s.*)
+ *(.rela.sdata .rela.sdata.* .rela.gnu.linkonce.s.*)
+ *(.rel.sbss .rel.sbss.* .rel.gnu.linkonce.sb.*)
+ *(.rela.sbss .rela.sbss.* .rela.gnu.linkonce.sb.*)
+ *(.rel.sdata2 .rel.sdata2.* .rel.gnu.linkonce.s2.*)
+ *(.rela.sdata2 .rela.sdata2.* .rela.gnu.linkonce.s2.*)
+ *(.rel.sbss2 .rel.sbss2.* .rel.gnu.linkonce.sb2.*)
+ *(.rela.sbss2 .rela.sbss2.* .rela.gnu.linkonce.sb2.*)
+ *(.rel.bss .rel.bss.* .rel.gnu.linkonce.b.*)
+ *(.rela.bss .rela.bss.* .rela.gnu.linkonce.b.*)
+ *(.rel.plt)
+ *(.rela.plt)
+ *(.rel.dyn)
+ *(.init)
+ *(.plt)
+ *(.text .stub .text.* .gnu.linkonce.t.*)
+ .text          0x0000000000010020       0x78 ../Temp_Inline_BSP//obj/HAL/src/crt0.o
+                0x0000000000010020                _start
+ .text          0x0000000000010098       0x8c obj/default/Drivers/Calculations_Driver.o
+                0x0000000000010098                CalculateScalingfactors
+ .text          0x0000000000010124        0x8 obj/default/Drivers/DDR3_Driver.o
+                0x0000000000010124                Verify_DDR3_Status
+ .text          0x000000000001012c        0x0 obj/default/Drivers/FIFO_Driver.o
+ .text          0x000000000001012c       0xb0 obj/default/Drivers/FPGA_Driver.o
+                0x000000000001012c                CheckForFPGAFaultFlags
+                0x00000000000101d4                ControlSupplyRailsInBounds
+ .text          0x00000000000101dc      0x140 obj/default/Drivers/GPIO_Drivers.o
+                0x00000000000101dc                Set_TP1
+                0x00000000000101f0                Clear_TP1
+                0x0000000000010204                Set_TP2
+                0x0000000000010218                Clear_TP2
+                0x000000000001022c                Set_TP3
+                0x0000000000010240                Clear_TP3
+                0x0000000000010254                Set_TP4
+                0x0000000000010268                Clear_TP4
+                0x000000000001027c                Set_TP5
+                0x0000000000010290                Clear_TP5
+                0x00000000000102a4                Set_TP6
+                0x00000000000102b8                Clear_TP6
+                0x00000000000102cc                Set_TP7
+                0x00000000000102e0                Clear_TP7
+                0x00000000000102f4                Set_TP8
+                0x0000000000010308                Clear_TP8
+ .text          0x000000000001031c       0xb4 obj/default/Drivers/TimerDriver.o
+                0x000000000001034c                init_timer_interrupt
+ .text          0x00000000000103d0      0x140 obj/default/Drivers/USB_Data_Driver.o
+                0x00000000000103d0                USB_Data_GPIO_interrupt_irq_routine
+                0x00000000000104b8                USB_Data_GPIO_interrupt_init
+ .text          0x0000000000010510      0x634 obj/default/Handlers/CurrentCTRL_Handler.o
+                0x0000000000010510                Init_ControlLoopHandler
+                0x00000000000105b0                ControlLoopHandler
+ .text          0x0000000000010b44        0x0 obj/default/Handlers/DDR3_Handler.o
+ .text          0x0000000000010b44      0x1bc obj/default/Handlers/RegisterData_RX_Handler.o
+                0x0000000000010b44                RegisterDataRX_GPIO_interrupt_irq_routine
+                0x0000000000010c4c                Trigger_Parameter_Page_Transmission
+                0x0000000000010cb4                RegisterDataRX_GPIO_interrupt_init
+ .text          0x0000000000010d00      0x178 obj/default/Handlers/Registers_Handler.o
+                0x0000000000010d00                Init_Register_Module
+                0x0000000000010e04                ClearDriveStateRequest
+                0x0000000000010e18                UpdateControlLoopFPGA_Parameters
+                0x0000000000010e1c                UpdateRegisterData
+                0x0000000000010e5c                InputDemandHandler
+ .text          0x0000000000010e78      0x308 obj/default/Handlers/TimerHandler.o
+                0x00000000000110e4                Init_TimerHandler
+ .text          0x0000000000011180      0x404 obj/default/Handlers/USB_Data_Handler.o
+                0x0000000000011180                DataInterfaceOperatingModeStatemachine
+                0x00000000000114dc                GetPatternDataOperatingState
+                0x00000000000114e4                FT_600_CommsHandler
+                0x00000000000114ec                Decode_USB_Text_String
+ .text          0x0000000000011584      0x478 obj/default/Handlers/msgDMA_Handler.o
+                0x0000000000011680                Init_msgDMA_Module
+                0x00000000000116d4                Basic_Parameter_Transfer
+                0x00000000000117cc                UpdateDMA_WithFT600_RX_CMD
+                0x00000000000118cc                Trigger_FIFOmsgDMA_AsynchCall_2
+                0x0000000000011998                DMA_Handler
+ .text          0x00000000000119fc       0x98 obj/default/main.o
+                0x00000000000119fc                main
+ .text          0x0000000000011a94        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strcmp.o)
+ .text.strcmp   0x0000000000011a94       0xa0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strcmp.o)
+                0x0000000000011a94                strcmp
+ .text          0x0000000000011b34       0x4c ../Temp_Inline_BSP/\libhal_bsp.a(alt_main.o)
+                0x0000000000011b34                alt_main
+ .text          0x0000000000011b80       0x54 ../Temp_Inline_BSP/\libhal_bsp.a(alt_sys_init.o)
+                0x0000000000011b80                alt_irq_init
+                0x0000000000011bac                alt_sys_init
+ .text          0x0000000000011bd4     0x121c ../Temp_Inline_BSP/\libhal_bsp.a(altera_msgdma.o)
+                0x00000000000121f8                alt_msgdma_construct_standard_st_to_mm_descriptor
+                0x0000000000012238                alt_msgdma_construct_standard_mm_to_st_descriptor
+                0x0000000000012278                alt_msgdma_construct_standard_mm_to_mm_descriptor
+                0x00000000000122bc                alt_msgdma_construct_extended_st_to_mm_descriptor
+                0x0000000000012344                alt_msgdma_construct_extended_mm_to_st_descriptor
+                0x00000000000123cc                alt_msgdma_construct_extended_mm_to_mm_descriptor
+                0x0000000000012474                alt_msgdma_construct_prefetcher_standard_mm_to_mm_descriptor
+                0x00000000000124c8                alt_msgdma_construct_prefetcher_standard_st_to_mm_descriptor
+                0x0000000000012518                alt_msgdma_construct_prefetcher_standard_mm_to_st_descriptor
+                0x0000000000012568                alt_msgdma_construct_prefetcher_extended_st_to_mm_descriptor
+                0x0000000000012608                alt_msgdma_construct_prefetcher_extended_mm_to_st_descriptor
+                0x00000000000126a8                alt_msgdma_construct_prefetcher_extended_mm_to_mm_descriptor
+                0x000000000001276c                alt_msgdma_prefetcher_add_standard_desc_to_list
+                0x00000000000127f0                alt_msgdma_prefetcher_add_extended_desc_to_list
+                0x0000000000012894                alt_msgdma_prefetcher_set_std_list_own_by_hw_bits
+                0x000000000001293c                alt_msgdma_prefetcher_set_extd_list_own_by_hw_bits
+                0x00000000000129e0                alt_msgdma_start_prefetcher_with_list_addr
+                0x0000000000012b44                alt_msgdma_start_prefetcher_with_std_desc_list
+                0x0000000000012bc0                alt_msgdma_start_prefetcher_with_extd_desc_list
+                0x0000000000012c3c                alt_msgdma_open
+                0x0000000000012c88                alt_msgdma_init
+                0x0000000000012d68                alt_msgdma_register_callback
+                0x0000000000012d78                alt_msgdma_standard_descriptor_async_transfer
+                0x0000000000012d94                alt_msgdma_extended_descriptor_async_transfer
+                0x0000000000012db4                alt_msgdma_standard_descriptor_sync_transfer
+                0x0000000000012dd0                alt_msgdma_extended_descriptor_sync_transfer
+ .text          0x0000000000012df0       0xa0 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_0_vector_tbl.o)
+                0x0000000000012df0                VIC_0_VECTOR_TABLE
+ .text          0x0000000000012e90       0x24 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_funnel_non_preemptive.o)
+                0x0000000000012e90                alt_shadow_non_preemptive_interrupt
+ .text          0x0000000000012eb4       0xc4 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_irq_init.o)
+                0x0000000000012eb4                alt_vic_irq_init
+ .text          0x0000000000012f78       0x90 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_isr_register.o)
+                0x0000000000012f78                alt_ic_isr_register
+ .text          0x0000000000013008       0x6c ../Temp_Inline_BSP/\libhal_bsp.a(alt_busy_sleep.o)
+                0x0000000000013008                alt_busy_sleep
+ .text          0x0000000000013074       0xb8 ../Temp_Inline_BSP/\libhal_bsp.a(alt_close.o)
+                0x0000000000013074                close
+ .text          0x000000000001312c        0x4 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dcache_flush.o)
+                0x000000000001312c                alt_dcache_flush
+ .text          0x0000000000013130        0x8 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev.o)
+ .text          0x0000000000013138       0x74 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev_llist_insert.o)
+                0x0000000000013138                alt_dev_llist_insert
+ .text          0x00000000000131ac       0x78 ../Temp_Inline_BSP/\libhal_bsp.a(alt_do_ctors.o)
+                0x00000000000131ac                _do_ctors
+ .text          0x0000000000013224       0x78 ../Temp_Inline_BSP/\libhal_bsp.a(alt_do_dtors.o)
+                0x0000000000013224                _do_dtors
+ .text          0x000000000001329c        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_errno.o)
+ .text          0x000000000001329c       0x7c ../Temp_Inline_BSP/\libhal_bsp.a(alt_find_dev.o)
+                0x000000000001329c                alt_find_dev
+ .text          0x0000000000013318      0x214 ../Temp_Inline_BSP/\libhal_bsp.a(alt_printf.o)
+                0x0000000000013318                alt_printf
+ .text          0x000000000001352c       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(alt_putchar.o)
+                0x000000000001352c                alt_putchar
+ .text          0x000000000001354c       0x24 ../Temp_Inline_BSP/\libhal_bsp.a(alt_release_fd.o)
+                0x000000000001354c                alt_release_fd
+ .text          0x0000000000013570        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-atexit.o)
+ .text.atexit   0x0000000000013570       0x3c ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-atexit.o)
+                0x0000000000013570                atexit
+ .text          0x00000000000135ac        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-exit.o)
+ .text.exit     0x00000000000135ac       0x28 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-exit.o)
+                0x00000000000135ac                exit
+ .text          0x00000000000135d4        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-impure.o)
+ .text          0x00000000000135d4        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-int_errno.o)
+ .text          0x00000000000135d4        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-memcmp.o)
+ .text.memcmp   0x00000000000135d4       0xa4 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-memcmp.o)
+                0x00000000000135d4                memcmp
+ .text          0x0000000000013678        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-putc.o)
+ .text.putc     0x0000000000013678       0x6c ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-putc.o)
+                0x0000000000013678                putc
+ .text._putc_r  0x00000000000136e4       0x70 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-putc.o)
+                0x00000000000136e4                _putc_r
+ .text          0x0000000000013754        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strlen.o)
+ .text.strlen   0x0000000000013754       0x5c ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strlen.o)
+                0x0000000000013754                strlen
+ .text          0x00000000000137b0        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__atexit.o)
+ .text.__register_exitproc
+                0x00000000000137b0      0x1b4 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__atexit.o)
+                0x00000000000137b0                __register_exitproc
+ .text          0x0000000000013964        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__call_atexit.o)
+ .text.__call_exitprocs
+                0x0000000000013964      0x1f8 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__call_atexit.o)
+                0x0000000000013964                __call_exitprocs
+ .text          0x0000000000013b5c        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-fvwrite_small_dev.o)
+ .text.__sfvwrite_small_dev
+                0x0000000000013b5c      0x108 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-fvwrite_small_dev.o)
+                0x0000000000013b5c                __sfvwrite_small_dev
+ .text          0x0000000000013c64        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-writer.o)
+ .text._write_r
+                0x0000000000013c64       0x70 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-writer.o)
+                0x0000000000013c64                _write_r
+ .text          0x0000000000013cd4       0x14 ../Temp_Inline_BSP/\libhal_bsp.a(alt_exit.o)
+                0x0000000000013cd4                _exit
+ .text          0x0000000000013ce8       0xd4 ../Temp_Inline_BSP/\libhal_bsp.a(alt_write.o)
+                0x0000000000013ce8                write
+ *(.gnu.warning.*)
+ *(.fini)
+                [!provide]                        PROVIDE (__etext, ABSOLUTE (.))
+                [!provide]                        PROVIDE (_etext, ABSOLUTE (.))
+                [!provide]                        PROVIDE (etext, ABSOLUTE (.))
+ *(.eh_frame_hdr)
+                0x0000000000013dbc                . = ALIGN (0x4)
+                [!provide]                        PROVIDE (__preinit_array_start, ABSOLUTE (.))
+ *(.preinit_array)
+                [!provide]                        PROVIDE (__preinit_array_end, ABSOLUTE (.))
+                [!provide]                        PROVIDE (__init_array_start, ABSOLUTE (.))
+ *(.init_array)
+                [!provide]                        PROVIDE (__init_array_end, ABSOLUTE (.))
+                [!provide]                        PROVIDE (__fini_array_start, ABSOLUTE (.))
+ *(.fini_array)
+                [!provide]                        PROVIDE (__fini_array_end, ABSOLUTE (.))
+ *(.eh_frame)
+ *(.gcc_except_table .gcc_except_table.*)
+ *(.dynamic)
+                0x0000000000013dbc                PROVIDE (__CTOR_LIST__, ABSOLUTE (.))
+ *(.ctors)
+ *(SORT(.ctors.*))
+                0x0000000000013dbc                PROVIDE (__CTOR_END__, ABSOLUTE (.))
+                0x0000000000013dbc                PROVIDE (__DTOR_LIST__, ABSOLUTE (.))
+ *(.dtors)
+ *(SORT(.dtors.*))
+                0x0000000000013dbc                PROVIDE (__DTOR_END__, ABSOLUTE (.))
+ *(.jcr)
+                0x0000000000013dbc                . = ALIGN (0x4)
+
+.rodata         0x0000000000013dbc      0x3fc
+                [!provide]                        PROVIDE (__ram_rodata_start, ABSOLUTE (.))
+                0x0000000000013dbc                . = ALIGN (0x4)
+ *(.rodata .rodata.* .gnu.linkonce.r.*)
+ .rodata.str1.4
+                0x0000000000013dbc      0x1ca obj/default/Handlers/USB_Data_Handler.o
+ *fill*         0x0000000000013f86        0x2 
+ .rodata.str1.4
+                0x0000000000013f88       0x12 obj/default/Handlers/msgDMA_Handler.o
+ *fill*         0x0000000000013f9a        0x2 
+ .rodata.str1.4
+                0x0000000000013f9c        0x5 obj/default/main.o
+ *fill*         0x0000000000013fa1        0x3 
+ .rodata.str1.4
+                0x0000000000013fa4       0x18 ../Temp_Inline_BSP/\libhal_bsp.a(alt_sys_init.o)
+                                         0x2c (size before relaxing)
+ .rodata.str1.4
+                0x0000000000013fbc      0x1cf ../Temp_Inline_BSP/\libhal_bsp.a(altera_msgdma.o)
+ *fill*         0x000000000001418b        0x1 
+ .rodata        0x000000000001418c       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_irq_init.o)
+ .rodata.str1.4
+                0x00000000000141ac        0xc ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev.o)
+                                          0xa (size before relaxing)
+ *(.rodata1)
+                0x00000000000141b8                . = ALIGN (0x4)
+                [!provide]                        PROVIDE (__ram_rodata_end, ABSOLUTE (.))
+                [!provide]                        PROVIDE (__flash_rodata_start, LOADADDR (.rodata))
+
+.rwdata         0x00000000000141c0      0x3c8
+                [!provide]                        PROVIDE (__ram_rwdata_start, ABSOLUTE (.))
+                0x00000000000141c0                . = ALIGN (0x4)
+ *(.got.plt)
+ *(.got)
+ *(.data1)
+ *(.data .data.* .gnu.linkonce.d.*)
+ .data          0x00000000000141c0        0x0 ../Temp_Inline_BSP//obj/HAL/src/crt0.o
+ .data          0x00000000000141c0        0x0 obj/default/Drivers/Calculations_Driver.o
+ .data          0x00000000000141c0        0x0 obj/default/Drivers/DDR3_Driver.o
+ .data          0x00000000000141c0        0x0 obj/default/Drivers/FIFO_Driver.o
+ .data          0x00000000000141c0        0x0 obj/default/Drivers/FPGA_Driver.o
+ .data          0x00000000000141c0        0x0 obj/default/Drivers/GPIO_Drivers.o
+ .data          0x00000000000141c0        0x0 obj/default/Drivers/TimerDriver.o
+ .data          0x00000000000141c0        0x0 obj/default/Drivers/USB_Data_Driver.o
+ .data          0x00000000000141c0        0x0 obj/default/Handlers/CurrentCTRL_Handler.o
+ .data          0x00000000000141c0        0x0 obj/default/Handlers/DDR3_Handler.o
+ .data          0x00000000000141c0        0x0 obj/default/Handlers/RegisterData_RX_Handler.o
+ .data          0x00000000000141c0        0x0 obj/default/Handlers/Registers_Handler.o
+ .data          0x00000000000141c0        0x0 obj/default/Handlers/TimerHandler.o
+ .data          0x00000000000141c0        0x0 obj/default/Handlers/USB_Data_Handler.o
+ .data          0x00000000000141c0        0x0 obj/default/Handlers/msgDMA_Handler.o
+ .data          0x00000000000141c0        0x0 obj/default/main.o
+ .data          0x00000000000141c0        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strcmp.o)
+ .data          0x00000000000141c0        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_main.o)
+ .data          0x00000000000141c0       0xfc ../Temp_Inline_BSP/\libhal_bsp.a(alt_sys_init.o)
+ .data          0x00000000000142bc        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(altera_msgdma.o)
+ .data          0x00000000000142bc        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_0_vector_tbl.o)
+ .data          0x00000000000142bc        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_funnel_non_preemptive.o)
+ .data          0x00000000000142bc        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_irq_init.o)
+ .data          0x00000000000142bc        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_isr_register.o)
+ .data          0x00000000000142bc        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_busy_sleep.o)
+ .data          0x00000000000142bc        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_close.o)
+ .data          0x00000000000142bc        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dcache_flush.o)
+ .data          0x00000000000142bc      0x1a8 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev.o)
+                0x00000000000142bc                alt_fd_list
+                0x000000000001443c                alt_dev_null
+ .data          0x0000000000014464        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev_llist_insert.o)
+ .data          0x0000000000014464        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_do_ctors.o)
+ .data          0x0000000000014464        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_do_dtors.o)
+ .data          0x0000000000014464        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_errno.o)
+ .data          0x0000000000014464        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_find_dev.o)
+ .data          0x0000000000014464        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_printf.o)
+ .data          0x0000000000014464        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_putchar.o)
+ .data          0x0000000000014464        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_release_fd.o)
+ .data          0x0000000000014464        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-atexit.o)
+ .data          0x0000000000014464        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-exit.o)
+ .data          0x0000000000014464        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-impure.o)
+ .data.impure_data
+                0x0000000000014464       0xe0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-impure.o)
+ .data          0x0000000000014544        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-int_errno.o)
+ .data          0x0000000000014544        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-memcmp.o)
+ .data          0x0000000000014544        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-putc.o)
+ .data          0x0000000000014544        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strlen.o)
+ .data          0x0000000000014544        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__atexit.o)
+ .data          0x0000000000014544        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__call_atexit.o)
+ .data          0x0000000000014544        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-fvwrite_small_dev.o)
+ .data          0x0000000000014544        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-writer.o)
+ .data          0x0000000000014544        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_exit.o)
+ .data          0x0000000000014544        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_write.o)
+                0x000000000001c544                _gp = ABSOLUTE ((. + 0x8000))
+                [!provide]                        PROVIDE (gp, _gp)
+ *(.rwdata .rwdata.*)
+ *(.sdata .sdata.* .gnu.linkonce.s.*)
+ .sdata         0x0000000000014544        0xc obj/default/Handlers/TimerHandler.o
+                0x0000000000014544                fast_timer_base
+                0x0000000000014548                medium_timer_base
+                0x000000000001454c                slow_timer_base
+ .sdata         0x0000000000014550        0x8 obj/default/Handlers/msgDMA_Handler.o
+                0x0000000000014550                ptr2CurrCTRLDebugData
+                0x0000000000014554                PC_to_NIOS_Shared_RAM_base_address
+ .sdata         0x0000000000014558        0x8 obj/default/main.o
+                0x0000000000014558                Slot_Address
+                0x000000000001455c                FT600_DebugString
+ .sdata         0x0000000000014560        0x8 ../Temp_Inline_BSP/\libhal_bsp.a(altera_msgdma.o)
+                0x0000000000014560                alt_msgdma_list
+ .sdata         0x0000000000014568       0x14 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev.o)
+                0x0000000000014568                alt_max_fd
+                0x000000000001456c                alt_dev_list
+                0x0000000000014574                alt_fs_list
+ .sdata         0x000000000001457c        0x4 ../Temp_Inline_BSP/\libhal_bsp.a(alt_errno.o)
+                0x000000000001457c                alt_errno
+ .sdata._impure_ptr
+                0x0000000000014580        0x4 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-impure.o)
+                0x0000000000014580                _impure_ptr
+ .sdata._global_impure_ptr
+                0x0000000000014584        0x4 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-impure.o)
+                0x0000000000014584                _global_impure_ptr
+ *(.sdata2 .sdata2.* .gnu.linkonce.s2.*)
+                0x0000000000014588                . = ALIGN (0x4)
+                0x0000000000014588                _edata = ABSOLUTE (.)
+                [!provide]                        PROVIDE (edata, ABSOLUTE (.))
+                [!provide]                        PROVIDE (__ram_rwdata_end, ABSOLUTE (.))
+                [!provide]                        PROVIDE (__flash_rwdata_start, LOADADDR (.rwdata))
+
+.bss            0x00000000000145a0      0x2d4
+                0x00000000000145a0                __bss_start = ABSOLUTE (.)
+                [!provide]                        PROVIDE (__sbss_start, ABSOLUTE (.))
+                [!provide]                        PROVIDE (___sbss_start, ABSOLUTE (.))
+ *(.dynsbss)
+ *(.sbss .sbss.* .gnu.linkonce.sb.*)
+ .sbss          0x00000000000145a0       0x14 obj/default/Drivers/USB_Data_Driver.o
+ .sbss          0x00000000000145b4        0x4 obj/default/Drivers/USB_Data_Driver.o
+                0x00000000000145b4                USB_Repeat_edge_capture
+ .sbss          0x00000000000145b8        0x4 obj/default/Handlers/CurrentCTRL_Handler.o
+ .sbss          0x00000000000145bc        0xc obj/default/Handlers/TimerHandler.o
+                0x00000000000145c0                FastTimerTickCounter
+                0x00000000000145c4                TimerTickCounter
+ .sbss          0x00000000000145c8        0x8 obj/default/Handlers/USB_Data_Handler.o
+ .sbss          0x00000000000145d0       0x20 obj/default/Handlers/msgDMA_Handler.o
+                0x00000000000145dc                DMA_Write_StackPointer
+                0x00000000000145e0                DMA_Read_StackPointer
+                0x00000000000145e4                Trigger_USB_BroadcastFlag
+                0x00000000000145e6                Trigger_New_USB_MessageFlag
+                0x00000000000145e8                Trigger_USB_RXFn_ResponseFlag
+                0x00000000000145ea                Trigger_USB_TXEnResponseFlag
+                0x00000000000145ec                FIFO_MSGDMA
+ .sbss          0x00000000000145f0        0xc obj/default/main.o
+                0x00000000000145f4                stringlength
+                0x00000000000145f8                ptr2Uint32
+ .sbss          0x00000000000145fc        0xc ../Temp_Inline_BSP/\libhal_bsp.a(alt_main.o)
+                0x00000000000145fc                alt_envp
+                0x0000000000014600                alt_argv
+                0x0000000000014604                alt_argc
+ .sbss          0x0000000000014608        0x4 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_irq_init.o)
+                0x0000000000014608                alt_vic_dev_list
+ .sbss          0x000000000001460c        0x4 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-int_errno.o)
+                0x000000000001460c                errno
+ .sbss.__atexit_lock
+                0x0000000000014610        0x4 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__call_atexit.o)
+ *(.sbss2 .sbss2.* .gnu.linkonce.sb2.*)
+ *(.scommon)
+                [!provide]                        PROVIDE (__sbss_end, ABSOLUTE (.))
+                [!provide]                        PROVIDE (___sbss_end, ABSOLUTE (.))
+ *(.dynbss)
+ *(.bss .bss.* .gnu.linkonce.b.*)
+ .bss           0x0000000000014614        0x0 ../Temp_Inline_BSP//obj/HAL/src/crt0.o
+ .bss           0x0000000000014614        0x0 obj/default/Drivers/Calculations_Driver.o
+ .bss           0x0000000000014614        0x0 obj/default/Drivers/DDR3_Driver.o
+ .bss           0x0000000000014614        0x0 obj/default/Drivers/FIFO_Driver.o
+ .bss           0x0000000000014614        0x0 obj/default/Drivers/FPGA_Driver.o
+ .bss           0x0000000000014614        0x0 obj/default/Drivers/GPIO_Drivers.o
+ .bss           0x0000000000014614        0x0 obj/default/Drivers/TimerDriver.o
+ .bss           0x0000000000014614        0x0 obj/default/Drivers/USB_Data_Driver.o
+ .bss           0x0000000000014614       0x74 obj/default/Handlers/CurrentCTRL_Handler.o
+ .bss           0x0000000000014688        0x0 obj/default/Handlers/DDR3_Handler.o
+ .bss           0x0000000000014688       0x14 obj/default/Handlers/RegisterData_RX_Handler.o
+ .bss           0x000000000001469c        0x0 obj/default/Handlers/Registers_Handler.o
+ .bss           0x000000000001469c        0x0 obj/default/Handlers/TimerHandler.o
+ .bss           0x000000000001469c        0x0 obj/default/Handlers/USB_Data_Handler.o
+ .bss           0x000000000001469c        0x0 obj/default/Handlers/msgDMA_Handler.o
+ .bss           0x000000000001469c        0x0 obj/default/main.o
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strcmp.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_main.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_sys_init.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(altera_msgdma.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_0_vector_tbl.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_funnel_non_preemptive.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_irq_init.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_isr_register.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_busy_sleep.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_close.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dcache_flush.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev_llist_insert.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_do_ctors.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_do_dtors.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_errno.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_find_dev.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_printf.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_putchar.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_release_fd.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-atexit.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-exit.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-impure.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-int_errno.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-memcmp.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-putc.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strlen.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__atexit.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__call_atexit.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-fvwrite_small_dev.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-writer.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_exit.o)
+ .bss           0x000000000001469c        0x0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_write.o)
+ *(COMMON)
+ *fill*         0x000000000001469c        0x4 
+ COMMON         0x00000000000146a0       0x60 obj/default/Handlers/TimerHandler.o
+                0x00000000000146a0                MediumTimerDEV
+                0x00000000000146c0                SlowTimerDEV
+                0x00000000000146e0                FastTimerDEV
+ COMMON         0x0000000000014700      0x174 obj/default/Handlers/msgDMA_Handler.o
+                0x0000000000014700                DMA_Stack
+                0x0000000000014840                FIFO_to_DDR3_Descriptor
+                0x0000000000014860                DMA_Stack_Entry
+                0x0000000000014874                . = ALIGN (0x4)
+                0x0000000000014874                __bss_end = ABSOLUTE (.)
+
+.Program_Memory
+                0x0000000000014874        0x0
+                [!provide]                        PROVIDE (_alt_partition_Program_Memory_start, ABSOLUTE (.))
+ *(.Program_Memory .Program_Memory. Program_Memory.*)
+                0x0000000000014874                . = ALIGN (0x4)
+                [!provide]                        PROVIDE (_alt_partition_Program_Memory_end, ABSOLUTE (.))
+                0x0000000000014874                _end = ABSOLUTE (.)
+                0x0000000000014874                end = ABSOLUTE (.)
+                0x0000000000014874                __alt_stack_base = ABSOLUTE (.)
+                [!provide]                        PROVIDE (_alt_partition_Program_Memory_load_addr, LOADADDR (.Program_Memory))
+
+.Data_Memory    0x000000000001a000        0x0
+                [!provide]                        PROVIDE (_alt_partition_Data_Memory_start, ABSOLUTE (.))
+ *(.Data_Memory .Data_Memory. Data_Memory.*)
+                0x000000000001a000                . = ALIGN (0x4)
+                [!provide]                        PROVIDE (_alt_partition_Data_Memory_end, ABSOLUTE (.))
+                [!provide]                        PROVIDE (_alt_partition_Data_Memory_load_addr, LOADADDR (.Data_Memory))
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment        0x0000000000000000       0x23
+ *(.comment)
+ .comment       0x0000000000000000       0x23 obj/default/Drivers/Calculations_Driver.o
+                                         0x24 (size before relaxing)
+ .comment       0x0000000000000023       0x24 obj/default/Drivers/DDR3_Driver.o
+ .comment       0x0000000000000023       0x24 obj/default/Drivers/FIFO_Driver.o
+ .comment       0x0000000000000023       0x24 obj/default/Drivers/FPGA_Driver.o
+ .comment       0x0000000000000023       0x24 obj/default/Drivers/GPIO_Drivers.o
+ .comment       0x0000000000000023       0x24 obj/default/Drivers/TimerDriver.o
+ .comment       0x0000000000000023       0x24 obj/default/Drivers/USB_Data_Driver.o
+ .comment       0x0000000000000023       0x24 obj/default/Handlers/CurrentCTRL_Handler.o
+ .comment       0x0000000000000023       0x24 obj/default/Handlers/DDR3_Handler.o
+ .comment       0x0000000000000023       0x24 obj/default/Handlers/RegisterData_RX_Handler.o
+ .comment       0x0000000000000023       0x24 obj/default/Handlers/Registers_Handler.o
+ .comment       0x0000000000000023       0x24 obj/default/Handlers/TimerHandler.o
+ .comment       0x0000000000000023       0x24 obj/default/Handlers/USB_Data_Handler.o
+ .comment       0x0000000000000023       0x24 obj/default/Handlers/msgDMA_Handler.o
+ .comment       0x0000000000000023       0x24 obj/default/main.o
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strcmp.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP/\libhal_bsp.a(alt_main.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP/\libhal_bsp.a(alt_sys_init.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP/\libhal_bsp.a(altera_msgdma.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_irq_init.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_isr_register.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP/\libhal_bsp.a(alt_busy_sleep.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP/\libhal_bsp.a(alt_close.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dcache_flush.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev_llist_insert.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP/\libhal_bsp.a(alt_do_ctors.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP/\libhal_bsp.a(alt_do_dtors.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP/\libhal_bsp.a(alt_errno.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP/\libhal_bsp.a(alt_find_dev.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP/\libhal_bsp.a(alt_printf.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP/\libhal_bsp.a(alt_putchar.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP/\libhal_bsp.a(alt_release_fd.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-atexit.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-exit.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-impure.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-int_errno.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-memcmp.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-putc.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strlen.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__atexit.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__call_atexit.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-fvwrite_small_dev.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-writer.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP/\libhal_bsp.a(alt_exit.o)
+ .comment       0x0000000000000023       0x24 ../Temp_Inline_BSP/\libhal_bsp.a(alt_write.o)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x0000000000000000      0x608
+ *(.debug_aranges)
+ .debug_aranges
+                0x0000000000000000       0x28 ../Temp_Inline_BSP//obj/HAL/src/crt0.o
+ .debug_aranges
+                0x0000000000000028       0x20 obj/default/Drivers/Calculations_Driver.o
+ .debug_aranges
+                0x0000000000000048       0x20 obj/default/Drivers/DDR3_Driver.o
+ .debug_aranges
+                0x0000000000000068       0x18 obj/default/Drivers/FIFO_Driver.o
+ .debug_aranges
+                0x0000000000000080       0x20 obj/default/Drivers/FPGA_Driver.o
+ .debug_aranges
+                0x00000000000000a0       0x20 obj/default/Drivers/GPIO_Drivers.o
+ .debug_aranges
+                0x00000000000000c0       0x20 obj/default/Drivers/TimerDriver.o
+ .debug_aranges
+                0x00000000000000e0       0x20 obj/default/Drivers/USB_Data_Driver.o
+ .debug_aranges
+                0x0000000000000100       0x20 obj/default/Handlers/CurrentCTRL_Handler.o
+ .debug_aranges
+                0x0000000000000120       0x18 obj/default/Handlers/DDR3_Handler.o
+ .debug_aranges
+                0x0000000000000138       0x20 obj/default/Handlers/RegisterData_RX_Handler.o
+ .debug_aranges
+                0x0000000000000158       0x20 obj/default/Handlers/Registers_Handler.o
+ .debug_aranges
+                0x0000000000000178       0x20 obj/default/Handlers/TimerHandler.o
+ .debug_aranges
+                0x0000000000000198       0x20 obj/default/Handlers/USB_Data_Handler.o
+ .debug_aranges
+                0x00000000000001b8       0x20 obj/default/Handlers/msgDMA_Handler.o
+ .debug_aranges
+                0x00000000000001d8       0x20 obj/default/main.o
+ .debug_aranges
+                0x00000000000001f8       0x20 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strcmp.o)
+ .debug_aranges
+                0x0000000000000218       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(alt_main.o)
+ .debug_aranges
+                0x0000000000000238       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(alt_sys_init.o)
+ .debug_aranges
+                0x0000000000000258       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(altera_msgdma.o)
+ .debug_aranges
+                0x0000000000000278       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_0_vector_tbl.o)
+ .debug_aranges
+                0x0000000000000298       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_funnel_non_preemptive.o)
+ .debug_aranges
+                0x00000000000002b8       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_irq_init.o)
+ .debug_aranges
+                0x00000000000002d8       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_isr_register.o)
+ .debug_aranges
+                0x00000000000002f8       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(alt_busy_sleep.o)
+ .debug_aranges
+                0x0000000000000318       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(alt_close.o)
+ .debug_aranges
+                0x0000000000000338       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dcache_flush.o)
+ .debug_aranges
+                0x0000000000000358       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev.o)
+ .debug_aranges
+                0x0000000000000378       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev_llist_insert.o)
+ .debug_aranges
+                0x0000000000000398       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(alt_do_ctors.o)
+ .debug_aranges
+                0x00000000000003b8       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(alt_do_dtors.o)
+ .debug_aranges
+                0x00000000000003d8       0x18 ../Temp_Inline_BSP/\libhal_bsp.a(alt_errno.o)
+ .debug_aranges
+                0x00000000000003f0       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(alt_find_dev.o)
+ .debug_aranges
+                0x0000000000000410       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(alt_printf.o)
+ .debug_aranges
+                0x0000000000000430       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(alt_putchar.o)
+ .debug_aranges
+                0x0000000000000450       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(alt_release_fd.o)
+ .debug_aranges
+                0x0000000000000470       0x20 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-atexit.o)
+ .debug_aranges
+                0x0000000000000490       0x20 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-exit.o)
+ .debug_aranges
+                0x00000000000004b0       0x18 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-impure.o)
+ .debug_aranges
+                0x00000000000004c8       0x18 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-int_errno.o)
+ .debug_aranges
+                0x00000000000004e0       0x20 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-memcmp.o)
+ .debug_aranges
+                0x0000000000000500       0x28 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-putc.o)
+ .debug_aranges
+                0x0000000000000528       0x20 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strlen.o)
+ .debug_aranges
+                0x0000000000000548       0x20 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__atexit.o)
+ .debug_aranges
+                0x0000000000000568       0x20 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__call_atexit.o)
+ .debug_aranges
+                0x0000000000000588       0x20 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-fvwrite_small_dev.o)
+ .debug_aranges
+                0x00000000000005a8       0x20 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-writer.o)
+ .debug_aranges
+                0x00000000000005c8       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(alt_exit.o)
+ .debug_aranges
+                0x00000000000005e8       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(alt_write.o)
+
+.debug_pubnames
+ *(.debug_pubnames)
+
+.debug_info     0x0000000000000000     0xd645
+ *(.debug_info .gnu.linkonce.wi.*)
+ .debug_info    0x0000000000000000       0xb9 ../Temp_Inline_BSP//obj/HAL/src/crt0.o
+ .debug_info    0x00000000000000b9      0x61c obj/default/Drivers/Calculations_Driver.o
+ .debug_info    0x00000000000006d5       0xfc obj/default/Drivers/DDR3_Driver.o
+ .debug_info    0x00000000000007d1       0x5d obj/default/Drivers/FIFO_Driver.o
+ .debug_info    0x000000000000082e      0x382 obj/default/Drivers/FPGA_Driver.o
+ .debug_info    0x0000000000000bb0      0x1a4 obj/default/Drivers/GPIO_Drivers.o
+ .debug_info    0x0000000000000d54      0x203 obj/default/Drivers/TimerDriver.o
+ .debug_info    0x0000000000000f57      0x7ee obj/default/Drivers/USB_Data_Driver.o
+ .debug_info    0x0000000000001745      0xba1 obj/default/Handlers/CurrentCTRL_Handler.o
+ .debug_info    0x00000000000022e6      0x1a2 obj/default/Handlers/DDR3_Handler.o
+ .debug_info    0x0000000000002488      0x7ae obj/default/Handlers/RegisterData_RX_Handler.o
+ .debug_info    0x0000000000002c36      0xa4a obj/default/Handlers/Registers_Handler.o
+ .debug_info    0x0000000000003680      0x946 obj/default/Handlers/TimerHandler.o
+ .debug_info    0x0000000000003fc6      0x918 obj/default/Handlers/USB_Data_Handler.o
+ .debug_info    0x00000000000048de      0xe84 obj/default/Handlers/msgDMA_Handler.o
+ .debug_info    0x0000000000005762      0x76b obj/default/main.o
+ .debug_info    0x0000000000005ecd       0xb8 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strcmp.o)
+ .debug_info    0x0000000000005f85      0x1d9 ../Temp_Inline_BSP/\libhal_bsp.a(alt_main.o)
+ .debug_info    0x000000000000615e      0x3b4 ../Temp_Inline_BSP/\libhal_bsp.a(alt_sys_init.o)
+ .debug_info    0x0000000000006512     0x20d0 ../Temp_Inline_BSP/\libhal_bsp.a(altera_msgdma.o)
+ .debug_info    0x00000000000085e2       0xd4 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_0_vector_tbl.o)
+ .debug_info    0x00000000000086b6       0xdd ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_funnel_non_preemptive.o)
+ .debug_info    0x0000000000008793      0x19a ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_irq_init.o)
+ .debug_info    0x000000000000892d      0x288 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_isr_register.o)
+ .debug_info    0x0000000000008bb5       0xd8 ../Temp_Inline_BSP/\libhal_bsp.a(alt_busy_sleep.o)
+ .debug_info    0x0000000000008c8d      0x368 ../Temp_Inline_BSP/\libhal_bsp.a(alt_close.o)
+ .debug_info    0x0000000000008ff5       0xba ../Temp_Inline_BSP/\libhal_bsp.a(alt_dcache_flush.o)
+ .debug_info    0x00000000000090af      0x499 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev.o)
+ .debug_info    0x0000000000009548      0x1b3 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev_llist_insert.o)
+ .debug_info    0x00000000000096fb       0x84 ../Temp_Inline_BSP/\libhal_bsp.a(alt_do_ctors.o)
+ .debug_info    0x000000000000977f       0x84 ../Temp_Inline_BSP/\libhal_bsp.a(alt_do_dtors.o)
+ .debug_info    0x0000000000009803       0xa6 ../Temp_Inline_BSP/\libhal_bsp.a(alt_errno.o)
+ .debug_info    0x00000000000098a9      0x32d ../Temp_Inline_BSP/\libhal_bsp.a(alt_find_dev.o)
+ .debug_info    0x0000000000009bd6      0x171 ../Temp_Inline_BSP/\libhal_bsp.a(alt_printf.o)
+ .debug_info    0x0000000000009d47      0x8c3 ../Temp_Inline_BSP/\libhal_bsp.a(alt_putchar.o)
+ .debug_info    0x000000000000a60a      0x2b1 ../Temp_Inline_BSP/\libhal_bsp.a(alt_release_fd.o)
+ .debug_info    0x000000000000a8bb       0xca ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-atexit.o)
+ .debug_info    0x000000000000a985       0x9d ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-exit.o)
+ .debug_info    0x000000000000aa22      0x5a5 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-impure.o)
+ .debug_info    0x000000000000afc7       0x86 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-int_errno.o)
+ .debug_info    0x000000000000b04d       0xef ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-memcmp.o)
+ .debug_info    0x000000000000b13c      0x624 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-putc.o)
+ .debug_info    0x000000000000b760       0xc5 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strlen.o)
+ .debug_info    0x000000000000b825      0x60f ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__atexit.o)
+ .debug_info    0x000000000000be34      0x638 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__call_atexit.o)
+ .debug_info    0x000000000000c46c      0x5fc ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-fvwrite_small_dev.o)
+ .debug_info    0x000000000000ca68      0x5ff ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-writer.o)
+ .debug_info    0x000000000000d067       0xea ../Temp_Inline_BSP/\libhal_bsp.a(alt_exit.o)
+ .debug_info    0x000000000000d151      0x4f4 ../Temp_Inline_BSP/\libhal_bsp.a(alt_write.o)
+
+.debug_abbrev   0x0000000000000000     0x305a
+ *(.debug_abbrev)
+ .debug_abbrev  0x0000000000000000       0x12 ../Temp_Inline_BSP//obj/HAL/src/crt0.o
+ .debug_abbrev  0x0000000000000012       0xab obj/default/Drivers/Calculations_Driver.o
+ .debug_abbrev  0x00000000000000bd       0x8e obj/default/Drivers/DDR3_Driver.o
+ .debug_abbrev  0x000000000000014b       0x26 obj/default/Drivers/FIFO_Driver.o
+ .debug_abbrev  0x0000000000000171       0xb0 obj/default/Drivers/FPGA_Driver.o
+ .debug_abbrev  0x0000000000000221       0x67 obj/default/Drivers/GPIO_Drivers.o
+ .debug_abbrev  0x0000000000000288       0xfd obj/default/Drivers/TimerDriver.o
+ .debug_abbrev  0x0000000000000385      0x167 obj/default/Drivers/USB_Data_Driver.o
+ .debug_abbrev  0x00000000000004ec      0x1e0 obj/default/Handlers/CurrentCTRL_Handler.o
+ .debug_abbrev  0x00000000000006cc       0x4e obj/default/Handlers/DDR3_Handler.o
+ .debug_abbrev  0x000000000000071a      0x11b obj/default/Handlers/RegisterData_RX_Handler.o
+ .debug_abbrev  0x0000000000000835      0x12e obj/default/Handlers/Registers_Handler.o
+ .debug_abbrev  0x0000000000000963      0x17a obj/default/Handlers/TimerHandler.o
+ .debug_abbrev  0x0000000000000add      0x1aa obj/default/Handlers/USB_Data_Handler.o
+ .debug_abbrev  0x0000000000000c87      0x270 obj/default/Handlers/msgDMA_Handler.o
+ .debug_abbrev  0x0000000000000ef7      0x117 obj/default/main.o
+ .debug_abbrev  0x000000000000100e       0x61 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strcmp.o)
+ .debug_abbrev  0x000000000000106f       0xfd ../Temp_Inline_BSP/\libhal_bsp.a(alt_main.o)
+ .debug_abbrev  0x000000000000116c      0x140 ../Temp_Inline_BSP/\libhal_bsp.a(alt_sys_init.o)
+ .debug_abbrev  0x00000000000012ac      0x391 ../Temp_Inline_BSP/\libhal_bsp.a(altera_msgdma.o)
+ .debug_abbrev  0x000000000000163d       0x14 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_0_vector_tbl.o)
+ .debug_abbrev  0x0000000000001651       0x14 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_funnel_non_preemptive.o)
+ .debug_abbrev  0x0000000000001665       0xd4 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_irq_init.o)
+ .debug_abbrev  0x0000000000001739      0x185 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_isr_register.o)
+ .debug_abbrev  0x00000000000018be       0x8d ../Temp_Inline_BSP/\libhal_bsp.a(alt_busy_sleep.o)
+ .debug_abbrev  0x000000000000194b      0x15c ../Temp_Inline_BSP/\libhal_bsp.a(alt_close.o)
+ .debug_abbrev  0x0000000000001aa7       0x74 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dcache_flush.o)
+ .debug_abbrev  0x0000000000001b1b       0xd9 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev.o)
+ .debug_abbrev  0x0000000000001bf4      0x11c ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev_llist_insert.o)
+ .debug_abbrev  0x0000000000001d10       0x79 ../Temp_Inline_BSP/\libhal_bsp.a(alt_do_ctors.o)
+ .debug_abbrev  0x0000000000001d89       0x79 ../Temp_Inline_BSP/\libhal_bsp.a(alt_do_dtors.o)
+ .debug_abbrev  0x0000000000001e02       0x5a ../Temp_Inline_BSP/\libhal_bsp.a(alt_errno.o)
+ .debug_abbrev  0x0000000000001e5c      0x125 ../Temp_Inline_BSP/\libhal_bsp.a(alt_find_dev.o)
+ .debug_abbrev  0x0000000000001f81       0xf0 ../Temp_Inline_BSP/\libhal_bsp.a(alt_printf.o)
+ .debug_abbrev  0x0000000000002071      0x1d7 ../Temp_Inline_BSP/\libhal_bsp.a(alt_putchar.o)
+ .debug_abbrev  0x0000000000002248       0xde ../Temp_Inline_BSP/\libhal_bsp.a(alt_release_fd.o)
+ .debug_abbrev  0x0000000000002326       0x7b ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-atexit.o)
+ .debug_abbrev  0x00000000000023a1       0x52 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-exit.o)
+ .debug_abbrev  0x00000000000023f3      0x148 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-impure.o)
+ .debug_abbrev  0x000000000000253b       0x35 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-int_errno.o)
+ .debug_abbrev  0x0000000000002570       0x7d ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-memcmp.o)
+ .debug_abbrev  0x00000000000025ed      0x193 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-putc.o)
+ .debug_abbrev  0x0000000000002780       0x7d ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strlen.o)
+ .debug_abbrev  0x00000000000027fd      0x1af ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__atexit.o)
+ .debug_abbrev  0x00000000000029ac      0x1a9 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__call_atexit.o)
+ .debug_abbrev  0x0000000000002b55      0x190 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-fvwrite_small_dev.o)
+ .debug_abbrev  0x0000000000002ce5      0x17c ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-writer.o)
+ .debug_abbrev  0x0000000000002e61       0xa9 ../Temp_Inline_BSP/\libhal_bsp.a(alt_exit.o)
+ .debug_abbrev  0x0000000000002f0a      0x150 ../Temp_Inline_BSP/\libhal_bsp.a(alt_write.o)
+
+.debug_line     0x0000000000000000     0x330f
+ *(.debug_line)
+ .debug_line    0x0000000000000000       0x7e ../Temp_Inline_BSP//obj/HAL/src/crt0.o
+ .debug_line    0x000000000000007e       0xac obj/default/Drivers/Calculations_Driver.o
+ .debug_line    0x000000000000012a       0x67 obj/default/Drivers/DDR3_Driver.o
+ .debug_line    0x0000000000000191       0x1d obj/default/Drivers/FIFO_Driver.o
+ .debug_line    0x00000000000001ae       0xcf obj/default/Drivers/FPGA_Driver.o
+ .debug_line    0x000000000000027d       0xa0 obj/default/Drivers/GPIO_Drivers.o
+ .debug_line    0x000000000000031d       0xc0 obj/default/Drivers/TimerDriver.o
+ .debug_line    0x00000000000003dd      0x15d obj/default/Drivers/USB_Data_Driver.o
+ .debug_line    0x000000000000053a      0x1bc obj/default/Handlers/CurrentCTRL_Handler.o
+ .debug_line    0x00000000000006f6       0x38 obj/default/Handlers/DDR3_Handler.o
+ .debug_line    0x000000000000072e      0x13e obj/default/Handlers/RegisterData_RX_Handler.o
+ .debug_line    0x000000000000086c       0xe3 obj/default/Handlers/Registers_Handler.o
+ .debug_line    0x000000000000094f      0x17a obj/default/Handlers/TimerHandler.o
+ .debug_line    0x0000000000000ac9      0x142 obj/default/Handlers/USB_Data_Handler.o
+ .debug_line    0x0000000000000c0b      0x23f obj/default/Handlers/msgDMA_Handler.o
+ .debug_line    0x0000000000000e4a      0x142 obj/default/main.o
+ .debug_line    0x0000000000000f8c       0xed ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strcmp.o)
+ .debug_line    0x0000000000001079      0x110 ../Temp_Inline_BSP/\libhal_bsp.a(alt_main.o)
+ .debug_line    0x0000000000001189       0xee ../Temp_Inline_BSP/\libhal_bsp.a(alt_sys_init.o)
+ .debug_line    0x0000000000001277      0x5ee ../Temp_Inline_BSP/\libhal_bsp.a(altera_msgdma.o)
+ .debug_line    0x0000000000001865       0x5e ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_0_vector_tbl.o)
+ .debug_line    0x00000000000018c3       0x6a ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_funnel_non_preemptive.o)
+ .debug_line    0x000000000000192d       0xb0 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_irq_init.o)
+ .debug_line    0x00000000000019dd       0xd2 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_isr_register.o)
+ .debug_line    0x0000000000001aaf       0x84 ../Temp_Inline_BSP/\libhal_bsp.a(alt_busy_sleep.o)
+ .debug_line    0x0000000000001b33       0xf6 ../Temp_Inline_BSP/\libhal_bsp.a(alt_close.o)
+ .debug_line    0x0000000000001c29       0x63 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dcache_flush.o)
+ .debug_line    0x0000000000001c8c       0xc6 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev.o)
+ .debug_line    0x0000000000001d52       0xce ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev_llist_insert.o)
+ .debug_line    0x0000000000001e20       0x57 ../Temp_Inline_BSP/\libhal_bsp.a(alt_do_ctors.o)
+ .debug_line    0x0000000000001e77       0x57 ../Temp_Inline_BSP/\libhal_bsp.a(alt_do_dtors.o)
+ .debug_line    0x0000000000001ece       0x51 ../Temp_Inline_BSP/\libhal_bsp.a(alt_errno.o)
+ .debug_line    0x0000000000001f1f       0xdc ../Temp_Inline_BSP/\libhal_bsp.a(alt_find_dev.o)
+ .debug_line    0x0000000000001ffb      0x11f ../Temp_Inline_BSP/\libhal_bsp.a(alt_printf.o)
+ .debug_line    0x000000000000211a      0x114 ../Temp_Inline_BSP/\libhal_bsp.a(alt_putchar.o)
+ .debug_line    0x000000000000222e       0xac ../Temp_Inline_BSP/\libhal_bsp.a(alt_release_fd.o)
+ .debug_line    0x00000000000022da       0xe9 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-atexit.o)
+ .debug_line    0x00000000000023c3       0xda ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-exit.o)
+ .debug_line    0x000000000000249d      0x13d ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-impure.o)
+ .debug_line    0x00000000000025da       0x75 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-int_errno.o)
+ .debug_line    0x000000000000264f      0x151 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-memcmp.o)
+ .debug_line    0x00000000000027a0      0x1c9 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-putc.o)
+ .debug_line    0x0000000000002969      0x147 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strlen.o)
+ .debug_line    0x0000000000002ab0      0x183 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__atexit.o)
+ .debug_line    0x0000000000002c33      0x1c0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__call_atexit.o)
+ .debug_line    0x0000000000002df3      0x172 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-fvwrite_small_dev.o)
+ .debug_line    0x0000000000002f65      0x1b0 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-writer.o)
+ .debug_line    0x0000000000003115       0x64 ../Temp_Inline_BSP/\libhal_bsp.a(alt_exit.o)
+ .debug_line    0x0000000000003179      0x196 ../Temp_Inline_BSP/\libhal_bsp.a(alt_write.o)
+
+.debug_frame    0x0000000000000000      0xd88
+ *(.debug_frame)
+ .debug_frame   0x0000000000000000       0x20 obj/default/Drivers/Calculations_Driver.o
+ .debug_frame   0x0000000000000020       0x20 obj/default/Drivers/DDR3_Driver.o
+ .debug_frame   0x0000000000000040       0x30 obj/default/Drivers/FPGA_Driver.o
+ .debug_frame   0x0000000000000070      0x110 obj/default/Drivers/GPIO_Drivers.o
+ .debug_frame   0x0000000000000180       0x4c obj/default/Drivers/TimerDriver.o
+ .debug_frame   0x00000000000001cc       0x4c obj/default/Drivers/USB_Data_Driver.o
+ .debug_frame   0x0000000000000218       0x44 obj/default/Handlers/CurrentCTRL_Handler.o
+ .debug_frame   0x000000000000025c       0x60 obj/default/Handlers/RegisterData_RX_Handler.o
+ .debug_frame   0x00000000000002bc       0x60 obj/default/Handlers/Registers_Handler.o
+ .debug_frame   0x000000000000031c       0x84 obj/default/Handlers/TimerHandler.o
+ .debug_frame   0x00000000000003a0       0x70 obj/default/Handlers/USB_Data_Handler.o
+ .debug_frame   0x0000000000000410       0xb4 obj/default/Handlers/msgDMA_Handler.o
+ .debug_frame   0x00000000000004c4       0x28 obj/default/main.o
+ .debug_frame   0x00000000000004ec       0x34 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strcmp.o)
+ .debug_frame   0x0000000000000520       0x28 ../Temp_Inline_BSP/\libhal_bsp.a(alt_main.o)
+ .debug_frame   0x0000000000000548       0x48 ../Temp_Inline_BSP/\libhal_bsp.a(alt_sys_init.o)
+ .debug_frame   0x0000000000000590      0x324 ../Temp_Inline_BSP/\libhal_bsp.a(altera_msgdma.o)
+ .debug_frame   0x00000000000008b4       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_irq_init.o)
+ .debug_frame   0x00000000000008d4       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_isr_register.o)
+ .debug_frame   0x00000000000008f4       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(alt_busy_sleep.o)
+ .debug_frame   0x0000000000000914       0x34 ../Temp_Inline_BSP/\libhal_bsp.a(alt_close.o)
+ .debug_frame   0x0000000000000948       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dcache_flush.o)
+ .debug_frame   0x0000000000000968       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev.o)
+ .debug_frame   0x0000000000000988       0x40 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev_llist_insert.o)
+ .debug_frame   0x00000000000009c8       0x38 ../Temp_Inline_BSP/\libhal_bsp.a(alt_do_ctors.o)
+ .debug_frame   0x0000000000000a00       0x38 ../Temp_Inline_BSP/\libhal_bsp.a(alt_do_dtors.o)
+ .debug_frame   0x0000000000000a38       0x3c ../Temp_Inline_BSP/\libhal_bsp.a(alt_find_dev.o)
+ .debug_frame   0x0000000000000a74       0x54 ../Temp_Inline_BSP/\libhal_bsp.a(alt_printf.o)
+ .debug_frame   0x0000000000000ac8       0x2c ../Temp_Inline_BSP/\libhal_bsp.a(alt_putchar.o)
+ .debug_frame   0x0000000000000af4       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(alt_release_fd.o)
+ .debug_frame   0x0000000000000b14       0x38 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-atexit.o)
+ .debug_frame   0x0000000000000b4c       0x2c ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-exit.o)
+ .debug_frame   0x0000000000000b78       0x34 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-memcmp.o)
+ .debug_frame   0x0000000000000bac       0x60 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-putc.o)
+ .debug_frame   0x0000000000000c0c       0x34 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strlen.o)
+ .debug_frame   0x0000000000000c40       0x40 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__atexit.o)
+ .debug_frame   0x0000000000000c80       0x48 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__call_atexit.o)
+ .debug_frame   0x0000000000000cc8       0x38 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-fvwrite_small_dev.o)
+ .debug_frame   0x0000000000000d00       0x38 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-writer.o)
+ .debug_frame   0x0000000000000d38       0x20 ../Temp_Inline_BSP/\libhal_bsp.a(alt_exit.o)
+ .debug_frame   0x0000000000000d58       0x30 ../Temp_Inline_BSP/\libhal_bsp.a(alt_write.o)
+
+.debug_str      0x0000000000000000     0x3480
+ *(.debug_str)
+ .debug_str     0x0000000000000000      0xb05 obj/default/Drivers/Calculations_Driver.o
+                                        0xb53 (size before relaxing)
+ .debug_str     0x0000000000000b05       0x7b obj/default/Drivers/DDR3_Driver.o
+                                        0x305 (size before relaxing)
+ .debug_str     0x0000000000000b80       0x16 obj/default/Drivers/FIFO_Driver.o
+                                        0x27c (size before relaxing)
+ .debug_str     0x0000000000000b96      0x2de obj/default/Drivers/FPGA_Driver.o
+                                        0x5df (size before relaxing)
+ .debug_str     0x0000000000000e74       0xa7 obj/default/Drivers/GPIO_Drivers.o
+                                        0x33b (size before relaxing)
+ .debug_str     0x0000000000000f1b       0xbf obj/default/Drivers/TimerDriver.o
+                                        0x361 (size before relaxing)
+ .debug_str     0x0000000000000fda      0x123 obj/default/Drivers/USB_Data_Driver.o
+                                        0xcb6 (size before relaxing)
+ .debug_str     0x00000000000010fd      0x113 obj/default/Handlers/CurrentCTRL_Handler.o
+                                        0xf82 (size before relaxing)
+ .debug_str     0x0000000000001210       0x22 obj/default/Handlers/DDR3_Handler.o
+                                        0x2b5 (size before relaxing)
+ .debug_str     0x0000000000001232      0x120 obj/default/Handlers/RegisterData_RX_Handler.o
+                                        0xced (size before relaxing)
+ .debug_str     0x0000000000001352      0x12e obj/default/Handlers/Registers_Handler.o
+                                        0xf8b (size before relaxing)
+ .debug_str     0x0000000000001480      0x13d obj/default/Handlers/TimerHandler.o
+                                        0xd39 (size before relaxing)
+ .debug_str     0x00000000000015bd       0xf3 obj/default/Handlers/USB_Data_Handler.o
+                                        0xc55 (size before relaxing)
+ .debug_str     0x00000000000016b0      0x4ea obj/default/Handlers/msgDMA_Handler.o
+                                       0x1207 (size before relaxing)
+ .debug_str     0x0000000000001b9a       0x26 obj/default/main.o
+                                        0xc48 (size before relaxing)
+ .debug_str     0x0000000000001bc0      0x205 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strcmp.o)
+                                        0x2aa (size before relaxing)
+ .debug_str     0x0000000000001dc5       0xed ../Temp_Inline_BSP/\libhal_bsp.a(alt_main.o)
+                                        0x344 (size before relaxing)
+ .debug_str     0x0000000000001eb2      0x101 ../Temp_Inline_BSP/\libhal_bsp.a(alt_sys_init.o)
+                                        0x58a (size before relaxing)
+ .debug_str     0x0000000000001fb3      0x877 ../Temp_Inline_BSP/\libhal_bsp.a(altera_msgdma.o)
+                                        0xef6 (size before relaxing)
+ .debug_str     0x000000000000282a       0x47 ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_irq_init.o)
+                                        0x365 (size before relaxing)
+ .debug_str     0x0000000000002871       0x3f ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_isr_register.o)
+                                        0x3cf (size before relaxing)
+ .debug_str     0x00000000000028b0       0x33 ../Temp_Inline_BSP/\libhal_bsp.a(alt_busy_sleep.o)
+                                        0x2d7 (size before relaxing)
+ .debug_str     0x00000000000028e3       0x7d ../Temp_Inline_BSP/\libhal_bsp.a(alt_close.o)
+                                        0x386 (size before relaxing)
+ .debug_str     0x0000000000002960       0x1b ../Temp_Inline_BSP/\libhal_bsp.a(alt_dcache_flush.o)
+                                        0x2c7 (size before relaxing)
+ .debug_str     0x000000000000297b      0x120 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev.o)
+                                        0x471 (size before relaxing)
+ .debug_str     0x0000000000002a9b       0x36 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev_llist_insert.o)
+                                        0x338 (size before relaxing)
+ .debug_str     0x0000000000002ad1       0x3e ../Temp_Inline_BSP/\libhal_bsp.a(alt_do_ctors.o)
+                                        0x23c (size before relaxing)
+ .debug_str     0x0000000000002b0f       0x4c ../Temp_Inline_BSP/\libhal_bsp.a(alt_do_dtors.o)
+                                        0x23b (size before relaxing)
+ .debug_str     0x0000000000002b5b       0x14 ../Temp_Inline_BSP/\libhal_bsp.a(alt_errno.o)
+                                        0x2b1 (size before relaxing)
+ .debug_str     0x0000000000002b6f       0x25 ../Temp_Inline_BSP/\libhal_bsp.a(alt_find_dev.o)
+                                        0x366 (size before relaxing)
+ .debug_str     0x0000000000002b94       0x54 ../Temp_Inline_BSP/\libhal_bsp.a(alt_printf.o)
+                                        0x272 (size before relaxing)
+ .debug_str     0x0000000000002be8      0x371 ../Temp_Inline_BSP/\libhal_bsp.a(alt_putchar.o)
+                                        0x676 (size before relaxing)
+ .debug_str     0x0000000000002f59       0x19 ../Temp_Inline_BSP/\libhal_bsp.a(alt_release_fd.o)
+                                        0x33f (size before relaxing)
+ .debug_str     0x0000000000002f72       0x83 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-atexit.o)
+                                        0x2da (size before relaxing)
+ .debug_str     0x0000000000002ff5       0x51 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-exit.o)
+                                        0x2ab (size before relaxing)
+ .debug_str     0x0000000000003046       0xc3 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-impure.o)
+                                        0x591 (size before relaxing)
+ .debug_str     0x0000000000003109       0x55 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-int_errno.o)
+                                        0x2ab (size before relaxing)
+ .debug_str     0x000000000000315e       0x53 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-memcmp.o)
+                                        0x2b1 (size before relaxing)
+ .debug_str     0x00000000000031b1       0x5f ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-putc.o)
+                                        0x589 (size before relaxing)
+ .debug_str     0x0000000000003210       0x53 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strlen.o)
+                                        0x2b7 (size before relaxing)
+ .debug_str     0x0000000000003263       0x69 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__atexit.o)
+                                        0x5ca (size before relaxing)
+ .debug_str     0x00000000000032cc       0x87 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__call_atexit.o)
+                                        0x5b8 (size before relaxing)
+ .debug_str     0x0000000000003353       0x85 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-fvwrite_small_dev.o)
+                                        0x59e (size before relaxing)
+ .debug_str     0x00000000000033d8       0x64 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-writer.o)
+                                        0x585 (size before relaxing)
+ .debug_str     0x000000000000343c       0x30 ../Temp_Inline_BSP/\libhal_bsp.a(alt_exit.o)
+                                        0x2bd (size before relaxing)
+ .debug_str     0x000000000000346c       0x14 ../Temp_Inline_BSP/\libhal_bsp.a(alt_write.o)
+                                        0x464 (size before relaxing)
+
+.debug_loc      0x0000000000000000     0x2da2
+ *(.debug_loc)
+ .debug_loc     0x0000000000000000       0x13 obj/default/Drivers/FPGA_Driver.o
+ .debug_loc     0x0000000000000013      0x11d obj/default/Drivers/TimerDriver.o
+ .debug_loc     0x0000000000000130       0x42 obj/default/Drivers/USB_Data_Driver.o
+ .debug_loc     0x0000000000000172      0x14d obj/default/Handlers/CurrentCTRL_Handler.o
+ .debug_loc     0x00000000000002bf       0x42 obj/default/Handlers/RegisterData_RX_Handler.o
+ .debug_loc     0x0000000000000301       0x92 obj/default/Handlers/Registers_Handler.o
+ .debug_loc     0x0000000000000393       0x63 obj/default/Handlers/TimerHandler.o
+ .debug_loc     0x00000000000003f6       0x2a obj/default/Handlers/USB_Data_Handler.o
+ .debug_loc     0x0000000000000420      0x1c6 obj/default/Handlers/msgDMA_Handler.o
+ .debug_loc     0x00000000000005e6       0x1e ../Temp_Inline_BSP/\libhal_bsp.a(alt_main.o)
+ .debug_loc     0x0000000000000604       0x21 ../Temp_Inline_BSP/\libhal_bsp.a(alt_sys_init.o)
+ .debug_loc     0x0000000000000625     0x1e77 ../Temp_Inline_BSP/\libhal_bsp.a(altera_msgdma.o)
+ .debug_loc     0x000000000000249c       0x4d ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_irq_init.o)
+ .debug_loc     0x00000000000024e9      0x10e ../Temp_Inline_BSP/\libhal_bsp.a(altera_vic_isr_register.o)
+ .debug_loc     0x00000000000025f7       0xcd ../Temp_Inline_BSP/\libhal_bsp.a(alt_busy_sleep.o)
+ .debug_loc     0x00000000000026c4       0x9b ../Temp_Inline_BSP/\libhal_bsp.a(alt_close.o)
+ .debug_loc     0x000000000000275f       0xcc ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev_llist_insert.o)
+ .debug_loc     0x000000000000282b       0x13 ../Temp_Inline_BSP/\libhal_bsp.a(alt_do_ctors.o)
+ .debug_loc     0x000000000000283e       0x13 ../Temp_Inline_BSP/\libhal_bsp.a(alt_do_dtors.o)
+ .debug_loc     0x0000000000002851       0x7e ../Temp_Inline_BSP/\libhal_bsp.a(alt_find_dev.o)
+ .debug_loc     0x00000000000028cf      0x2ad ../Temp_Inline_BSP/\libhal_bsp.a(alt_printf.o)
+ .debug_loc     0x0000000000002b7c       0x21 ../Temp_Inline_BSP/\libhal_bsp.a(alt_putchar.o)
+ .debug_loc     0x0000000000002b9d       0x21 ../Temp_Inline_BSP/\libhal_bsp.a(alt_release_fd.o)
+ .debug_loc     0x0000000000002bbe      0x1e4 ../Temp_Inline_BSP/\libhal_bsp.a(alt_write.o)
+
+.debug_macinfo
+ *(.debug_macinfo)
+
+.debug_weaknames
+ *(.debug_weaknames)
+
+.debug_funcnames
+ *(.debug_funcnames)
+
+.debug_typenames
+ *(.debug_typenames)
+
+.debug_varnames
+ *(.debug_varnames)
+
+.debug_alt_sim_info
+                0x0000000000000000       0x50
+ *(.debug_alt_sim_info)
+ .debug_alt_sim_info
+                0x0000000000000000       0x20 ../Temp_Inline_BSP//obj/HAL/src/crt0.o
+ .debug_alt_sim_info
+                0x0000000000000020       0x30 ../Temp_Inline_BSP/\libhal_bsp.a(alt_busy_sleep.o)
+                0x0000000000018000                __alt_data_end = 0x18000
+                0x0000000000018000                PROVIDE (__alt_stack_pointer, __alt_data_end)
+                [!provide]                        PROVIDE (__alt_stack_limit, __alt_stack_base)
+                [!provide]                        PROVIDE (__alt_heap_start, end)
+                [!provide]                        PROVIDE (__alt_heap_limit, 0x18000)
+OUTPUT(Temp_inlineCode.elf elf32-littlenios2)
+
+.debug_ranges   0x0000000000000000      0x148
+ .debug_ranges  0x0000000000000000       0x20 ../Temp_Inline_BSP//obj/HAL/src/crt0.o
+ .debug_ranges  0x0000000000000020       0x18 obj/default/Handlers/USB_Data_Handler.o
+ .debug_ranges  0x0000000000000038       0x10 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strcmp.o)
+ .debug_ranges  0x0000000000000048       0x18 ../Temp_Inline_BSP/\libhal_bsp.a(alt_dev_llist_insert.o)
+ .debug_ranges  0x0000000000000060       0x38 ../Temp_Inline_BSP/\libhal_bsp.a(alt_printf.o)
+ .debug_ranges  0x0000000000000098       0x10 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-atexit.o)
+ .debug_ranges  0x00000000000000a8       0x10 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-exit.o)
+ .debug_ranges  0x00000000000000b8       0x10 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-memcmp.o)
+ .debug_ranges  0x00000000000000c8       0x18 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-putc.o)
+ .debug_ranges  0x00000000000000e0       0x10 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-strlen.o)
+ .debug_ranges  0x00000000000000f0       0x10 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__atexit.o)
+ .debug_ranges  0x0000000000000100       0x10 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-__call_atexit.o)
+ .debug_ranges  0x0000000000000110       0x28 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-fvwrite_small_dev.o)
+ .debug_ranges  0x0000000000000138       0x10 ../Temp_Inline_BSP//newlib/nios2-elf/lib\libsmallc.a(lib_a-writer.o)

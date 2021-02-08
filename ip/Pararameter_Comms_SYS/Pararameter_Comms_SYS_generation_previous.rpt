@@ -1,0 +1,86 @@
+Info: Starting: Create block symbol file (.bsf)
+Info: qsys-generate C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\ip\Pararameter_Comms_SYS.qsys --block-symbol-file --output-directory=C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\ip\Pararameter_Comms_SYS --family="MAX 10" --part=10M50DAF484I7G
+Progress: Loading ip/Pararameter_Comms_SYS.qsys
+Progress: Reading input file
+Progress: Adding ParameterLengthPage [altera_avalon_pio 18.1]
+Progress: Parameterizing module ParameterLengthPage
+Progress: Adding Parameter_GPIO [altera_avalon_pio 18.1]
+Progress: Parameterizing module Parameter_GPIO
+Progress: Adding Parameter_RX_RAM [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module Parameter_RX_RAM
+Progress: Adding Parameter_TX_RAM [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module Parameter_TX_RAM
+Progress: Adding Reset [altera_avalon_pio 18.1]
+Progress: Parameterizing module Reset
+Progress: Adding clk_0 [clock_source 18.1]
+Progress: Parameterizing module clk_0
+Progress: Adding clk_1 [clock_source 18.1]
+Progress: Parameterizing module clk_1
+Progress: Adding clk_2 [clock_source 18.1]
+Progress: Parameterizing module clk_2
+Progress: Adding mm_clock_crossing_bridge_0 [altera_avalon_mm_clock_crossing_bridge 18.1]
+Progress: Parameterizing module mm_clock_crossing_bridge_0
+Progress: Adding to_external_bus_bridge_0 [altera_up_avalon_to_external_bus_bridge 18.0]
+Progress: Parameterizing module to_external_bus_bridge_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: qsys-generate succeeded.
+Info: Finished: Create block symbol file (.bsf)
+Info: 
+Info: Starting: Create HDL design files for synthesis
+Info: qsys-generate C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\ip\Pararameter_Comms_SYS.qsys --synthesis=VERILOG --output-directory=C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\ip\Pararameter_Comms_SYS\synthesis --family="MAX 10" --part=10M50DAF484I7G
+Progress: Loading ip/Pararameter_Comms_SYS.qsys
+Progress: Reading input file
+Progress: Adding ParameterLengthPage [altera_avalon_pio 18.1]
+Progress: Parameterizing module ParameterLengthPage
+Progress: Adding Parameter_GPIO [altera_avalon_pio 18.1]
+Progress: Parameterizing module Parameter_GPIO
+Progress: Adding Parameter_RX_RAM [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module Parameter_RX_RAM
+Progress: Adding Parameter_TX_RAM [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module Parameter_TX_RAM
+Progress: Adding Reset [altera_avalon_pio 18.1]
+Progress: Parameterizing module Reset
+Progress: Adding clk_0 [clock_source 18.1]
+Progress: Parameterizing module clk_0
+Progress: Adding clk_1 [clock_source 18.1]
+Progress: Parameterizing module clk_1
+Progress: Adding clk_2 [clock_source 18.1]
+Progress: Parameterizing module clk_2
+Progress: Adding mm_clock_crossing_bridge_0 [altera_avalon_mm_clock_crossing_bridge 18.1]
+Progress: Parameterizing module mm_clock_crossing_bridge_0
+Progress: Adding to_external_bus_bridge_0 [altera_up_avalon_to_external_bus_bridge 18.0]
+Progress: Parameterizing module to_external_bus_bridge_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: Pararameter_Comms_SYS: Generating Pararameter_Comms_SYS "Pararameter_Comms_SYS" for QUARTUS_SYNTH
+Info: ParameterLengthPage: Starting RTL generation for module 'Pararameter_Comms_SYS_ParameterLengthPage'
+Info: ParameterLengthPage:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=Pararameter_Comms_SYS_ParameterLengthPage --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8656_7272317749139442237.dir/0002_ParameterLengthPage_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8656_7272317749139442237.dir/0002_ParameterLengthPage_gen//Pararameter_Comms_SYS_ParameterLengthPage_component_configuration.pl  --do_build_sim=0  ]
+Info: ParameterLengthPage: Done RTL generation for module 'Pararameter_Comms_SYS_ParameterLengthPage'
+Info: ParameterLengthPage: "Pararameter_Comms_SYS" instantiated altera_avalon_pio "ParameterLengthPage"
+Info: Parameter_GPIO: Starting RTL generation for module 'Pararameter_Comms_SYS_Parameter_GPIO'
+Info: Parameter_GPIO:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=Pararameter_Comms_SYS_Parameter_GPIO --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8656_7272317749139442237.dir/0003_Parameter_GPIO_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8656_7272317749139442237.dir/0003_Parameter_GPIO_gen//Pararameter_Comms_SYS_Parameter_GPIO_component_configuration.pl  --do_build_sim=0  ]
+Info: Parameter_GPIO: Done RTL generation for module 'Pararameter_Comms_SYS_Parameter_GPIO'
+Info: Parameter_GPIO: "Pararameter_Comms_SYS" instantiated altera_avalon_pio "Parameter_GPIO"
+Info: Parameter_RX_RAM: Starting RTL generation for module 'Pararameter_Comms_SYS_Parameter_RX_RAM'
+Info: Parameter_RX_RAM:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=Pararameter_Comms_SYS_Parameter_RX_RAM --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8656_7272317749139442237.dir/0004_Parameter_RX_RAM_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8656_7272317749139442237.dir/0004_Parameter_RX_RAM_gen//Pararameter_Comms_SYS_Parameter_RX_RAM_component_configuration.pl  --do_build_sim=0  ]
+Info: Parameter_RX_RAM: Done RTL generation for module 'Pararameter_Comms_SYS_Parameter_RX_RAM'
+Info: Parameter_RX_RAM: "Pararameter_Comms_SYS" instantiated altera_avalon_onchip_memory2 "Parameter_RX_RAM"
+Info: Parameter_TX_RAM: Starting RTL generation for module 'Pararameter_Comms_SYS_Parameter_TX_RAM'
+Info: Parameter_TX_RAM:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=Pararameter_Comms_SYS_Parameter_TX_RAM --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8656_7272317749139442237.dir/0005_Parameter_TX_RAM_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8656_7272317749139442237.dir/0005_Parameter_TX_RAM_gen//Pararameter_Comms_SYS_Parameter_TX_RAM_component_configuration.pl  --do_build_sim=0  ]
+Info: Parameter_TX_RAM: Done RTL generation for module 'Pararameter_Comms_SYS_Parameter_TX_RAM'
+Info: Parameter_TX_RAM: "Pararameter_Comms_SYS" instantiated altera_avalon_onchip_memory2 "Parameter_TX_RAM"
+Info: Reset: Starting RTL generation for module 'Pararameter_Comms_SYS_Reset'
+Info: Reset:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=Pararameter_Comms_SYS_Reset --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8656_7272317749139442237.dir/0006_Reset_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8656_7272317749139442237.dir/0006_Reset_gen//Pararameter_Comms_SYS_Reset_component_configuration.pl  --do_build_sim=0  ]
+Info: Reset: Done RTL generation for module 'Pararameter_Comms_SYS_Reset'
+Info: Reset: "Pararameter_Comms_SYS" instantiated altera_avalon_pio "Reset"
+Info: to_external_bus_bridge_0: Starting Generation of Avalon to External Bus Bridge
+Info: to_external_bus_bridge_0: "Pararameter_Comms_SYS" instantiated altera_up_avalon_to_external_bus_bridge "to_external_bus_bridge_0"
+Info: rst_controller: "Pararameter_Comms_SYS" instantiated altera_reset_controller "rst_controller"
+Info: Pararameter_Comms_SYS: Done "Pararameter_Comms_SYS" with 8 modules, 10 files
+Info: qsys-generate succeeded.
+Info: Finished: Create HDL design files for synthesis

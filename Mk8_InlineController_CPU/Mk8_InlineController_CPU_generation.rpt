@@ -1,0 +1,436 @@
+Info: Starting: Create block symbol file (.bsf)
+Info: qsys-generate C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\Mk8_InlineController_CPU.qsys --block-symbol-file --output-directory=C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\Mk8_InlineController_CPU --family="MAX 10" --part=10M50DAF484I7G
+Progress: Loading EB_Mk8_Inline_Controller_Hardware/Mk8_InlineController_CPU.qsys
+Progress: Reading input file
+Progress: Adding CurrCTRL_FIFO [altera_avalon_fifo 18.1]
+Progress: Parameterizing module CurrCTRL_FIFO
+Progress: Adding CurrCTRL_SYS [CurrCTRL_SYS 1.0]
+Progress: Reading input file
+Progress: Adding CurrCTRLSYS_Bridge [altera_up_avalon_to_external_bus_bridge 18.0]
+Progress: Parameterizing module CurrCTRLSYS_Bridge
+Progress: Adding CurrCTRL_Debug_RAM_0 [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module CurrCTRL_Debug_RAM_0
+Progress: Adding CurrCTRL_Debug_RAM_1 [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module CurrCTRL_Debug_RAM_1
+Progress: Adding CurrCTRL_Debug_RAM_2 [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module CurrCTRL_Debug_RAM_2
+Progress: Adding CurrCTRL_Debug_RAM_3 [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module CurrCTRL_Debug_RAM_3
+Progress: Adding CurrCTRL_GPIO [altera_avalon_pio 18.1]
+Progress: Parameterizing module CurrCTRL_GPIO
+Progress: Adding CurrCTRL_Register_RAM [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module CurrCTRL_Register_RAM
+Progress: Adding CurrSYS_FIFO_ext_CLK [clock_source 18.1]
+Progress: Parameterizing module CurrSYS_FIFO_ext_CLK
+Progress: Adding CurrSYS_RAM_ext_CLK [clock_source 18.1]
+Progress: Parameterizing module CurrSYS_RAM_ext_CLK
+Progress: Adding DebugFIFO [altera_avalon_fifo 18.1]
+Progress: Parameterizing module DebugFIFO
+Progress: Adding MainDiagnosticFIFO [altera_avalon_fifo 18.1]
+Progress: Parameterizing module MainDiagnosticFIFO
+Progress: Adding Pheriphal_CLK [clock_source 18.1]
+Progress: Parameterizing module Pheriphal_CLK
+Progress: Adding SYS_Bus_CLK [clock_source 18.1]
+Progress: Parameterizing module SYS_Bus_CLK
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Progress: Parameterizing module CurrCTRL_SYS
+Progress: Adding Data_Memory [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module Data_Memory
+Progress: Adding Parameter_SYS [Pararameter_Comms_SYS 1.0]
+Progress: Reading input file
+Progress: Adding CPU_Clk [clock_source 18.1]
+Progress: Parameterizing module CPU_Clk
+Progress: Adding CRC_Init_Bridge [altera_up_avalon_to_external_bus_bridge 18.0]
+Progress: Parameterizing module CRC_Init_Bridge
+Progress: Adding Clk_Ext_RAM [clock_source 18.1]
+Progress: Parameterizing module Clk_Ext_RAM
+Progress: Adding ParameterLengthPage [altera_avalon_pio 18.1]
+Progress: Parameterizing module ParameterLengthPage
+Progress: Adding Parameter_GPIO [altera_avalon_pio 18.1]
+Progress: Parameterizing module Parameter_GPIO
+Progress: Adding Parameter_RX_RAM [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module Parameter_RX_RAM
+Progress: Adding Parameter_TX_RAM [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module Parameter_TX_RAM
+Progress: Adding Pheriphal_CLK [clock_source 18.1]
+Progress: Parameterizing module Pheriphal_CLK
+Progress: Adding Reset [altera_avalon_pio 18.1]
+Progress: Parameterizing module Reset
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Progress: Parameterizing module Parameter_SYS
+Progress: Adding PatternGeneratorSYS_0 [PatternGeneratorSYS 1.0]
+Progress: Reading input file
+Progress: Adding PD_DebugRAM [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module PD_DebugRAM
+Progress: Adding PD_FIFO [altera_avalon_fifo 18.1]
+Progress: Parameterizing module PD_FIFO
+Progress: Adding PD_GPIO [altera_avalon_pio 18.1]
+Progress: Parameterizing module PD_GPIO
+Progress: Adding Reset_PD [altera_avalon_pio 18.1]
+Progress: Parameterizing module Reset_PD
+Progress: Adding clk_0 [clock_source 18.1]
+Progress: Parameterizing module clk_0
+Progress: Adding clk_1 [clock_source 18.1]
+Progress: Parameterizing module clk_1
+Progress: Adding clk_PD [clock_source 18.1]
+Progress: Parameterizing module clk_PD
+Progress: Adding mm_clock_crossing_bridge_0 [altera_avalon_mm_clock_crossing_bridge 18.1]
+Progress: Parameterizing module mm_clock_crossing_bridge_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Progress: Parameterizing module PatternGeneratorSYS_0
+Progress: Adding Pheriphals [subsystemA 1.0]
+Progress: Reading input file
+Progress: Adding DDR3_status_GPIO [altera_avalon_pio 18.1]
+Progress: Parameterizing module DDR3_status_GPIO
+Progress: Adding LED_GPIO [altera_avalon_pio 18.1]
+Progress: Parameterizing module LED_GPIO
+Progress: Adding LVDS_gpio [altera_avalon_pio 18.1]
+Progress: Parameterizing module LVDS_gpio
+Progress: Adding TP_GPIO [altera_avalon_pio 18.1]
+Progress: Parameterizing module TP_GPIO
+Progress: Adding clk_0 [clock_source 18.1]
+Progress: Parameterizing module clk_0
+Progress: Adding dual_boot_0 [altera_dual_boot 18.1]
+Progress: Parameterizing module dual_boot_0
+Progress: Adding ft600_gpio [altera_avalon_pio 18.1]
+Progress: Parameterizing module ft600_gpio
+Progress: Adding jtag_uart [altera_avalon_jtag_uart 18.1]
+Progress: Parameterizing module jtag_uart
+Progress: Adding mm_clock_crossing_bridge_0 [altera_avalon_mm_clock_crossing_bridge 18.1]
+Progress: Parameterizing module mm_clock_crossing_bridge_0
+Progress: Adding timer_0 [altera_avalon_timer 18.1]
+Progress: Parameterizing module timer_0
+Progress: Adding timer_1 [altera_avalon_timer 18.1]
+Progress: Parameterizing module timer_1
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Progress: Parameterizing module Pheriphals
+Progress: Adding Program_Memory [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module Program_Memory
+Progress: Adding TimerSYS [TimerSYS 1.0]
+Progress: Reading input file
+Progress: Adding Slave_Clk [clock_source 18.1]
+Progress: Parameterizing module Slave_Clk
+Progress: Adding Timer_clk [clock_source 18.1]
+Progress: Parameterizing module Timer_clk
+Progress: Adding mm_clock_crossing_bridge_0 [altera_avalon_mm_clock_crossing_bridge 18.1]
+Progress: Parameterizing module mm_clock_crossing_bridge_0
+Progress: Adding timer_0 [altera_avalon_timer 18.1]
+Progress: Parameterizing module timer_0
+Progress: Adding timer_1 [altera_avalon_timer 18.1]
+Progress: Parameterizing module timer_1
+Progress: Adding timer_2 [altera_avalon_timer 18.1]
+Progress: Parameterizing module timer_2
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Progress: Parameterizing module TimerSYS
+Progress: Adding USB_Data_SYS [USB_Comms_SYS 1.0]
+Progress: Reading input file
+Progress: Adding CPU_CLK [clock_source 18.1]
+Progress: Parameterizing module CPU_CLK
+Progress: Adding USB_Ext_CLK [clock_source 18.1]
+Progress: Parameterizing module USB_Ext_CLK
+Progress: Adding USB_GPIO [altera_avalon_pio 18.1]
+Progress: Parameterizing module USB_GPIO
+Progress: Adding USB_RX_RAM [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module USB_RX_RAM
+Progress: Adding pheriphal_clk [clock_source 18.1]
+Progress: Parameterizing module pheriphal_clk
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Progress: Parameterizing module USB_Data_SYS
+Progress: Adding altpll_sys [altpll 18.1]
+Progress: Parameterizing module altpll_sys
+Progress: Adding clk_0 [clock_source 18.1]
+Progress: Parameterizing module clk_0
+Progress: Adding clk_50 [clock_source 18.1]
+Progress: Parameterizing module clk_50
+Progress: Adding clock_bridge_0 [altera_clock_bridge 18.1]
+Progress: Parameterizing module clock_bridge_0
+Progress: Adding clock_bridge_1 [altera_clock_bridge 18.1]
+Progress: Parameterizing module clock_bridge_1
+Progress: Adding dual_boot_0 [altera_dual_boot 18.1]
+Progress: Parameterizing module dual_boot_0
+Progress: Adding mem_if_ddr3_emif [altera_mem_if_ddr3_emif 18.1]
+Progress: Parameterizing module mem_if_ddr3_emif
+Progress: Adding mm_clock_crossing_bridge_1 [altera_avalon_mm_clock_crossing_bridge 18.1]
+Progress: Parameterizing module mm_clock_crossing_bridge_1
+Progress: Adding msgdma_0 [altera_msgdma 18.1]
+Progress: Parameterizing module msgdma_0
+Progress: Adding nios2_gen2 [altera_nios2_gen2 18.1]
+Progress: Parameterizing module nios2_gen2
+Progress: Adding nios_custom_instr_floating_point_2_0 [altera_nios_custom_instr_floating_point_2 18.1]
+Progress: Parameterizing module nios_custom_instr_floating_point_2_0
+Progress: Adding onchip_flash [altera_onchip_flash 18.1]
+Progress: Parameterizing module onchip_flash
+Progress: Adding pio_0 [altera_avalon_pio 18.1]
+Progress: Parameterizing module pio_0
+Progress: Adding vic_0 [altera_vic 18.1]
+Progress: Parameterizing module vic_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: Mk8_InlineController_CPU.msgdma_0: Response information port is disabled. Enable the response port if data transfer information is required by host
+Info: qsys-generate succeeded.
+Info: Finished: Create block symbol file (.bsf)
+Info: 
+Info: Starting: Create HDL design files for synthesis
+Info: qsys-generate C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\Mk8_InlineController_CPU.qsys --synthesis=VERILOG --output-directory=C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\Mk8_InlineController_CPU\synthesis --family="MAX 10" --part=10M50DAF484I7G
+Progress: Loading EB_Mk8_Inline_Controller_Hardware/Mk8_InlineController_CPU.qsys
+Progress: Reading input file
+Progress: Adding CurrCTRL_FIFO [altera_avalon_fifo 18.1]
+Progress: Parameterizing module CurrCTRL_FIFO
+Progress: Adding CurrCTRL_SYS [CurrCTRL_SYS 1.0]
+Progress: Parameterizing module CurrCTRL_SYS
+Progress: Adding Data_Memory [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module Data_Memory
+Progress: Adding Parameter_SYS [Pararameter_Comms_SYS 1.0]
+Progress: Parameterizing module Parameter_SYS
+Progress: Adding PatternGeneratorSYS_0 [PatternGeneratorSYS 1.0]
+Progress: Parameterizing module PatternGeneratorSYS_0
+Progress: Adding Pheriphals [subsystemA 1.0]
+Progress: Parameterizing module Pheriphals
+Progress: Adding Program_Memory [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module Program_Memory
+Progress: Adding TimerSYS [TimerSYS 1.0]
+Progress: Parameterizing module TimerSYS
+Progress: Adding USB_Data_SYS [USB_Comms_SYS 1.0]
+Progress: Parameterizing module USB_Data_SYS
+Progress: Adding altpll_sys [altpll 18.1]
+Progress: Parameterizing module altpll_sys
+Progress: Adding clk_0 [clock_source 18.1]
+Progress: Parameterizing module clk_0
+Progress: Adding clk_50 [clock_source 18.1]
+Progress: Parameterizing module clk_50
+Progress: Adding clock_bridge_0 [altera_clock_bridge 18.1]
+Progress: Parameterizing module clock_bridge_0
+Progress: Adding clock_bridge_1 [altera_clock_bridge 18.1]
+Progress: Parameterizing module clock_bridge_1
+Progress: Adding dual_boot_0 [altera_dual_boot 18.1]
+Progress: Parameterizing module dual_boot_0
+Progress: Adding mem_if_ddr3_emif [altera_mem_if_ddr3_emif 18.1]
+Progress: Parameterizing module mem_if_ddr3_emif
+Progress: Adding mm_clock_crossing_bridge_1 [altera_avalon_mm_clock_crossing_bridge 18.1]
+Progress: Parameterizing module mm_clock_crossing_bridge_1
+Progress: Adding msgdma_0 [altera_msgdma 18.1]
+Progress: Parameterizing module msgdma_0
+Progress: Adding nios2_gen2 [altera_nios2_gen2 18.1]
+Progress: Parameterizing module nios2_gen2
+Progress: Adding nios_custom_instr_floating_point_2_0 [altera_nios_custom_instr_floating_point_2 18.1]
+Progress: Parameterizing module nios_custom_instr_floating_point_2_0
+Progress: Adding onchip_flash [altera_onchip_flash 18.1]
+Progress: Parameterizing module onchip_flash
+Progress: Adding pio_0 [altera_avalon_pio 18.1]
+Progress: Parameterizing module pio_0
+Progress: Adding vic_0 [altera_vic 18.1]
+Progress: Parameterizing module vic_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: Mk8_InlineController_CPU.msgdma_0: Response information port is disabled. Enable the response port if data transfer information is required by host
+Info: Mk8_InlineController_CPU: Generating Mk8_InlineController_CPU "Mk8_InlineController_CPU" for QUARTUS_SYNTH
+Info: Inserting clock-crossing logic between cmd_demux.src6 and cmd_mux_006.sink0
+Info: Inserting clock-crossing logic between rsp_demux_006.src0 and rsp_mux.sink6
+Warning: Mk8_InlineController_CPU: "No matching role found for nios2_gen2_custom_instruction_master_multi_xconnect:ci_slave:ci_slave_ipending (ipending)"
+Warning: Mk8_InlineController_CPU: "No matching role found for nios2_gen2_custom_instruction_master_multi_xconnect:ci_slave:ci_slave_estatus (estatus)"
+Info: CurrCTRL_SYS: "Mk8_InlineController_CPU" instantiated CurrCTRL_SYS "CurrCTRL_SYS"
+Info: Data_Memory: Starting RTL generation for module 'Mk8_InlineController_CPU_Data_Memory'
+Info: Data_Memory:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=Mk8_InlineController_CPU_Data_Memory --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0002_Data_Memory_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0002_Data_Memory_gen//Mk8_InlineController_CPU_Data_Memory_component_configuration.pl  --do_build_sim=0  ]
+Info: Data_Memory: Done RTL generation for module 'Mk8_InlineController_CPU_Data_Memory'
+Info: Data_Memory: "Mk8_InlineController_CPU" instantiated altera_avalon_onchip_memory2 "Data_Memory"
+Info: Parameter_SYS: "Mk8_InlineController_CPU" instantiated Pararameter_Comms_SYS "Parameter_SYS"
+Info: Pheriphals: "Mk8_InlineController_CPU" instantiated subsystemA "Pheriphals"
+Info: Program_Memory: Starting RTL generation for module 'Mk8_InlineController_CPU_Program_Memory'
+Info: Program_Memory:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=Mk8_InlineController_CPU_Program_Memory --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0003_Program_Memory_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0003_Program_Memory_gen//Mk8_InlineController_CPU_Program_Memory_component_configuration.pl  --do_build_sim=0  ]
+Info: Program_Memory: Done RTL generation for module 'Mk8_InlineController_CPU_Program_Memory'
+Info: Program_Memory: "Mk8_InlineController_CPU" instantiated altera_avalon_onchip_memory2 "Program_Memory"
+Info: TimerSYS: "Mk8_InlineController_CPU" instantiated TimerSYS "TimerSYS"
+Info: USB_Data_SYS: "Mk8_InlineController_CPU" instantiated USB_Comms_SYS "USB_Data_SYS"
+Info: altpll_sys: "Mk8_InlineController_CPU" instantiated altpll "altpll_sys"
+Info: mm_clock_crossing_bridge_1: "Mk8_InlineController_CPU" instantiated altera_avalon_mm_clock_crossing_bridge "mm_clock_crossing_bridge_1"
+Info: msgdma_0: "Mk8_InlineController_CPU" instantiated altera_msgdma "msgdma_0"
+Info: nios2_gen2: "Mk8_InlineController_CPU" instantiated altera_nios2_gen2 "nios2_gen2"
+Info: nios_custom_instr_floating_point_2_0: "Mk8_InlineController_CPU" instantiated altera_nios_custom_instr_floating_point_2 "nios_custom_instr_floating_point_2_0"
+Info: vic_0: "Mk8_InlineController_CPU" instantiated altera_vic "vic_0"
+Info: nios2_gen2_custom_instruction_master_translator: "Mk8_InlineController_CPU" instantiated altera_customins_master_translator "nios2_gen2_custom_instruction_master_translator"
+Info: nios2_gen2_custom_instruction_master_comb_xconnect: "Mk8_InlineController_CPU" instantiated altera_customins_xconnect "nios2_gen2_custom_instruction_master_comb_xconnect"
+Info: nios2_gen2_custom_instruction_master_comb_slave_translator0: "Mk8_InlineController_CPU" instantiated altera_customins_slave_translator "nios2_gen2_custom_instruction_master_comb_slave_translator0"
+Info: nios2_gen2_custom_instruction_master_multi_xconnect: "Mk8_InlineController_CPU" instantiated altera_customins_xconnect "nios2_gen2_custom_instruction_master_multi_xconnect"
+Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_001: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_002: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_003: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_004: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_005: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_006: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_007: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_008: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_009: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_010: Inserting error_adapter: error_adapter_0
+Info: mm_interconnect_0: "Mk8_InlineController_CPU" instantiated altera_mm_interconnect "mm_interconnect_0"
+Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_001: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_002: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_003: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_004: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_005: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_006: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_007: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_008: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_009: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_010: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_011: Inserting error_adapter: error_adapter_0
+Info: mm_interconnect_1: "Mk8_InlineController_CPU" instantiated altera_mm_interconnect "mm_interconnect_1"
+Info: irq_mapper: "Mk8_InlineController_CPU" instantiated altera_irq_mapper "irq_mapper"
+Info: irq_synchronizer: "Mk8_InlineController_CPU" instantiated altera_irq_clock_crosser "irq_synchronizer"
+Info: rst_controller: "Mk8_InlineController_CPU" instantiated altera_reset_controller "rst_controller"
+Info: CurrCTRLSYS_Bridge: Starting Generation of Avalon to External Bus Bridge
+Info: CurrCTRLSYS_Bridge: "CurrCTRL_SYS" instantiated altera_up_avalon_to_external_bus_bridge "CurrCTRLSYS_Bridge"
+Info: CurrCTRL_GPIO: Starting RTL generation for module 'Mk8_InlineController_CPU_CurrCTRL_SYS_CurrCTRL_GPIO'
+Info: CurrCTRL_GPIO:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=Mk8_InlineController_CPU_CurrCTRL_SYS_CurrCTRL_GPIO --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0015_CurrCTRL_GPIO_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0015_CurrCTRL_GPIO_gen//Mk8_InlineController_CPU_CurrCTRL_SYS_CurrCTRL_GPIO_component_configuration.pl  --do_build_sim=0  ]
+Info: CurrCTRL_GPIO: Done RTL generation for module 'Mk8_InlineController_CPU_CurrCTRL_SYS_CurrCTRL_GPIO'
+Info: CurrCTRL_GPIO: "CurrCTRL_SYS" instantiated altera_avalon_pio "CurrCTRL_GPIO"
+Info: CurrCTRL_Register_RAM: Starting RTL generation for module 'Mk8_InlineController_CPU_CurrCTRL_SYS_CurrCTRL_Register_RAM'
+Info: CurrCTRL_Register_RAM:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=Mk8_InlineController_CPU_CurrCTRL_SYS_CurrCTRL_Register_RAM --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0016_CurrCTRL_Register_RAM_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0016_CurrCTRL_Register_RAM_gen//Mk8_InlineController_CPU_CurrCTRL_SYS_CurrCTRL_Register_RAM_component_configuration.pl  --do_build_sim=0  ]
+Info: CurrCTRL_Register_RAM: Done RTL generation for module 'Mk8_InlineController_CPU_CurrCTRL_SYS_CurrCTRL_Register_RAM'
+Info: CurrCTRL_Register_RAM: "CurrCTRL_SYS" instantiated altera_avalon_onchip_memory2 "CurrCTRL_Register_RAM"
+Info: CRC_Init_Bridge: Starting Generation of Avalon to External Bus Bridge
+Info: CRC_Init_Bridge: "Parameter_SYS" instantiated altera_up_avalon_to_external_bus_bridge "CRC_Init_Bridge"
+Info: ParameterLengthPage: Starting RTL generation for module 'Mk8_InlineController_CPU_Parameter_SYS_ParameterLengthPage'
+Info: ParameterLengthPage:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=Mk8_InlineController_CPU_Parameter_SYS_ParameterLengthPage --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0018_ParameterLengthPage_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0018_ParameterLengthPage_gen//Mk8_InlineController_CPU_Parameter_SYS_ParameterLengthPage_component_configuration.pl  --do_build_sim=0  ]
+Info: ParameterLengthPage: Done RTL generation for module 'Mk8_InlineController_CPU_Parameter_SYS_ParameterLengthPage'
+Info: ParameterLengthPage: "Parameter_SYS" instantiated altera_avalon_pio "ParameterLengthPage"
+Info: Parameter_GPIO: Starting RTL generation for module 'Mk8_InlineController_CPU_Parameter_SYS_Parameter_GPIO'
+Info: Parameter_GPIO:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=Mk8_InlineController_CPU_Parameter_SYS_Parameter_GPIO --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0019_Parameter_GPIO_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0019_Parameter_GPIO_gen//Mk8_InlineController_CPU_Parameter_SYS_Parameter_GPIO_component_configuration.pl  --do_build_sim=0  ]
+Info: Parameter_GPIO: Done RTL generation for module 'Mk8_InlineController_CPU_Parameter_SYS_Parameter_GPIO'
+Info: Parameter_GPIO: "Parameter_SYS" instantiated altera_avalon_pio "Parameter_GPIO"
+Info: Parameter_RX_RAM: Starting RTL generation for module 'Mk8_InlineController_CPU_Parameter_SYS_Parameter_RX_RAM'
+Info: Parameter_RX_RAM:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=Mk8_InlineController_CPU_Parameter_SYS_Parameter_RX_RAM --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0020_Parameter_RX_RAM_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0020_Parameter_RX_RAM_gen//Mk8_InlineController_CPU_Parameter_SYS_Parameter_RX_RAM_component_configuration.pl  --do_build_sim=0  ]
+Info: Parameter_RX_RAM: Done RTL generation for module 'Mk8_InlineController_CPU_Parameter_SYS_Parameter_RX_RAM'
+Info: Parameter_RX_RAM: "Parameter_SYS" instantiated altera_avalon_onchip_memory2 "Parameter_RX_RAM"
+Info: Parameter_TX_RAM: Starting RTL generation for module 'Mk8_InlineController_CPU_Parameter_SYS_Parameter_TX_RAM'
+Info: Parameter_TX_RAM:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=Mk8_InlineController_CPU_Parameter_SYS_Parameter_TX_RAM --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0021_Parameter_TX_RAM_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0021_Parameter_TX_RAM_gen//Mk8_InlineController_CPU_Parameter_SYS_Parameter_TX_RAM_component_configuration.pl  --do_build_sim=0  ]
+Info: Parameter_TX_RAM: Done RTL generation for module 'Mk8_InlineController_CPU_Parameter_SYS_Parameter_TX_RAM'
+Info: Parameter_TX_RAM: "Parameter_SYS" instantiated altera_avalon_onchip_memory2 "Parameter_TX_RAM"
+Info: LED_GPIO: Starting RTL generation for module 'Mk8_InlineController_CPU_Pheriphals_LED_GPIO'
+Info: LED_GPIO:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=Mk8_InlineController_CPU_Pheriphals_LED_GPIO --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0022_LED_GPIO_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0022_LED_GPIO_gen//Mk8_InlineController_CPU_Pheriphals_LED_GPIO_component_configuration.pl  --do_build_sim=0  ]
+Info: LED_GPIO: Done RTL generation for module 'Mk8_InlineController_CPU_Pheriphals_LED_GPIO'
+Info: LED_GPIO: "Pheriphals" instantiated altera_avalon_pio "LED_GPIO"
+Info: TP_GPIO: Starting RTL generation for module 'Mk8_InlineController_CPU_Pheriphals_TP_GPIO'
+Info: TP_GPIO:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=Mk8_InlineController_CPU_Pheriphals_TP_GPIO --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0023_TP_GPIO_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0023_TP_GPIO_gen//Mk8_InlineController_CPU_Pheriphals_TP_GPIO_component_configuration.pl  --do_build_sim=0  ]
+Info: TP_GPIO: Done RTL generation for module 'Mk8_InlineController_CPU_Pheriphals_TP_GPIO'
+Info: TP_GPIO: "Pheriphals" instantiated altera_avalon_pio "TP_GPIO"
+Info: timer_0: Starting RTL generation for module 'Mk8_InlineController_CPU_TimerSYS_timer_0'
+Info: timer_0:   Generation command is [exec C:/intelFPGA_lite/18.1/quartus/bin64//perl/bin/perl.exe -I C:/intelFPGA_lite/18.1/quartus/bin64//perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_timer -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_timer/generate_rtl.pl --name=Mk8_InlineController_CPU_TimerSYS_timer_0 --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0024_timer_0_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0024_timer_0_gen//Mk8_InlineController_CPU_TimerSYS_timer_0_component_configuration.pl  --do_build_sim=0  ]
+Info: timer_0: Done RTL generation for module 'Mk8_InlineController_CPU_TimerSYS_timer_0'
+Info: timer_0: "TimerSYS" instantiated altera_avalon_timer "timer_0"
+Info: USB_RX_RAM: Starting RTL generation for module 'Mk8_InlineController_CPU_USB_Data_SYS_USB_RX_RAM'
+Info: USB_RX_RAM:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=Mk8_InlineController_CPU_USB_Data_SYS_USB_RX_RAM --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0025_USB_RX_RAM_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0025_USB_RX_RAM_gen//Mk8_InlineController_CPU_USB_Data_SYS_USB_RX_RAM_component_configuration.pl  --do_build_sim=0  ]
+Info: USB_RX_RAM: Done RTL generation for module 'Mk8_InlineController_CPU_USB_Data_SYS_USB_RX_RAM'
+Info: USB_RX_RAM: "USB_Data_SYS" instantiated altera_avalon_onchip_memory2 "USB_RX_RAM"
+Info: dispatcher_internal: "msgdma_0" instantiated modular_sgdma_dispatcher "dispatcher_internal"
+Info: read_mstr_internal: "msgdma_0" instantiated dma_read_master "read_mstr_internal"
+Info: write_mstr_internal: "msgdma_0" instantiated dma_write_master "write_mstr_internal"
+Info: cpu: Starting RTL generation for module 'Mk8_InlineController_CPU_nios2_gen2_cpu'
+Info: cpu:   Generation command is [exec C:/intelFPGA_lite/18.1/quartus/bin64//eperlcmd.exe -I C:/intelFPGA_lite/18.1/quartus/bin64//perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2/cpu_lib -I C:/intelfpga_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2/nios_lib -I C:/intelfpga_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2 -I C:/intelfpga_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2 -- C:/intelfpga_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2/generate_rtl.epl --name=Mk8_InlineController_CPU_nios2_gen2_cpu --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0029_cpu_gen/ --quartus_bindir=C:/intelFPGA_lite/18.1/quartus/bin64/ --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_7114444190950614580.dir/0029_cpu_gen//Mk8_InlineController_CPU_nios2_gen2_cpu_processor_configuration.pl  --do_build_sim=0  ]
+Info: cpu: # 2021.02.05 14:23:56 (*) Starting Nios II generation
+Info: cpu: # 2021.02.05 14:23:56 (*)   Checking for plaintext license.
+Info: cpu: # 2021.02.05 14:23:57 (*)   Plaintext license not found.
+Info: cpu: # 2021.02.05 14:23:57 (*)   Checking for encrypted license (non-evaluation).
+Info: cpu: # 2021.02.05 14:23:58 (*)   Encrypted license found.  SOF will not be time-limited.
+Info: cpu: # 2021.02.05 14:23:58 (*)   Elaborating CPU configuration settings
+Info: cpu: # 2021.02.05 14:23:58 (*)   Creating all objects for CPU
+Info: cpu: # 2021.02.05 14:23:58 (*)     Testbench
+Info: cpu: # 2021.02.05 14:23:58 (*)     Instruction decoding
+Info: cpu: # 2021.02.05 14:23:58 (*)       Instruction fields
+Info: cpu: # 2021.02.05 14:23:58 (*)       Instruction decodes
+Info: cpu: # 2021.02.05 14:23:58 (*)       Signals for RTL simulation waveforms
+Info: cpu: # 2021.02.05 14:23:58 (*)       Instruction controls
+Info: cpu: # 2021.02.05 14:23:58 (*)     Pipeline frontend
+Info: cpu: # 2021.02.05 14:23:59 (*)     Pipeline backend
+Info: cpu: # 2021.02.05 14:24:01 (*)   Generating RTL from CPU objects
+Info: cpu: # 2021.02.05 14:24:02 (*)   Creating encrypted RTL
+Info: cpu: # 2021.02.05 14:24:03 (*) Done Nios II generation
+Info: cpu: Done RTL generation for module 'Mk8_InlineController_CPU_nios2_gen2_cpu'
+Info: cpu: "nios2_gen2" instantiated altera_nios2_gen2_unit "cpu"
+Info: fpci_combi: "nios_custom_instr_floating_point_2_0" instantiated altera_nios_custom_instr_floating_point_2_combi "fpci_combi"
+Info: fpci_multi: "nios_custom_instr_floating_point_2_0" instantiated altera_nios_custom_instr_floating_point_2_multi "fpci_multi"
+Info: vic_csr: "vic_0" instantiated altera_vic_csr "vic_csr"
+Info: vic_priority: "vic_0" instantiated altera_vic_priority "vic_priority"
+Info: vic_vector: "vic_0" instantiated altera_vic_vector "vic_vector"
+Info: nios2_gen2_data_master_translator: "mm_interconnect_0" instantiated altera_merlin_master_translator "nios2_gen2_data_master_translator"
+Info: msgdma_0_csr_translator: "mm_interconnect_0" instantiated altera_merlin_slave_translator "msgdma_0_csr_translator"
+Info: nios2_gen2_data_master_agent: "mm_interconnect_0" instantiated altera_merlin_master_agent "nios2_gen2_data_master_agent"
+Info: msgdma_0_csr_agent: "mm_interconnect_0" instantiated altera_merlin_slave_agent "msgdma_0_csr_agent"
+Info: msgdma_0_csr_agent_rsp_fifo: "mm_interconnect_0" instantiated altera_avalon_sc_fifo "msgdma_0_csr_agent_rsp_fifo"
+Info: router: "mm_interconnect_0" instantiated altera_merlin_router "router"
+Info: router_001: "mm_interconnect_0" instantiated altera_merlin_router "router_001"
+Info: router_003: "mm_interconnect_0" instantiated altera_merlin_router "router_003"
+Info: router_004: "mm_interconnect_0" instantiated altera_merlin_router "router_004"
+Info: router_006: "mm_interconnect_0" instantiated altera_merlin_router "router_006"
+Info: router_007: "mm_interconnect_0" instantiated altera_merlin_router "router_007"
+Info: router_008: "mm_interconnect_0" instantiated altera_merlin_router "router_008"
+Info: msgdma_0_mm_read_limiter: "mm_interconnect_0" instantiated altera_merlin_traffic_limiter "msgdma_0_mm_read_limiter"
+Info: Reusing file C:/DesignData/CoilDriverDesigns/Mk_8/Inline_Controller/HardwareDesignCopy/EB_Mk8_Inline_Controller_Hardware/Mk8_InlineController_CPU/synthesis/submodules/altera_avalon_sc_fifo.v
+Info: cmd_demux: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "cmd_demux"
+Info: cmd_demux_001: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "cmd_demux_001"
+Info: cmd_demux_002: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "cmd_demux_002"
+Info: cmd_demux_003: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "cmd_demux_003"
+Info: cmd_mux: "mm_interconnect_0" instantiated altera_merlin_multiplexer "cmd_mux"
+Info: cmd_mux_002: "mm_interconnect_0" instantiated altera_merlin_multiplexer "cmd_mux_002"
+Info: Reusing file C:/DesignData/CoilDriverDesigns/Mk_8/Inline_Controller/HardwareDesignCopy/EB_Mk8_Inline_Controller_Hardware/Mk8_InlineController_CPU/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: cmd_mux_004: "mm_interconnect_0" instantiated altera_merlin_multiplexer "cmd_mux_004"
+Info: Reusing file C:/DesignData/CoilDriverDesigns/Mk_8/Inline_Controller/HardwareDesignCopy/EB_Mk8_Inline_Controller_Hardware/Mk8_InlineController_CPU/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: rsp_demux: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "rsp_demux"
+Info: rsp_demux_002: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "rsp_demux_002"
+Info: rsp_demux_004: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "rsp_demux_004"
+Info: rsp_demux_006: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "rsp_demux_006"
+Info: rsp_mux: "mm_interconnect_0" instantiated altera_merlin_multiplexer "rsp_mux"
+Info: Reusing file C:/DesignData/CoilDriverDesigns/Mk_8/Inline_Controller/HardwareDesignCopy/EB_Mk8_Inline_Controller_Hardware/Mk8_InlineController_CPU/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: rsp_mux_001: "mm_interconnect_0" instantiated altera_merlin_multiplexer "rsp_mux_001"
+Info: Reusing file C:/DesignData/CoilDriverDesigns/Mk_8/Inline_Controller/HardwareDesignCopy/EB_Mk8_Inline_Controller_Hardware/Mk8_InlineController_CPU/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: rsp_mux_003: "mm_interconnect_0" instantiated altera_merlin_multiplexer "rsp_mux_003"
+Info: Reusing file C:/DesignData/CoilDriverDesigns/Mk_8/Inline_Controller/HardwareDesignCopy/EB_Mk8_Inline_Controller_Hardware/Mk8_InlineController_CPU/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: msgdma_0_descriptor_slave_cmd_width_adapter: "mm_interconnect_0" instantiated altera_merlin_width_adapter "msgdma_0_descriptor_slave_cmd_width_adapter"
+Info: Reusing file C:/DesignData/CoilDriverDesigns/Mk_8/Inline_Controller/HardwareDesignCopy/EB_Mk8_Inline_Controller_Hardware/Mk8_InlineController_CPU/synthesis/submodules/altera_merlin_burst_uncompressor.sv
+Info: crosser: "mm_interconnect_0" instantiated altera_avalon_st_handshake_clock_crosser "crosser"
+Info: Reusing file C:/DesignData/CoilDriverDesigns/Mk_8/Inline_Controller/HardwareDesignCopy/EB_Mk8_Inline_Controller_Hardware/Mk8_InlineController_CPU/synthesis/submodules/altera_avalon_st_pipeline_base.v
+Info: Reusing file C:/DesignData/CoilDriverDesigns/Mk_8/Inline_Controller/HardwareDesignCopy/EB_Mk8_Inline_Controller_Hardware/Mk8_InlineController_CPU/synthesis/submodules/altera_std_synchronizer_nocut.v
+Info: avalon_st_adapter: "mm_interconnect_0" instantiated altera_avalon_st_adapter "avalon_st_adapter"
+Info: avalon_st_adapter_003: "mm_interconnect_0" instantiated altera_avalon_st_adapter "avalon_st_adapter_003"
+Info: router: "mm_interconnect_1" instantiated altera_merlin_router "router"
+Info: router_001: "mm_interconnect_1" instantiated altera_merlin_router "router_001"
+Info: router_002: "mm_interconnect_1" instantiated altera_merlin_router "router_002"
+Info: Parameter_SYS_crc_init_bridge_avalon_slave_burst_adapter: "mm_interconnect_1" instantiated altera_merlin_burst_adapter "Parameter_SYS_crc_init_bridge_avalon_slave_burst_adapter"
+Info: Reusing file C:/DesignData/CoilDriverDesigns/Mk_8/Inline_Controller/HardwareDesignCopy/EB_Mk8_Inline_Controller_Hardware/Mk8_InlineController_CPU/synthesis/submodules/altera_merlin_address_alignment.sv
+Info: Reusing file C:/DesignData/CoilDriverDesigns/Mk_8/Inline_Controller/HardwareDesignCopy/EB_Mk8_Inline_Controller_Hardware/Mk8_InlineController_CPU/synthesis/submodules/altera_avalon_st_pipeline_base.v
+Info: cmd_demux: "mm_interconnect_1" instantiated altera_merlin_demultiplexer "cmd_demux"
+Info: cmd_mux: "mm_interconnect_1" instantiated altera_merlin_multiplexer "cmd_mux"
+Info: Reusing file C:/DesignData/CoilDriverDesigns/Mk_8/Inline_Controller/HardwareDesignCopy/EB_Mk8_Inline_Controller_Hardware/Mk8_InlineController_CPU/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: rsp_demux: "mm_interconnect_1" instantiated altera_merlin_demultiplexer "rsp_demux"
+Info: rsp_mux: "mm_interconnect_1" instantiated altera_merlin_multiplexer "rsp_mux"
+Info: Reusing file C:/DesignData/CoilDriverDesigns/Mk_8/Inline_Controller/HardwareDesignCopy/EB_Mk8_Inline_Controller_Hardware/Mk8_InlineController_CPU/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: avalon_st_adapter: "mm_interconnect_1" instantiated altera_avalon_st_adapter "avalon_st_adapter"
+Info: error_adapter_0: "avalon_st_adapter" instantiated error_adapter "error_adapter_0"
+Info: error_adapter_0: "avalon_st_adapter_003" instantiated error_adapter "error_adapter_0"
+Info: error_adapter_0: "avalon_st_adapter" instantiated error_adapter "error_adapter_0"
+Info: Mk8_InlineController_CPU: Done "Mk8_InlineController_CPU" with 87 modules, 151 files
+Info: qsys-generate succeeded.
+Info: Finished: Create HDL design files for synthesis

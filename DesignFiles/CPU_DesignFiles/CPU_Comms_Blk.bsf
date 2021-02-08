@@ -1,0 +1,121 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 2019  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and any partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details, at
+https://fpgasoftware.intel.com/eula.
+*/
+(header "symbol" (version "1.2"))
+(symbol
+	(rect 16 16 432 208)
+	(text "CPU_Comms_Blk" (rect 5 0 108 19)(font "Intel Clear" (font_size 8)))
+	(text "inst" (rect 8 171 24 188)(font "Intel Clear" ))
+	(port
+		(pt 0 32)
+		(input)
+		(text "Reset_n" (rect 0 0 47 19)(font "Intel Clear" (font_size 8)))
+		(text "Reset_n" (rect 21 27 68 46)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 32)(pt 16 32))
+	)
+	(port
+		(pt 0 48)
+		(input)
+		(text "FIFO_Trigger" (rect 0 0 76 19)(font "Intel Clear" (font_size 8)))
+		(text "FIFO_Trigger" (rect 21 43 97 62)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 48)(pt 16 48))
+	)
+	(port
+		(pt 0 64)
+		(input)
+		(text "Loop_RX_Data[1..0]" (rect 0 0 119 19)(font "Intel Clear" (font_size 8)))
+		(text "Loop_RX_Data[1..0]" (rect 21 59 140 78)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 64)(pt 16 64)(line_width 3))
+	)
+	(port
+		(pt 0 80)
+		(input)
+		(text "CrrCTRLDataOut[9..0][31..0]" (rect 0 0 168 19)(font "Intel Clear" (font_size 8)))
+		(text "CrrCTRLDataOut[9..0][31..0]" (rect 21 75 189 94)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 80)(pt 16 80)(line_width 3))
+	)
+	(port
+		(pt 0 96)
+		(input)
+		(text "CurrCTRL_FaultFlags[1..0]" (rect 0 0 154 19)(font "Intel Clear" (font_size 8)))
+		(text "CurrCTRL_FaultFlags[1..0]" (rect 21 91 175 110)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 96)(pt 16 96)(line_width 3))
+	)
+	(port
+		(pt 0 112)
+		(input)
+		(text "clk_1u6_p[1..0]" (rect 0 0 93 19)(font "Intel Clear" (font_size 8)))
+		(text "clk_1u6_p[1..0]" (rect 21 107 114 126)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 112)(pt 16 112)(line_width 3))
+	)
+	(port
+		(pt 0 128)
+		(input)
+		(text "SysCLK" (rect 0 0 44 19)(font "Intel Clear" (font_size 8)))
+		(text "SysCLK" (rect 21 123 65 142)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 128)(pt 16 128))
+	)
+	(port
+		(pt 0 144)
+		(input)
+		(text "DDR3_CLK_50" (rect 0 0 89 19)(font "Intel Clear" (font_size 8)))
+		(text "DDR3_CLK_50" (rect 21 139 110 158)(font "Intel Clear" (font_size 8)))
+		(line (pt 0 144)(pt 16 144))
+	)
+	(port
+		(pt 416 32)
+		(output)
+		(text "Loop_TX_Data[1..0]" (rect 0 0 119 19)(font "Intel Clear" (font_size 8)))
+		(text "Loop_TX_Data[1..0]" (rect 276 27 395 46)(font "Intel Clear" (font_size 8)))
+		(line (pt 416 32)(pt 400 32)(line_width 3))
+	)
+	(port
+		(pt 416 48)
+		(output)
+		(text "CPU_PLL_Locked" (rect 0 0 105 19)(font "Intel Clear" (font_size 8)))
+		(text "CPU_PLL_Locked" (rect 290 43 395 62)(font "Intel Clear" (font_size 8)))
+		(line (pt 416 48)(pt 400 48))
+	)
+	(port
+		(pt 416 64)
+		(output)
+		(text "FIFO_Write[1..0]" (rect 0 0 96 19)(font "Intel Clear" (font_size 8)))
+		(text "FIFO_Write[1..0]" (rect 299 59 395 78)(font "Intel Clear" (font_size 8)))
+		(line (pt 416 64)(pt 400 64)(line_width 3))
+	)
+	(port
+		(pt 416 80)
+		(output)
+		(text "TP_GPIO[7..0]" (rect 0 0 84 19)(font "Intel Clear" (font_size 8)))
+		(text "TP_GPIO[7..0]" (rect 311 75 395 94)(font "Intel Clear" (font_size 8)))
+		(line (pt 416 80)(pt 400 80)(line_width 3))
+	)
+	(port
+		(pt 416 96)
+		(output)
+		(text "CurrCTRL_WriteReg[13..0][31..0]" (rect 0 0 195 19)(font "Intel Clear" (font_size 8)))
+		(text "CurrCTRL_WriteReg[13..0][31..0]" (rect 200 91 395 110)(font "Intel Clear" (font_size 8)))
+		(line (pt 416 96)(pt 400 96)(line_width 3))
+	)
+	(drawing
+		(rectangle (rect 16 16 400 176))
+	)
+)

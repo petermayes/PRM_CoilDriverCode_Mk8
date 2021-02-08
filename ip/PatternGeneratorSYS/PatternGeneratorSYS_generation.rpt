@@ -1,0 +1,72 @@
+Info: Starting: Create block symbol file (.bsf)
+Info: qsys-generate C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\ip\PatternGeneratorSYS.qsys --block-symbol-file --output-directory=C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\ip\PatternGeneratorSYS --family="MAX 10" --part=10M50DAF484I7G
+Progress: Loading ip/PatternGeneratorSYS.qsys
+Progress: Reading input file
+Progress: Adding PD_DebugRAM [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module PD_DebugRAM
+Progress: Adding PD_FIFO [altera_avalon_fifo 18.1]
+Progress: Parameterizing module PD_FIFO
+Progress: Adding PD_GPIO [altera_avalon_pio 18.1]
+Progress: Parameterizing module PD_GPIO
+Progress: Adding Reset_PD [altera_avalon_pio 18.1]
+Progress: Parameterizing module Reset_PD
+Progress: Adding clk_0 [clock_source 18.1]
+Progress: Parameterizing module clk_0
+Progress: Adding clk_1 [clock_source 18.1]
+Progress: Parameterizing module clk_1
+Progress: Adding clk_PD [clock_source 18.1]
+Progress: Parameterizing module clk_PD
+Progress: Adding mm_clock_crossing_bridge_0 [altera_avalon_mm_clock_crossing_bridge 18.1]
+Progress: Parameterizing module mm_clock_crossing_bridge_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: qsys-generate succeeded.
+Info: Finished: Create block symbol file (.bsf)
+Info: 
+Info: Starting: Create HDL design files for synthesis
+Info: qsys-generate C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\ip\PatternGeneratorSYS.qsys --synthesis=VERILOG --output-directory=C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\ip\PatternGeneratorSYS\synthesis --family="MAX 10" --part=10M50DAF484I7G
+Progress: Loading ip/PatternGeneratorSYS.qsys
+Progress: Reading input file
+Progress: Adding PD_DebugRAM [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module PD_DebugRAM
+Progress: Adding PD_FIFO [altera_avalon_fifo 18.1]
+Progress: Parameterizing module PD_FIFO
+Progress: Adding PD_GPIO [altera_avalon_pio 18.1]
+Progress: Parameterizing module PD_GPIO
+Progress: Adding Reset_PD [altera_avalon_pio 18.1]
+Progress: Parameterizing module Reset_PD
+Progress: Adding clk_0 [clock_source 18.1]
+Progress: Parameterizing module clk_0
+Progress: Adding clk_1 [clock_source 18.1]
+Progress: Parameterizing module clk_1
+Progress: Adding clk_PD [clock_source 18.1]
+Progress: Parameterizing module clk_PD
+Progress: Adding mm_clock_crossing_bridge_0 [altera_avalon_mm_clock_crossing_bridge 18.1]
+Progress: Parameterizing module mm_clock_crossing_bridge_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: PatternGeneratorSYS: Generating PatternGeneratorSYS "PatternGeneratorSYS" for QUARTUS_SYNTH
+Info: PD_DebugRAM: Starting RTL generation for module 'PatternGeneratorSYS_PD_DebugRAM'
+Info: PD_DebugRAM:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=PatternGeneratorSYS_PD_DebugRAM --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8656_3600517358919932457.dir/0002_PD_DebugRAM_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8656_3600517358919932457.dir/0002_PD_DebugRAM_gen//PatternGeneratorSYS_PD_DebugRAM_component_configuration.pl  --do_build_sim=0  ]
+Info: PD_DebugRAM: Done RTL generation for module 'PatternGeneratorSYS_PD_DebugRAM'
+Info: PD_DebugRAM: "PatternGeneratorSYS" instantiated altera_avalon_onchip_memory2 "PD_DebugRAM"
+Info: PD_FIFO: Starting RTL generation for module 'PatternGeneratorSYS_PD_FIFO'
+Info: PD_FIFO:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_fifo -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_fifo/generate_rtl.pl --name=PatternGeneratorSYS_PD_FIFO --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8656_3600517358919932457.dir/0003_PD_FIFO_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8656_3600517358919932457.dir/0003_PD_FIFO_gen//PatternGeneratorSYS_PD_FIFO_component_configuration.pl  --do_build_sim=0  ]
+Info: PD_FIFO: Done RTL generation for module 'PatternGeneratorSYS_PD_FIFO'
+Info: PD_FIFO: "PatternGeneratorSYS" instantiated altera_avalon_fifo "PD_FIFO"
+Info: PD_GPIO: Starting RTL generation for module 'PatternGeneratorSYS_PD_GPIO'
+Info: PD_GPIO:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=PatternGeneratorSYS_PD_GPIO --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8656_3600517358919932457.dir/0004_PD_GPIO_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8656_3600517358919932457.dir/0004_PD_GPIO_gen//PatternGeneratorSYS_PD_GPIO_component_configuration.pl  --do_build_sim=0  ]
+Info: PD_GPIO: Done RTL generation for module 'PatternGeneratorSYS_PD_GPIO'
+Info: PD_GPIO: "PatternGeneratorSYS" instantiated altera_avalon_pio "PD_GPIO"
+Info: Reset_PD: Starting RTL generation for module 'PatternGeneratorSYS_Reset_PD'
+Info: Reset_PD:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=PatternGeneratorSYS_Reset_PD --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8656_3600517358919932457.dir/0005_Reset_PD_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8656_3600517358919932457.dir/0005_Reset_PD_gen//PatternGeneratorSYS_Reset_PD_component_configuration.pl  --do_build_sim=0  ]
+Info: Reset_PD: Done RTL generation for module 'PatternGeneratorSYS_Reset_PD'
+Info: Reset_PD: "PatternGeneratorSYS" instantiated altera_avalon_pio "Reset_PD"
+Info: rst_controller: "PatternGeneratorSYS" instantiated altera_reset_controller "rst_controller"
+Info: PatternGeneratorSYS: Done "PatternGeneratorSYS" with 6 modules, 9 files
+Info: qsys-generate succeeded.
+Info: Finished: Create HDL design files for synthesis

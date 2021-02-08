@@ -1,0 +1,512 @@
+--INCLUDE "CurrentFilterBlock";
+
+
+CONSTANT RESET_STATE									= 0;
+CONSTANT TRIGGER_ADC_CONVERSION					= 1;
+CONSTANT	ADC_CONVERT_HIGH_STATE					= 2;
+CONSTANT	WAIT_FOR_ADC_BUSY_TO_GO_LOW	 		= 3;
+CONSTANT	ADC_CLOCK_HIGH							 	= 4;
+CONSTANT	ADC_CLOCK_LOW							 	= 5;
+CONSTANT	ADC_CONVERSION_COMPLETE					= 6;
+CONSTANT	ADC_WAIT_FOR_READ_TO_COMPLETE			= 7;
+CONSTANT	ADC_TIMEOUT_STATE							= 8;
+CONSTANT	FALSE_CLK_EDGE_STATE						= 9;
+CONSTANT WAIT_FOR_END_OF_CURRENT_CYCLE			= 10;
+CONSTANT TEST_SIGN_BIT								= 11;
+CONSTANT	POSITIVE_TEST						 		= 12;
+CONSTANT	NEGATIVE_TEST								= 13;
+CONSTANT	CURRENT_TRIP_STATE				 		= 14;
+CONSTANT	CURRENT_NOT_TRIP_STATE			 		= 15;
+CONSTANT WAIT_FOR_POSITIVE_SYNCH_PULSE			= 16;
+
+
+
+SUBDESIGN ADC_ConversionSignalGeneration
+(
+	reset										: input;
+	Synch_Pulse								: input;
+	Fault_Reset								: input;
+	ADC_Shift_Data_In[19..0]			: input;
+	PositiveCurrentTrip[19..0]			: input;
+	FilteredInputCurrent[19..0]		: input;
+	ADC_Busy									: input;
+	clk										: input;
+
+	ADC_Convert								: output;	
+	ADC_CLK									: output;
+	ADC_Capture								: output;
+	ADC_NewDataFlag						: output;
+	False_Clk								: output;
+	CurrentTripFault						: output;
+	Timeout_Fault_Flag					: output;
+	Latched_ADC_ShiftData[19..0]		: output;
+	TimebaseCount[31..0]					: output;
+	state[4..0]								: output;
+--	FilteredCurrent[31..0]				: output;
+)
+
+VARIABLE
+	StateMode_dff[4..0]					: dff;
+	ADC_ConvertTimeCount_dff[9..0]	: dff;
+	ADC_CLK_EdgeCount_dffe[5..0]		: dff;
+	TimeoutCountdff[9..0]				: dff;
+	TimebaseCount_dff[31..0]			: dff;
+	LatchedTimebaseCount_dff[31..0]	: dff;
+	LatchedADC_Data_dff[19..0]			: dff;
+	FaultLatches_dff[1..0]				: dff;
+	Synch_Pulse_dff						: dff;
+	InvertedCurrentValue[19..0]		: node;
+	ADC_FilterCLK_dffe					: dffe;
+	ActiveTripCounter[5..0]				: dffe;
+--	FilteredCurrent[31..0]				: node;
+	ADC_NewDataFlag_node             : node;
+	ADC_NewDataFlag_dff              : dff;
+	
+BEGIN 
+
+	-- ************************************************************
+	-- ************************************************************
+	-- ************************************************************
+
+--	FilteredCurrent[31..0] = CurrentFilterBlock(LatchedADC_Data_dff[19..0].q, ADC_FilterCLK_dffe.q); 
+
+
+	-- ************************************************************
+	-- ************************************************************
+	-- ************************************************************
+
+	StateMode_dff[].clk = clk;
+	ADC_ConvertTimeCount_dff[].clk = clk;
+	ADC_CLK_EdgeCount_dffe[].clk = clk;	
+	TimeoutCountdff[].clk = clk;
+	TimebaseCount_dff[].clk = clk;
+	LatchedTimebaseCount_dff[].clk = clk;
+	LatchedADC_Data_dff[].clk = clk;
+	FaultLatches_dff[].clk = clk;
+	Synch_Pulse_dff.clk = clk;
+	ADC_FilterCLK_dffe.clk = clk;
+	ActiveTripCounter[].clk = clk;
+	
+	state[] = StateMode_dff[].q;
+	TimebaseCount[] = LatchedTimebaseCount_dff[].q;
+	Latched_ADC_ShiftData[] = LatchedADC_Data_dff[].q;
+	Synch_Pulse_dff.d = Synch_Pulse;
+
+	Timeout_Fault_Flag = FaultLatches_dff[1].q;
+	CurrentTripFault = FaultLatches_dff[0].q;
+	
+--	InvertedCurrentValue[] = 0 - LatchedADC_Data_dff[].q;	
+	InvertedCurrentValue[] = 0 - FilteredInputCurrent[];	
+
+	ADC_NewDataFlag_dff.clk = clk;
+	ADC_NewDataFlag_dff.d = ADC_NewDataFlag_node;
+	ADC_NewDataFlag = ADC_NewDataFlag_dff.q;
+	
+	if (reset == vcc) then
+	
+	
+		case StateMode_dff[].q is
+
+			when RESET_STATE =>
+	
+				StateMode_dff[].d = WAIT_FOR_POSITIVE_SYNCH_PULSE;			
+				LatchedADC_Data_dff[].d = 0;
+				FaultLatches_dff[].d = 0;
+				
+			-- **********************************************
+			
+			when WAIT_FOR_POSITIVE_SYNCH_PULSE =>
+			
+			
+				if (Synch_Pulse_dff.q == vcc) then
+			
+					StateMode_dff[].d = TRIGGER_ADC_CONVERSION;
+				
+				else
+				
+					StateMode_dff[].d = WAIT_FOR_POSITIVE_SYNCH_PULSE;
+				
+				end if;	
+		
+				LatchedTimebaseCount_dff[].d = LatchedTimebaseCount_dff[].q;
+				TimebaseCount_dff[].d = TimebaseCount_dff[].q + 1;					
+				LatchedADC_Data_dff[].d = LatchedADC_Data_dff[].q;
+				FaultLatches_dff[].d = FaultLatches_dff[].q;		
+			
+			
+			-- **********************************************			
+				
+			when TRIGGER_ADC_CONVERSION =>
+			
+				StateMode_dff[].d = ADC_CONVERT_HIGH_STATE;	
+				
+				ADC_ConvertTimeCount_dff[].d = 10;
+				
+				TimebaseCount_dff[].d = 0;
+				LatchedTimebaseCount_dff[].d = TimebaseCount_dff[].q; -- Capture the timebase count
+					
+				LatchedADC_Data_dff[].d = LatchedADC_Data_dff[].q;
+				FaultLatches_dff[].d = FaultLatches_dff[].q;
+				
+				
+			-- **********************************************						
+				
+			when ADC_CONVERT_HIGH_STATE =>
+			
+			
+				if (ADC_ConvertTimeCount_dff[].q == 0) then
+				
+					if (ADC_Busy == vcc) then
+				
+						StateMode_dff[].d = WAIT_FOR_ADC_BUSY_TO_GO_LOW;
+					
+					else
+					
+						StateMode_dff[].d = ADC_TIMEOUT_STATE;
+					
+					end if;
+					
+				
+				else				
+					
+					StateMode_dff[].d = StateMode_dff[].q;
+					
+				end if;
+				
+				
+				ADC_ConvertTimeCount_dff[].d = ADC_ConvertTimeCount_dff[].q - 1;
+				ADC_Convert = vcc;
+		
+				
+				TimebaseCount_dff[].d = TimebaseCount_dff[].q + 1;
+				LatchedTimebaseCount_dff[].d = LatchedTimebaseCount_dff[].q;
+				
+				LatchedADC_Data_dff[].d = LatchedADC_Data_dff[].q;		
+		
+				TimeoutCountdff[].d = 922;		
+			
+				FaultLatches_dff[].d = FaultLatches_dff[].q;		
+			
+				ADC_FilterCLK_dffe.d = vcc;
+				ADC_FilterCLK_dffe.ena = vcc;
+
+				
+			-- **********************************************					
+					
+			when WAIT_FOR_ADC_BUSY_TO_GO_LOW =>
+			
+				if (TimeoutCountdff[].q == 0) then
+				
+					StateMode_dff[].d = ADC_TIMEOUT_STATE;				
+				
+			
+				elsif (ADC_Busy == gnd) then
+				
+					StateMode_dff[].d = FALSE_CLK_EDGE_STATE;
+				
+				else				
+					
+					StateMode_dff[].d = StateMode_dff[].q;
+					
+				end if;
+
+	
+				ADC_CLK_EdgeCount_dffe[].d = 19;
+				
+				TimeoutCountdff[].d = TimeoutCountdff[].q - 1;	
+				
+				
+				TimebaseCount_dff[].d = TimebaseCount_dff[].q + 1;
+				LatchedTimebaseCount_dff[].d = LatchedTimebaseCount_dff[].q;		
+			
+			
+				LatchedADC_Data_dff[].d = LatchedADC_Data_dff[].q;	
+				FaultLatches_dff[].d = FaultLatches_dff[].q;		
+				
+				
+				ADC_FilterCLK_dffe.d = gnd;
+				ADC_FilterCLK_dffe.ena = vcc;
+				
+
+			-- **********************************************						
+				
+			when FALSE_CLK_EDGE_STATE =>
+	
+	
+				StateMode_dff[].d = ADC_CLOCK_HIGH;							
+				
+				False_Clk	= vcc;	
+				ADC_CLK_EdgeCount_dffe[].d = ADC_CLK_EdgeCount_dffe[].q;	
+				
+				TimebaseCount_dff[].d = TimebaseCount_dff[].q + 1;
+				LatchedTimebaseCount_dff[].d = LatchedTimebaseCount_dff[].q;	
+				
+				LatchedADC_Data_dff[].d = LatchedADC_Data_dff[].q;	
+				FaultLatches_dff[].d = FaultLatches_dff[].q;				
+				
+				TimeoutCountdff[].d = TimeoutCountdff[].q - 1;	
+		
+				
+			-- **********************************************						
+				
+			when ADC_CLOCK_HIGH =>
+	
+	
+				StateMode_dff[].d = ADC_CLOCK_LOW;							
+				
+				ADC_CLK	= vcc;	
+				ADC_CLK_EdgeCount_dffe[].d = ADC_CLK_EdgeCount_dffe[].q;	
+				
+				TimebaseCount_dff[].d = TimebaseCount_dff[].q + 1;
+				LatchedTimebaseCount_dff[].d = LatchedTimebaseCount_dff[].q;	
+					
+				
+				LatchedADC_Data_dff[].d = LatchedADC_Data_dff[].q;	
+				FaultLatches_dff[].d = FaultLatches_dff[].q;				
+				
+				TimeoutCountdff[].d = TimeoutCountdff[].q - 1;	
+				
+			-- **********************************************						
+		
+
+			when ADC_CLOCK_LOW =>
+	
+				if (ADC_CLK_EdgeCount_dffe[].q == 0) then				
+					StateMode_dff[].d = ADC_CONVERSION_COMPLETE;	
+					ADC_CLK_EdgeCount_dffe[].d = 5;					
+				else				
+					StateMode_dff[].d = ADC_CLOCK_HIGH;	
+					ADC_CLK_EdgeCount_dffe[].d = ADC_CLK_EdgeCount_dffe[].q - 1;			
+				end if;
+				
+				ADC_CLK	= gnd;	
+				
+				TimebaseCount_dff[].d = TimebaseCount_dff[].q + 1;
+				LatchedTimebaseCount_dff[].d = LatchedTimebaseCount_dff[].q;	
+	
+				LatchedADC_Data_dff[].d = LatchedADC_Data_dff[].q;	
+				FaultLatches_dff[].d = FaultLatches_dff[].q;				
+
+			-- **********************************************	
+
+			when ADC_CONVERSION_COMPLETE =>
+	
+				if (ADC_CLK_EdgeCount_dffe[].q == 0) then				
+					StateMode_dff[].d = ADC_WAIT_FOR_READ_TO_COMPLETE;	
+					LatchedADC_Data_dff[].d = ADC_Shift_Data_In[19..0];
+					
+				else				
+					StateMode_dff[].d = ADC_CONVERSION_COMPLETE;			
+					LatchedADC_Data_dff[].d = 0; --LatchedADC_Data_dff[].q; -- made 0 just to make it easier on picoscope
+				end if;	
+				
+
+				ADC_CLK_EdgeCount_dffe[].d = ADC_CLK_EdgeCount_dffe[].q - 1;					
+				
+				ADC_ConvertTimeCount_dff[].d = 10;		
+	
+				TimebaseCount_dff[].d = TimebaseCount_dff[].q + 1;
+				LatchedTimebaseCount_dff[].d = LatchedTimebaseCount_dff[].q;	
+	
+				FaultLatches_dff[].d = FaultLatches_dff[].q;	
+
+				ADC_Capture = vcc;
+
+				
+			-- **********************************************		
+	
+				when ADC_WAIT_FOR_READ_TO_COMPLETE =>
+			
+			
+				if (ADC_ConvertTimeCount_dff[].q == 0) then
+				
+					StateMode_dff[].d = TEST_SIGN_BIT;
+				
+				else				
+					
+					StateMode_dff[].d = StateMode_dff[].q;
+					
+				end if;
+				
+				
+				ADC_ConvertTimeCount_dff[].d = ADC_ConvertTimeCount_dff[].q -1;		
+				
+				TimebaseCount_dff[].d = TimebaseCount_dff[].q + 1;
+				LatchedTimebaseCount_dff[].d = LatchedTimebaseCount_dff[].q;
+				
+				LatchedADC_Data_dff[].d = LatchedADC_Data_dff[].q;	
+				FaultLatches_dff[].d = FaultLatches_dff[].q;				
+		
+				ADC_NewDataFlag_node = vcc;
+
+				
+			-- **********************************************	
+			
+			when TEST_SIGN_BIT =>
+
+	--			if (LatchedADC_Data_dff[19].q == gnd) then			
+				if (FilteredInputCurrent[19] == gnd) then				
+					StateMode_dff[].d = POSITIVE_TEST;							
+				else				
+					StateMode_dff[].d = NEGATIVE_TEST;				
+				end if;
+				
+				LatchedADC_Data_dff[].d = LatchedADC_Data_dff[].q;			
+				LatchedTimebaseCount_dff[].d = LatchedTimebaseCount_dff[].q;	
+				TimebaseCount_dff[].d = TimebaseCount_dff[].q + 1;		
+				FaultLatches_dff[].d = FaultLatches_dff[].q;				
+				
+		
+				-- ************************************************************	
+		
+			when POSITIVE_TEST =>
+			
+				
+			--	if (LatchedADC_Data_dff[].q > PositiveCurrentTrip[]) then			
+				if (FilteredInputCurrent[] > PositiveCurrentTrip[]) then
+					StateMode_dff[].d = CURRENT_TRIP_STATE;							
+				else				
+					StateMode_dff[].d = CURRENT_NOT_TRIP_STATE;				
+				end if;
+				
+
+				LatchedADC_Data_dff[].d = LatchedADC_Data_dff[].q;			
+				LatchedTimebaseCount_dff[].d = LatchedTimebaseCount_dff[].q;	
+				TimebaseCount_dff[].d = TimebaseCount_dff[].q + 1;		
+				FaultLatches_dff[].d = FaultLatches_dff[].q;					
+					
+				-- ************************************************************	
+		
+			when NEGATIVE_TEST =>
+			
+				if (InvertedCurrentValue[] > PositiveCurrentTrip[]) then
+					StateMode_dff[].d = CURRENT_TRIP_STATE;							
+				else				
+					StateMode_dff[].d = CURRENT_NOT_TRIP_STATE;				
+				end if;
+				
+				LatchedADC_Data_dff[].d = LatchedADC_Data_dff[].q;			
+				LatchedTimebaseCount_dff[].d = LatchedTimebaseCount_dff[].q;	
+				TimebaseCount_dff[].d = TimebaseCount_dff[].q + 1;		
+				FaultLatches_dff[].d = FaultLatches_dff[].q;		
+					
+				-- ************************************************************		
+			
+			when CURRENT_TRIP_STATE =>
+			
+				StateMode_dff[].d = WAIT_FOR_END_OF_CURRENT_CYCLE;	
+				
+							
+				if (ActiveTripCounter[].q == 10) then
+				
+					FaultLatches_dff[0].d = vcc;
+					FaultLatches_dff[1].d = FaultLatches_dff[1].q;
+				
+			--		ActiveTripCounter[].d = ActiveTripCounter[].q;
+										
+				else
+				
+					FaultLatches_dff[].d = FaultLatches_dff[].q;
+					ActiveTripCounter[].d = ActiveTripCounter[].q + 1;
+					ActiveTripCounter[].ena = vcc;
+		
+				end if;
+				
+				LatchedADC_Data_dff[].d = LatchedADC_Data_dff[].q;			
+				LatchedTimebaseCount_dff[].d = LatchedTimebaseCount_dff[].q;	
+				TimebaseCount_dff[].d = TimebaseCount_dff[].q + 1;					
+										
+					
+				-- ************************************************************	
+			
+			when CURRENT_NOT_TRIP_STATE =>
+			
+				StateMode_dff[].d = WAIT_FOR_END_OF_CURRENT_CYCLE;	
+							
+				ActiveTripCounter[].d = 0;
+				ActiveTripCounter[].ena = vcc;
+				
+				FaultLatches_dff[].d = FaultLatches_dff[].q;	
+				
+				LatchedADC_Data_dff[].d = LatchedADC_Data_dff[].q;			
+				LatchedTimebaseCount_dff[].d = LatchedTimebaseCount_dff[].q;	
+				TimebaseCount_dff[].d = TimebaseCount_dff[].q + 1;					
+										
+					
+				-- ************************************************************							
+				
+				
+			when WAIT_FOR_END_OF_CURRENT_CYCLE =>
+			
+	--			if (TimebaseCount_dff[].q > 180) then  -- 1.375 extended so 3 debug txs
+				if (Synch_Pulse_dff.q == gnd) then  -- 				
+				
+					StateMode_dff[].d = WAIT_FOR_POSITIVE_SYNCH_PULSE;
+				
+				else				
+					
+					StateMode_dff[].d = StateMode_dff[].q;				
+					
+				end if;	
+		
+						
+				LatchedADC_Data_dff[].d = LatchedADC_Data_dff[].q;			
+				LatchedTimebaseCount_dff[].d = LatchedTimebaseCount_dff[].q;	
+				TimebaseCount_dff[].d = TimebaseCount_dff[].q + 1;	
+				
+				if (Fault_Reset == vcc) then
+				
+					FaultLatches_dff[].d = 0;	
+				
+				else
+				
+					FaultLatches_dff[].d = FaultLatches_dff[].q;		
+			
+				end if;		
+		
+				TimeoutCountdff[].d = 100;			
+
+			
+			-- **********************************************	
+
+			when ADC_TIMEOUT_STATE =>
+			
+				if (TimeoutCountdff[].q == 0) then
+
+					StateMode_dff[].d = WAIT_FOR_POSITIVE_SYNCH_PULSE;
+					
+				else
+				
+					StateMode_dff[].d = ADC_TIMEOUT_STATE;			
+					
+				end if;
+				
+				Timeout_Fault_Flag = vcc;
+				TimeoutCountdff[].d = TimeoutCountdff[].q - 1;
+				
+				FaultLatches_dff[1].d = vcc;
+				FaultLatches_dff[0].d = FaultLatches_dff[0].q;
+			
+			
+			-- **********************************************				
+			
+	
+			when others =>
+				
+				StateMode_dff[].d = RESET_STATE;	
+
+			
+		end case;
+				
+				
+				
+	
+	else
+	
+		StateMode_dff[].d = RESET_STATE;
+
+	
+	end if;
+
+	
+END;

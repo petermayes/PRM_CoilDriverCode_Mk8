@@ -1,0 +1,49 @@
+Info: Starting: Create block symbol file (.bsf)
+Info: qsys-generate C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\ip\FIFO_pll.qsys --block-symbol-file --output-directory=C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\ip\FIFO_pll --family="MAX 10" --part=10M50DAF484I7G
+Progress: Loading ip/FIFO_pll.qsys
+Progress: Reading input file
+Progress: Adding altpll_0 [altpll 18.1]
+Progress: Parameterizing module altpll_0
+Progress: Adding clk_0 [clock_source 18.1]
+Progress: Parameterizing module clk_0
+Progress: Adding clock_bridge_0 [altera_clock_bridge 18.1]
+Progress: Parameterizing module clock_bridge_0
+Progress: Adding fifo_0 [altera_avalon_fifo 18.1]
+Progress: Parameterizing module fifo_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Warning: FIFO_pll.fifo_0: The Nios II HAL drivers for the Altera Avalon FIFO support only 32-bit data width.         If you connect this FIFO to a Nios II CPU, you will need to access the registers directly.
+Warning: FIFO_pll.altpll_0: altpll_0.pll_slave must be connected to an Avalon-MM master
+Info: qsys-generate succeeded.
+Info: Finished: Create block symbol file (.bsf)
+Info: 
+Info: Starting: Create HDL design files for synthesis
+Info: qsys-generate C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\ip\FIFO_pll.qsys --synthesis=VERILOG --output-directory=C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\ip\FIFO_pll\synthesis --family="MAX 10" --part=10M50DAF484I7G
+Progress: Loading ip/FIFO_pll.qsys
+Progress: Reading input file
+Progress: Adding altpll_0 [altpll 18.1]
+Progress: Parameterizing module altpll_0
+Progress: Adding clk_0 [clock_source 18.1]
+Progress: Parameterizing module clk_0
+Progress: Adding clock_bridge_0 [altera_clock_bridge 18.1]
+Progress: Parameterizing module clock_bridge_0
+Progress: Adding fifo_0 [altera_avalon_fifo 18.1]
+Progress: Parameterizing module fifo_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Warning: FIFO_pll.fifo_0: The Nios II HAL drivers for the Altera Avalon FIFO support only 32-bit data width.         If you connect this FIFO to a Nios II CPU, you will need to access the registers directly.
+Warning: FIFO_pll.altpll_0: altpll_0.pll_slave must be connected to an Avalon-MM master
+Info: FIFO_pll: Generating FIFO_pll "FIFO_pll" for QUARTUS_SYNTH
+Info: altpll_0: "FIFO_pll" instantiated altpll "altpll_0"
+Info: fifo_0: Starting RTL generation for module 'FIFO_pll_fifo_0'
+Info: fifo_0:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_fifo -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_fifo/generate_rtl.pl --name=FIFO_pll_fifo_0 --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8654_7920447128702565578.dir/0008_fifo_0_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8654_7920447128702565578.dir/0008_fifo_0_gen//FIFO_pll_fifo_0_component_configuration.pl  --do_build_sim=0  ]
+Info: fifo_0: Done RTL generation for module 'FIFO_pll_fifo_0'
+Info: fifo_0: "FIFO_pll" instantiated altera_avalon_fifo "fifo_0"
+Info: rst_controller: "FIFO_pll" instantiated altera_reset_controller "rst_controller"
+Info: FIFO_pll: Done "FIFO_pll" with 4 modules, 7 files
+Info: qsys-generate succeeded.
+Info: Finished: Create HDL design files for synthesis

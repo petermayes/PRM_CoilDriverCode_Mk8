@@ -1,0 +1,156 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 2019  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and any partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details, at
+https://fpgasoftware.intel.com/eula.
+*/
+(header "symbol" (version "1.1"))
+(symbol
+	(rect 16 16 352 224)
+	(text "ADC_ConversionSignalGeneration" (rect 5 0 144 12)(font "Arial" ))
+	(text "inst" (rect 8 192 20 204)(font "Arial" ))
+	(port
+		(pt 0 32)
+		(input)
+		(text "reset" (rect 0 0 20 12)(font "Arial" ))
+		(text "reset" (rect 21 27 41 39)(font "Arial" ))
+		(line (pt 0 32)(pt 16 32)(line_width 1))
+	)
+	(port
+		(pt 0 48)
+		(input)
+		(text "Synch_Pulse" (rect 0 0 53 12)(font "Arial" ))
+		(text "Synch_Pulse" (rect 21 43 74 55)(font "Arial" ))
+		(line (pt 0 48)(pt 16 48)(line_width 1))
+	)
+	(port
+		(pt 0 64)
+		(input)
+		(text "Fault_Reset" (rect 0 0 49 12)(font "Arial" ))
+		(text "Fault_Reset" (rect 21 59 70 71)(font "Arial" ))
+		(line (pt 0 64)(pt 16 64)(line_width 1))
+	)
+	(port
+		(pt 0 80)
+		(input)
+		(text "ADC_Shift_Data_In[19..0]" (rect 0 0 107 12)(font "Arial" ))
+		(text "ADC_Shift_Data_In[19..0]" (rect 21 75 128 87)(font "Arial" ))
+		(line (pt 0 80)(pt 16 80)(line_width 3))
+	)
+	(port
+		(pt 0 96)
+		(input)
+		(text "PositiveCurrentTrip[19..0]" (rect 0 0 100 12)(font "Arial" ))
+		(text "PositiveCurrentTrip[19..0]" (rect 21 91 121 103)(font "Arial" ))
+		(line (pt 0 96)(pt 16 96)(line_width 3))
+	)
+	(port
+		(pt 0 112)
+		(input)
+		(text "FilteredInputCurrent[19..0]" (rect 0 0 101 12)(font "Arial" ))
+		(text "FilteredInputCurrent[19..0]" (rect 21 107 122 119)(font "Arial" ))
+		(line (pt 0 112)(pt 16 112)(line_width 3))
+	)
+	(port
+		(pt 0 128)
+		(input)
+		(text "ADC_Busy" (rect 0 0 49 12)(font "Arial" ))
+		(text "ADC_Busy" (rect 21 123 70 135)(font "Arial" ))
+		(line (pt 0 128)(pt 16 128)(line_width 1))
+	)
+	(port
+		(pt 0 144)
+		(input)
+		(text "clk" (rect 0 0 10 12)(font "Arial" ))
+		(text "clk" (rect 21 139 31 151)(font "Arial" ))
+		(line (pt 0 144)(pt 16 144)(line_width 1))
+	)
+	(port
+		(pt 336 32)
+		(output)
+		(text "ADC_Convert" (rect 0 0 61 12)(font "Arial" ))
+		(text "ADC_Convert" (rect 254 27 315 39)(font "Arial" ))
+		(line (pt 336 32)(pt 320 32)(line_width 1))
+	)
+	(port
+		(pt 336 48)
+		(output)
+		(text "ADC_CLK" (rect 0 0 48 12)(font "Arial" ))
+		(text "ADC_CLK" (rect 267 43 315 55)(font "Arial" ))
+		(line (pt 336 48)(pt 320 48)(line_width 1))
+	)
+	(port
+		(pt 336 64)
+		(output)
+		(text "ADC_Capture" (rect 0 0 60 12)(font "Arial" ))
+		(text "ADC_Capture" (rect 255 59 315 71)(font "Arial" ))
+		(line (pt 336 64)(pt 320 64)(line_width 1))
+	)
+	(port
+		(pt 336 80)
+		(output)
+		(text "ADC_NewDataFlag" (rect 0 0 81 12)(font "Arial" ))
+		(text "ADC_NewDataFlag" (rect 234 75 315 87)(font "Arial" ))
+		(line (pt 336 80)(pt 320 80)(line_width 1))
+	)
+	(port
+		(pt 336 96)
+		(output)
+		(text "False_Clk" (rect 0 0 40 12)(font "Arial" ))
+		(text "False_Clk" (rect 275 91 315 103)(font "Arial" ))
+		(line (pt 336 96)(pt 320 96)(line_width 1))
+	)
+	(port
+		(pt 336 112)
+		(output)
+		(text "CurrentTripFault" (rect 0 0 64 12)(font "Arial" ))
+		(text "CurrentTripFault" (rect 251 107 315 119)(font "Arial" ))
+		(line (pt 336 112)(pt 320 112)(line_width 1))
+	)
+	(port
+		(pt 336 128)
+		(output)
+		(text "Timeout_Fault_Flag" (rect 0 0 79 12)(font "Arial" ))
+		(text "Timeout_Fault_Flag" (rect 236 123 315 135)(font "Arial" ))
+		(line (pt 336 128)(pt 320 128)(line_width 1))
+	)
+	(port
+		(pt 336 144)
+		(output)
+		(text "Latched_ADC_ShiftData[19..0]" (rect 0 0 126 12)(font "Arial" ))
+		(text "Latched_ADC_ShiftData[19..0]" (rect 189 139 315 151)(font "Arial" ))
+		(line (pt 336 144)(pt 320 144)(line_width 3))
+	)
+	(port
+		(pt 336 160)
+		(output)
+		(text "TimebaseCount[31..0]" (rect 0 0 86 12)(font "Arial" ))
+		(text "TimebaseCount[31..0]" (rect 229 155 315 167)(font "Arial" ))
+		(line (pt 336 160)(pt 320 160)(line_width 3))
+	)
+	(port
+		(pt 336 176)
+		(output)
+		(text "state[4..0]" (rect 0 0 40 12)(font "Arial" ))
+		(text "state[4..0]" (rect 275 171 315 183)(font "Arial" ))
+		(line (pt 336 176)(pt 320 176)(line_width 3))
+	)
+	(drawing
+		(rectangle (rect 16 16 320 192)(line_width 1))
+	)
+)

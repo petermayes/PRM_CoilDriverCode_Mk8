@@ -1,0 +1,185 @@
+/*
+ * msgDMA_Handler.h
+ *
+ *  Created on: 8 Jun 2019
+ *      Author: prm
+ */
+
+#ifndef REGISTERS_HANDLER_H_
+#define REGISTERS_HANDLER_H_
+
+#define READ_ONLY		0
+#define READ_WRITE		1
+
+#define UINT32									0
+#define INT32									1
+#define SINGLE									2
+#define DATA_INTERFACE_OPERATING_MODE			3
+#define PASS_FAIL								4
+#define PATTERN_DATA_MODE_STATE					5
+#define DMA_STATUS_FLAGS						6
+#define FIRMWARE_MODE_STATES					7
+#define PATTERN_EMBEDDED_STATE					8
+#define PATTERN_FPGA_STATE						9
+#define PATTERN_FPGA_FIFO_READ_STATE			10
+
+typedef struct DataDictionaryEntry
+{
+    int32	        DataField;
+    int16			ReadWriteFlag;
+    int16			DataType;
+} DataDictionaryEntry;
+
+typedef struct DataDictionary
+{
+	DataDictionaryEntry	        Node_Address;						// 0
+	DataDictionaryEntry			SoftwareVersion;					// 1
+	DataDictionaryEntry	        SlowTimerCount;						// 2
+	DataDictionaryEntry	        DataInterfaceOperatingMode;			// 3
+	DataDictionaryEntry	        PatternDataModeOperatingState;		// 4
+	DataDictionaryEntry			Flash_Update_Mode;					// 5
+	DataDictionaryEntry	        DDR3_StatusFlag;					// 6
+	DataDictionaryEntry			DDR3_CRC_Value;						// 7
+	DataDictionaryEntry			DMA_StatusWord;						// 8
+	DataDictionaryEntry			DMA_WritePointer;					// 9
+	DataDictionaryEntry	        DMA_ReadPointer;					// 10
+	DataDictionaryEntry			FT600_RXFn_Logic_Mode;				// 11
+	DataDictionaryEntry			FT600_RXFn_Flag;					// 12
+	DataDictionaryEntry			FT600_RX_NewData_Flag;				// 13
+	DataDictionaryEntry			FT600_RX_Timeout_Flags;				// 14
+	DataDictionaryEntry			FT600_RX_StateMachine_Value;		// 15
+	DataDictionaryEntry			USB_RX_MessageCount;				// 16
+	DataDictionaryEntry			USB_RX_StreamPage;					// 17
+	DataDictionaryEntry			USB_TX_MessageCount;				// 18
+	DataDictionaryEntry			USB_TX_StreamPage;					// 19
+	DataDictionaryEntry			Flash_Status;						// 20
+	DataDictionaryEntry			Flash_Reprogramming_State;			// 21
+	DataDictionaryEntry			Flash_WriteTarget;					// 22
+	DataDictionaryEntry			Flash_Write_Progress;				// 23
+	DataDictionaryEntry			Flash_ErrorCount;					// 24
+	DataDictionaryEntry			Parameter_Looop_RX_Count;			// 25
+	DataDictionaryEntry			Parameter_Looop_RX_Error_Count;		// 26
+	DataDictionaryEntry			CurrCTRL_FIFO_Fill_Level;			// 27
+	DataDictionaryEntry			CurrCTRL_Data0;						// 28
+	DataDictionaryEntry			CurrCTRL_Data1;						// 29
+	DataDictionaryEntry			CurrCTRL_Data2;						// 30
+	DataDictionaryEntry			CurrCTRL_Data3;						// 31
+	DataDictionaryEntry			CurrCTRL_Data4;						// 32
+	DataDictionaryEntry			CurrCTRL_Data5;						// 33
+	DataDictionaryEntry			CurrCTRL_Data6;						// 34
+	DataDictionaryEntry			CurrCTRL_Data7;						// 35
+	DataDictionaryEntry			Command_1;							// 36
+	DataDictionaryEntry			Command_2;							// 37
+	DataDictionaryEntry			Command_3;							// 38
+	DataDictionaryEntry			Patterngenerator_Embedded_State;	// 39
+	DataDictionaryEntry			Patterngenerator_FPGA_State;		// 40
+	DataDictionaryEntry			Patterngenerator_FIFO_Read_State;	// 41
+	DataDictionaryEntry			Patterngenerator_FillLevel;			// 42
+	DataDictionaryEntry			Patterngenerator_End_Index;			// 43
+	DataDictionaryEntry			Patterngenerator_Current_DataSet_Index;// 44
+	DataDictionaryEntry			Patterngenerator_Packet_Index;		// 45
+	DataDictionaryEntry			Patterngenerator_Progress;			// 46
+	DataDictionaryEntry			Patterngenerator_NextTargetTime;	// 47
+	DataDictionaryEntry			Patterngenerator_New_X_Position;	// 48
+	DataDictionaryEntry			Patterngenerator_New_Y_Position;	// 49
+	DataDictionaryEntry			Patterngenerator_New_BeamCurrent;	// 50
+	DataDictionaryEntry			Patterngenerator_New_BSD_Flag;		// 51
+	DataDictionaryEntry			Patterngenerator_X_Increment; 		// 52
+	DataDictionaryEntry			Patterngenerator_Y_Increment;		// 53
+	DataDictionaryEntry			Patterngenerator_Actual_X_Value;	// 54
+	DataDictionaryEntry			Patterngenerator_Actual_Y_Value;	// 55
+	DataDictionaryEntry			Patterngenerator_CurrentTimeCount;	// 56
+	DataDictionaryEntry			Patterngenerator_TimeDifference;	// 57
+	DataDictionaryEntry			CurrCTRL_DriveState;				// 58
+	DataDictionaryEntry			CurrCTRL_DriveStateDemand;			// 59
+	DataDictionaryEntry			CurrCTRL_ControlMode;				// 60
+	DataDictionaryEntry			CurrCTRL_ControlModeDemand;			// 61
+	DataDictionaryEntry			System_Fault_Bits;					// 62
+	DataDictionaryEntry			FPGA_Fault_Bits;					// 63
+	DataDictionaryEntry			FPGA_Fault_Flags;					// 64
+	DataDictionaryEntry			System_Status_Bits;					// 65
+	DataDictionaryEntry			CurrCTRL_MeasuredCurrentmA;			// 66
+	DataDictionaryEntry			CurrCTRL_AppliedVoltage_V;			// 67
+	DataDictionaryEntry			CurrCTRL_VoltageDemand_V;			// 68
+	DataDictionaryEntry			CurrCTRL_CurrentDemand_V;			// 69
+	DataDictionaryEntry			CurrCTRL_CurrentDemandAfterRamp_V;	// 70
+	DataDictionaryEntry			CurrCTRL_5;							// 71
+	DataDictionaryEntry			CurrCTRL_6;							// 72
+	DataDictionaryEntry			CurrCTRL_7;							// 73
+	DataDictionaryEntry			CurrCTRL_8;							// 74
+	DataDictionaryEntry			CurrCTRL_9;							// 75
+	DataDictionaryEntry			CurrCTRL_10;						// 76
+	DataDictionaryEntry			CurrCTRL_11;						// 77
+	DataDictionaryEntry			VoltageDemandFloat;					// 78
+	DataDictionaryEntry			CurrentDemandFloatmA;				// 79
+	DataDictionaryEntry			CurrentScalingFactor_bit_mA;		// 80
+	DataDictionaryEntry			CurrentScalingFactor_mA_bit;		// 81
+	DataDictionaryEntry			VoltageScalingFactor_mV_bit;		// 82
+	DataDictionaryEntry			VoltageScalingFactor_bit_mV;		// 83
+	DataDictionaryEntry			OutputStageGain;					// 84
+	DataDictionaryEntry			Debug_0;							// 85
+	DataDictionaryEntry			Debug_1;							// 86
+	DataDictionaryEntry			Debug_2;							// 87
+	DataDictionaryEntry			Debug_3;							// 88
+	DataDictionaryEntry			Debug_4;							// 89
+	DataDictionaryEntry			Debug_5;							// 90
+	DataDictionaryEntry			Debug_6;							// 91
+	DataDictionaryEntry			Debug_7;							// 92
+	DataDictionaryEntry			Debug_8;							// 93
+	DataDictionaryEntry			Debug_9;							// 94
+	DataDictionaryEntry			Debug_10;							// 95
+	DataDictionaryEntry			Debug_11;
+
+
+
+
+} DataDictionary;
+
+
+#define NUMBER_OF_REGISTERS			(1024 - FIRST_TEXT_AREA_BYTES - FIRST_TEXT_AREA_BYTES) //32)
+#define FIRST_TEXT_AREA_BYTES		16 //
+
+
+#define REGISTER_DRIVE_ADDRESS					0
+
+#define REGISTER_FAST_TICK						1
+#define REGISTER_MEDIUM_TICK					2
+#define REGISTER_SLOW_TICK						3
+#define REGISTER_DDR3_PASS_FLAG					4
+#define REGISTER_DDR3_CRC_VALUE					5
+#define REGISTER_DMA_WRITE_POINTER				6
+#define REGISTER_DMA_READ_POINTER				7
+#define REGISTER_DMA_STATUS						8
+
+#define REGISTER_FT600_RXFN_LOGIC_MODE 			9
+#define REGISTER_FT600_RXFN_FLAG				10
+#define REGISTER_FT600_NEW_RX_DATA_FLAG			11
+#define REGISTER_FT600_RX_TIMEOUT_FLAGS			12
+
+#define REGISTER_FT600_STATE_VALUE				13
+
+#define REGISTER_FT600_TX_MESSAGE_COUNT			14
+#define REGISTER_FT600_RX_MESSAGE_COUNT			15
+#define REGISTER_FT600_TX_STREAM_PAGE			16
+#define REGISTER_FT600_RX_STREAM_PAGE			17
+
+#define REGISTER_FT600_FLASH_ERASE_STATE		18
+#define REGISTER_FT600_FLASH_STATUS				19
+
+
+#define REGISTER_USB_REPEAT_COUNT				20
+
+#define REGISTER_BSD_FIFO_FILL_LEVEL			22
+
+extern DataDictionary Registers;
+extern char*	SecondTextArea[FIRST_TEXT_AREA_BYTES];
+extern char*	FirstTextArea[FIRST_TEXT_AREA_BYTES];
+extern Uint32 ExtendedMemoryLocation[1];
+extern Uint32 CurrCTRLDebugdata[1];
+extern int Init_Register_Module(Uint32, float);
+
+extern void UpdateControlLoopFPGA_Parameters(void);
+extern void UpdateRegisterData(Uint32*);
+extern void InputDemandHandler(ControlModuleDataStruc* ptr2data);
+
+#endif /* HANDLERS_MSGDMA_HANDLER_H_ */

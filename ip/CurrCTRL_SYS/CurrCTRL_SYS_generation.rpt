@@ -1,0 +1,86 @@
+Info: Starting: Create block symbol file (.bsf)
+Info: qsys-generate C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\ip\CurrCTRL_SYS.qsys --block-symbol-file --output-directory=C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\ip\CurrCTRL_SYS --family="MAX 10" --part=10M50DAF484I7G
+Progress: Loading ip/CurrCTRL_SYS.qsys
+Progress: Reading input file
+Progress: Adding CurrCTRLSYS_Bridge [altera_up_avalon_to_external_bus_bridge 18.0]
+Progress: Parameterizing module CurrCTRLSYS_Bridge
+Progress: Adding CurrCTRL_Debug_RAM_0 [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module CurrCTRL_Debug_RAM_0
+Progress: Adding CurrCTRL_Debug_RAM_1 [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module CurrCTRL_Debug_RAM_1
+Progress: Adding CurrCTRL_Debug_RAM_2 [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module CurrCTRL_Debug_RAM_2
+Progress: Adding CurrCTRL_Debug_RAM_3 [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module CurrCTRL_Debug_RAM_3
+Progress: Adding CurrCTRL_GPIO [altera_avalon_pio 18.1]
+Progress: Parameterizing module CurrCTRL_GPIO
+Progress: Adding CurrCTRL_Register_RAM [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module CurrCTRL_Register_RAM
+Progress: Adding CurrSYS_FIFO_ext_CLK [clock_source 18.1]
+Progress: Parameterizing module CurrSYS_FIFO_ext_CLK
+Progress: Adding CurrSYS_RAM_ext_CLK [clock_source 18.1]
+Progress: Parameterizing module CurrSYS_RAM_ext_CLK
+Progress: Adding DebugFIFO [altera_avalon_fifo 18.1]
+Progress: Parameterizing module DebugFIFO
+Progress: Adding MainDiagnosticFIFO [altera_avalon_fifo 18.1]
+Progress: Parameterizing module MainDiagnosticFIFO
+Progress: Adding Pheriphal_CLK [clock_source 18.1]
+Progress: Parameterizing module Pheriphal_CLK
+Progress: Adding SYS_Bus_CLK [clock_source 18.1]
+Progress: Parameterizing module SYS_Bus_CLK
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: qsys-generate succeeded.
+Info: Finished: Create block symbol file (.bsf)
+Info: 
+Info: Starting: Create HDL design files for synthesis
+Info: qsys-generate C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\ip\CurrCTRL_SYS.qsys --synthesis=VERILOG --output-directory=C:\DesignData\CoilDriverDesigns\Mk_8\Inline_Controller\HardwareDesignCopy\EB_Mk8_Inline_Controller_Hardware\ip\CurrCTRL_SYS\synthesis --family="MAX 10" --part=10M50DAF484I7G
+Progress: Loading ip/CurrCTRL_SYS.qsys
+Progress: Reading input file
+Progress: Adding CurrCTRLSYS_Bridge [altera_up_avalon_to_external_bus_bridge 18.0]
+Progress: Parameterizing module CurrCTRLSYS_Bridge
+Progress: Adding CurrCTRL_Debug_RAM_0 [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module CurrCTRL_Debug_RAM_0
+Progress: Adding CurrCTRL_Debug_RAM_1 [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module CurrCTRL_Debug_RAM_1
+Progress: Adding CurrCTRL_Debug_RAM_2 [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module CurrCTRL_Debug_RAM_2
+Progress: Adding CurrCTRL_Debug_RAM_3 [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module CurrCTRL_Debug_RAM_3
+Progress: Adding CurrCTRL_GPIO [altera_avalon_pio 18.1]
+Progress: Parameterizing module CurrCTRL_GPIO
+Progress: Adding CurrCTRL_Register_RAM [altera_avalon_onchip_memory2 18.1]
+Progress: Parameterizing module CurrCTRL_Register_RAM
+Progress: Adding CurrSYS_FIFO_ext_CLK [clock_source 18.1]
+Progress: Parameterizing module CurrSYS_FIFO_ext_CLK
+Progress: Adding CurrSYS_RAM_ext_CLK [clock_source 18.1]
+Progress: Parameterizing module CurrSYS_RAM_ext_CLK
+Progress: Adding DebugFIFO [altera_avalon_fifo 18.1]
+Progress: Parameterizing module DebugFIFO
+Progress: Adding MainDiagnosticFIFO [altera_avalon_fifo 18.1]
+Progress: Parameterizing module MainDiagnosticFIFO
+Progress: Adding Pheriphal_CLK [clock_source 18.1]
+Progress: Parameterizing module Pheriphal_CLK
+Progress: Adding SYS_Bus_CLK [clock_source 18.1]
+Progress: Parameterizing module SYS_Bus_CLK
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: CurrCTRL_SYS: Generating CurrCTRL_SYS "CurrCTRL_SYS" for QUARTUS_SYNTH
+Info: CurrCTRLSYS_Bridge: Starting Generation of Avalon to External Bus Bridge
+Info: CurrCTRLSYS_Bridge: "CurrCTRL_SYS" instantiated altera_up_avalon_to_external_bus_bridge "CurrCTRLSYS_Bridge"
+Info: CurrCTRL_GPIO: Starting RTL generation for module 'CurrCTRL_SYS_CurrCTRL_GPIO'
+Info: CurrCTRL_GPIO:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=CurrCTRL_SYS_CurrCTRL_GPIO --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_24535049080570284.dir/0003_CurrCTRL_GPIO_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_24535049080570284.dir/0003_CurrCTRL_GPIO_gen//CurrCTRL_SYS_CurrCTRL_GPIO_component_configuration.pl  --do_build_sim=0  ]
+Info: CurrCTRL_GPIO: Done RTL generation for module 'CurrCTRL_SYS_CurrCTRL_GPIO'
+Info: CurrCTRL_GPIO: "CurrCTRL_SYS" instantiated altera_avalon_pio "CurrCTRL_GPIO"
+Info: CurrCTRL_Register_RAM: Starting RTL generation for module 'CurrCTRL_SYS_CurrCTRL_Register_RAM'
+Info: CurrCTRL_Register_RAM:   Generation command is [exec C:/intelfpga_lite/18.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/18.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/18.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- C:/intelfpga_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=CurrCTRL_SYS_CurrCTRL_Register_RAM --dir=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_24535049080570284.dir/0004_CurrCTRL_Register_RAM_gen/ --quartus_dir=C:/intelfpga_lite/18.1/quartus --verilog --config=C:/Users/PETE~1.MAY/AppData/Local/Temp/alt8663_24535049080570284.dir/0004_CurrCTRL_Register_RAM_gen//CurrCTRL_SYS_CurrCTRL_Register_RAM_component_configuration.pl  --do_build_sim=0  ]
+Info: CurrCTRL_Register_RAM: Done RTL generation for module 'CurrCTRL_SYS_CurrCTRL_Register_RAM'
+Info: CurrCTRL_Register_RAM: "CurrCTRL_SYS" instantiated altera_avalon_onchip_memory2 "CurrCTRL_Register_RAM"
+Info: rst_controller: "CurrCTRL_SYS" instantiated altera_reset_controller "rst_controller"
+Info: CurrCTRL_SYS: Done "CurrCTRL_SYS" with 5 modules, 7 files
+Info: qsys-generate succeeded.
+Info: Finished: Create HDL design files for synthesis

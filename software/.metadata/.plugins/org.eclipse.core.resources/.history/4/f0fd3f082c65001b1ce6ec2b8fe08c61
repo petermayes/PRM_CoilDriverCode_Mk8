@@ -1,0 +1,129 @@
+// --------------------------------------------------------------------
+// Copyright (c) 2013 by Terasic Technologies Inc.
+// --------------------------------------------------------------------
+//
+// Permission:
+//
+//   Terasic grants permission to use and modify this code for use
+//   in synthesis for all Terasic Development Boards and Altera Development
+//   Kits made by Terasic.  Other use of this code, including the selling
+//   ,duplication, or modification of any portion is strictly prohibited.
+//
+// Disclaimer:
+//
+//   This VHDL/Verilog or C/C++ source code is intended as a design reference
+//   which illustrates how these types of functions can be implemented.
+//   It is the user's responsibility to verify their design for
+//   consistency and functionality through the use of formal
+//   verification methods.  Terasic provides no warranty regarding the use
+//   or functionality of this code.
+//
+// --------------------------------------------------------------------
+//
+//                     Terasic Technologies Inc
+//                     E. Rd Sec. 1. JhuBei City,
+//                     HsinChu County, Taiwan
+//                     302
+//
+//                     web: http://www.terasic.com/
+//                     email: support@terasic.com
+//
+// --------------------------------------------------------------------
+
+#include "system.h"
+#include "altera_avalon_pio_regs.h"
+
+#include "Includes\Types.h"
+#include "Drivers\GPIO_Driver.h"
+#include "Handlers\TimerHandler.h"
+#include "Handlers\msgDMA_Handler.h"
+#include "Handlers\RegisterData_RX_Handler.h"
+#include "Handlers\Registers_Handler.h"
+
+//#include <stdio.h>
+//#include <string.h>
+//#include <math.h>
+
+//void Add_TextToFT600Stack (char* ptr2text, Uint16 length);
+
+static Uint32	TP_Count = 0; //, count;
+
+Uint32	stringlength;
+char*	FT600_DebugString = "NULL";
+Uint32 	Slot_Address = 78;
+
+Uint32* ptr2Uint32;
+
+int main()
+
+{
+#ifdef CURRCTRL_SYS_CURRCTRLSYS_BRIDGE_BASE
+	IOWR_32DIRECT(CURRCTRL_SYS_CURRCTRLSYS_BRIDGE_BASE, (11*4), (1 << 23));
+#endif
+
+#if 0
+	stringlength = sprintf(FT600_DebugString,"Prototype Observer Controller\r\n");
+	Add_TextToFT600Stack(FT600_DebugString, stringlength);
+	stringlength = sprintf(FT600_DebugString,"Parameter Request Transmission Included\r\n");
+	Add_TextToFT600Stack(FT600_DebugString, stringlength);
+	stringlength = sprintf(FT600_DebugString,"Software Version - 1.12\r\n");
+	Add_TextToFT600Stack(FT600_DebugString, stringlength);
+
+#endif
+
+#ifdef PARAMETER_SYS_TO_EXTERNAL_BUS_BRIDGE_0_BASE
+	Copy_CRC_Table_To_External_RAM_Blocks();
+	Registers.DDR3_StatusFlag.DataField = Init_DDR3_VerificationRoutine(FALSE);
+#endif
+
+
+	Slot_Address = IORD_ALTERA_AVALON_PIO_DATA(PHERIPHALS_LED_GPIO_BASE) & 0x0f;
+	Slot_Address = 0;
+	Registers.Node_Address.DataField = Slot_Address;
+
+	Init_Register_Module(Slot_Address, 8.04f);
+	Init_msgDMA_Module();
+	Init_TimerHandler();
+
+
+#ifdef PARAMETER_SYS_PARAMETER_GPIO_BASE
+	RegisterDataRX_GPIO_interrupt_init();
+	IOWR_ALTERA_AVALON_PIO_IRQ_MASK(PARAMETER_SYS_PARAMETER_GPIO_BASE, 0x01);
+#endif
+
+//	USB_Data_GPIO_interrupt_init();
+//	IOWR_ALTERA_AVALON_PIO_IRQ_MASK(USB_DATA_SYS_USB_GPIO_BASE, 0x01);
+
+	while(1){
+
+		Set_TP8();
+		TP_Count++;
+		Clear_TP8();
+	}
+
+    return 0;
+}
+
+#if 0
+
+/*******************************************************************************
+ * Check_For_RX_Message                                                        *
+ *                                                                             *
+ ******************************************************************************/
+void Add_TextToFT600Stack (char* ptr2text, Uint16 length)
+{
+char*	DestinationAddress;
+static Uint32	DebugTextAreaCount = 0;
+
+if ((DebugTextAreaCount + length) <= 1024)
+	{
+		DestinationAddress = (char*)(DATA_MEMORY_BASE + 0x4000) + DebugTextAreaCount;
+		memcpy(DestinationAddress, ptr2text, length);
+		DebugTextAreaCount += length;
+	}
+
+}
+
+#endif
+
+/* ----------------------- EOF ------------------------------*/

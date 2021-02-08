@@ -1,0 +1,33 @@
+	component USB_Comms_SYS is
+		port (
+			clk_usb_ext_clk_clk        : in  std_logic                     := 'X';             -- clk
+			cpu_clk_clk                : in  std_logic                     := 'X';             -- clk
+			cpu_reset_reset_n          : in  std_logic                     := 'X';             -- reset_n
+			pheriphal_clk_clk          : in  std_logic                     := 'X';             -- clk
+			pheriphal_reset_reset_n    : in  std_logic                     := 'X';             -- reset_n
+			reset_usb_ext_clk_reset_n  : in  std_logic                     := 'X';             -- reset_n
+			usb_data_gpio_in_port      : in  std_logic                     := 'X';             -- in_port
+			usb_data_gpio_out_port     : out std_logic;                                        -- out_port
+			usb_data_gpio_irq_irq      : out std_logic;                                        -- irq
+			usb_data_ram_s2_address    : in  std_logic_vector(10 downto 0) := (others => 'X'); -- address
+			usb_data_ram_s2_chipselect : in  std_logic                     := 'X';             -- chipselect
+			usb_data_ram_s2_clken      : in  std_logic                     := 'X';             -- clken
+			usb_data_ram_s2_write      : in  std_logic                     := 'X';             -- write
+			usb_data_ram_s2_readdata   : out std_logic_vector(31 downto 0);                    -- readdata
+			usb_data_ram_s2_writedata  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			usb_data_ram_s2_byteenable : in  std_logic_vector(3 downto 0)  := (others => 'X'); -- byteenable
+			usb_gpio_s1_address        : in  std_logic_vector(2 downto 0)  := (others => 'X'); -- address
+			usb_gpio_s1_write_n        : in  std_logic                     := 'X';             -- write_n
+			usb_gpio_s1_writedata      : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			usb_gpio_s1_chipselect     : in  std_logic                     := 'X';             -- chipselect
+			usb_gpio_s1_readdata       : out std_logic_vector(31 downto 0);                    -- readdata
+			usb_rx_ram_s1_address      : in  std_logic_vector(10 downto 0) := (others => 'X'); -- address
+			usb_rx_ram_s1_clken        : in  std_logic                     := 'X';             -- clken
+			usb_rx_ram_s1_chipselect   : in  std_logic                     := 'X';             -- chipselect
+			usb_rx_ram_s1_write        : in  std_logic                     := 'X';             -- write
+			usb_rx_ram_s1_readdata     : out std_logic_vector(31 downto 0);                    -- readdata
+			usb_rx_ram_s1_writedata    : in  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
+			usb_rx_ram_s1_byteenable   : in  std_logic_vector(3 downto 0)  := (others => 'X')  -- byteenable
+		);
+	end component USB_Comms_SYS;
+

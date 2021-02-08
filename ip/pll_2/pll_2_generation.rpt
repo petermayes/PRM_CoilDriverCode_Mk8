@@ -1,0 +1,39 @@
+Info: Starting: Create block symbol file (.bsf)
+Info: qsys-generate C:\DesignData\CoilDriverDesigns\Mk_7\Observer_Function\EB_Mk7_ObserverFunction\ip\pll_2.qsys --block-symbol-file --output-directory=C:\DesignData\CoilDriverDesigns\Mk_7\Observer_Function\EB_Mk7_ObserverFunction\ip\pll_2 --family="MAX 10" --part=10M50DAF484I7G
+Progress: Loading ip/pll_2.qsys
+Progress: Reading input file
+Progress: Adding altpll_0 [altpll 20.1]
+Progress: Parameterizing module altpll_0
+Progress: Adding clk_0 [clock_source 20.1]
+Progress: Parameterizing module clk_0
+Progress: Adding fifo_0 [altera_avalon_fifo 20.1]
+Progress: Parameterizing module fifo_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Warning: pll_2.altpll_0: altpll_0.pll_slave must be connected to an Avalon-MM master
+Info: qsys-generate succeeded.
+Info: Finished: Create block symbol file (.bsf)
+Info: 
+Info: Starting: Create HDL design files for synthesis
+Info: qsys-generate C:\DesignData\CoilDriverDesigns\Mk_7\Observer_Function\EB_Mk7_ObserverFunction\ip\pll_2.qsys --synthesis=VERILOG --output-directory=C:\DesignData\CoilDriverDesigns\Mk_7\Observer_Function\EB_Mk7_ObserverFunction\ip\pll_2\synthesis --family="MAX 10" --part=10M50DAF484I7G
+Progress: Loading ip/pll_2.qsys
+Progress: Reading input file
+Progress: Adding altpll_0 [altpll 20.1]
+Progress: Parameterizing module altpll_0
+Progress: Adding clk_0 [clock_source 20.1]
+Progress: Parameterizing module clk_0
+Progress: Adding fifo_0 [altera_avalon_fifo 20.1]
+Progress: Parameterizing module fifo_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Warning: pll_2.altpll_0: altpll_0.pll_slave must be connected to an Avalon-MM master
+Info: pll_2: Generating pll_2 "pll_2" for QUARTUS_SYNTH
+Info: altpll_0: "pll_2" instantiated altpll "altpll_0"
+Info: rst_controller: "pll_2" instantiated altera_reset_controller "rst_controller"
+Info: pll_2: Done "pll_2" with 3 modules, 5 files
+Info: qsys-generate succeeded.
+Info: Finished: Create HDL design files for synthesis
